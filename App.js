@@ -17,7 +17,8 @@ import Screen from "./app/components/Screen";
 import ReceiptScreen from "./app/screens/ReceiptScreen";
 import TransferScreen from "./app/screens/TransferScreen";
 import DashboardScreen from "./app/screens/DashboardScreen";
-import BeneficiaryForm from "./app/screens/BeneficiaryForm";
+import BeneficiaryScreen from "./app/screens/BeneficiaryScreen";
+import BeneficiariesScreen from "./app/screens/BeneficiariesScreen";
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -57,7 +58,7 @@ export default function App() {
     <>
       <Screen onLayout={onLayoutRootView}>
         <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
-        <BeneficiaryForm />
+        <BeneficiariesScreen />
       </Screen>
     </>
   );

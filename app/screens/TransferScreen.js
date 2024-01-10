@@ -16,12 +16,11 @@ import colors from "../config/colors";
 import Text from "../components/CustomText";
 import ActivityIndicator from "../components/ActivityIndicator";
 
-import { InputField1, BtnForm1 } from "../components/form";
+import { InputField1, PickerForm, BtnForm1 } from "../components/form";
 
 const schema = Yup.object({
   id: Yup.number(),
-  description: Yup.string().label("Description"),
-  isAccountValid: Yup.boolean().required(),
+  bankId: Yup.number().label("Bank"),
   accountNo: Yup.string()
     .min(13, "Invalid Account No.")
     .required()
@@ -30,6 +29,8 @@ const schema = Yup.object({
     .typeError("Amount must be Number")
     .required()
     .label("Amount"),
+  isAccountValid: Yup.boolean().required(),
+  description: Yup.string().label("Description"),
 });
 
 const data = [
@@ -124,13 +125,20 @@ const data = [
     Account: "1481311198646",
   },
 ];
+const banks = [
+  { id: 1, name: "Shabelle Bank" },
+  { id: 2, name: "Awash Bank" },
+  { id: 3, name: "Commercial Bank" },
+  { id: 4, name: "Dashen Bank" },
+];
 
 export default function TransferScreen() {
   const [transfer, setTransfer] = useState({
     id: 0,
     amount: "",
-    accountNo: "",
+    bankId: 1,
     comment: "",
+    accountNo: "",
     isAccountValid: true,
   });
   const [myAccount] = useState({
@@ -151,9 +159,13 @@ export default function TransferScreen() {
     if (transfer.amount >= myAccount.balance) return setVisible(true);
 
     Keyboard.dismiss();
-    setTransfer(transfer);
-    setShowConfirm(true);
-    console.log("submitted: ", transfer);
+    setIsLoading(true);
+    setTimeout(() => {
+      setTransfer(transfer);
+      setShowConfirm(true);
+      console.log("submitted: ", transfer);
+      setIsLoading(false);
+    }, 3000);
   };
   const handleCheckAccountNo = (accountNo, setFieldValue, values) => {
     setLoading(true);
@@ -230,7 +242,7 @@ export default function TransferScreen() {
 
             <View style={styles.detailItem}>
               <Text style={styles.detailItemLabel} semibold>
-                To Account Number:
+                To Account No:
               </Text>
 
               <Text style={styles.detailItemValue} bold>
@@ -313,7 +325,10 @@ export default function TransferScreen() {
           Transfer Money
         </Text>
       </View>
-      <ScrollView contentContainerStyle={styles.main}>
+      <ScrollView
+        keyboardShouldPersistTaps="always"
+        contentContainerStyle={styles.main}
+      >
         <View style={styles.container}>
           <Formik
             enableReinitialize
@@ -323,14 +338,21 @@ export default function TransferScreen() {
           >
             {({ values, setFieldValue }) => (
               <>
+                <PickerForm
+                  label="Bank"
+                  name="bankId"
+                  icon="align-justify"
+                  autoCapitalize="words"
+                  options={banks.map((b) => ({ id: b.id, label: b.name }))}
+                />
                 <InputField1
                   required
                   maxLength={13}
-                  icon="user-tie"
+                  icon="wallet"
                   name="accountNo"
                   isLoading={loading}
                   keyboardType="numeric"
-                  placeholder="Account No"
+                  placeholder="Account No."
                   value={values["accountNo"]}
                   invalid={!values["isAccountValid"]}
                   onChange={(value) =>
@@ -367,11 +389,11 @@ const styles = StyleSheet.create({
     padding: 4,
     borderRadius: 5,
     marginRight: 10,
-    backgroundColor: colors.light,
+    backgroundColor: colors.lighter,
   },
   navCont: {
     marginTop: 15,
-    marginBottom: 30,
+    marginBottom: 40,
     flexDirection: "row",
     alignItems: "center",
     marginHorizontal: 12.5,
@@ -456,10 +478,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   confirmModal: {
-    height: 600,
     width: "100%",
     marginLeft: -20,
     marginBottom: -25,
+    paddingBottom: 40,
     borderTopEndRadius: 20,
     borderTopLeftRadius: 20,
     backgroundColor: colors.white,
@@ -468,8 +490,9 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 15,
     borderRadius: 7.5,
-    paddingVertical: 10,
+    paddingVertical: 15,
     alignItems: "center",
+    justifyContent: "center",
     backgroundColor: colors.primary,
   },
   modalBtnText: {

@@ -126,7 +126,7 @@ const banks = [
   { id: 4, name: "Dashen Bank" },
 ];
 
-export default function BeneficiaryForm() {
+export default function BeneficiaryScreen() {
   const [beneficiary, setBeneficiary] = useState({
     id: 0,
     name: "",
@@ -142,8 +142,12 @@ export default function BeneficiaryForm() {
     if (!beneficiary["isAccountValid"]) return;
 
     Keyboard.dismiss();
-    setBeneficiary(beneficiary);
-    console.log("submitted: ", beneficiary);
+    setIsLoading(true),
+      setTimeout(() => {
+        setBeneficiary(beneficiary);
+        console.log("submitted: ", beneficiary);
+        setIsLoading(false);
+      }, 3000);
   };
   const handleCheckAccountNo = (accountNo, setFieldValue) => {
     setLoading(true);
@@ -189,7 +193,10 @@ export default function BeneficiaryForm() {
           New Beneficiary
         </Text>
       </View>
-      <ScrollView contentContainerStyle={styles.main}>
+      <ScrollView
+        keyboardShouldPersistTaps="always"
+        contentContainerStyle={styles.main}
+      >
         <View style={styles.container}>
           <Formik
             enableReinitialize
@@ -206,7 +213,7 @@ export default function BeneficiaryForm() {
                   name="accountNo"
                   isLoading={loading}
                   keyboardType="numeric"
-                  placeholder="Account"
+                  placeholder="Account No."
                   value={values["accountNo"]}
                   invalid={!values["isAccountValid"]}
                   onChange={(value) =>
@@ -242,11 +249,11 @@ const styles = StyleSheet.create({
     padding: 4,
     borderRadius: 5,
     marginRight: 10,
-    backgroundColor: colors.light,
+    backgroundColor: colors.lighter,
   },
   navCont: {
     marginTop: 15,
-    marginBottom: 30,
+    marginBottom: 40,
     flexDirection: "row",
     alignItems: "center",
     marginHorizontal: 12.5,
