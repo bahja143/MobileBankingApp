@@ -62,6 +62,7 @@ const InputField1 = ({
           onBlur();
           setActive(false);
         }}
+        value={value}
         {...otherProps}
         password={password}
         onFocus={handleFocus}
@@ -126,8 +127,9 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 16.5,
+    color: colors.black,
     marginHorizontal: 8,
-    fontFamily: "Inter_500Medium",
+    fontFamily: "Inter_400Regular",
     backgroundColor: colors.white,
   },
   spinnerContainer: {
@@ -138,7 +140,6 @@ const styles = StyleSheet.create({
     width: 25,
     height: 25,
   },
-  icon: {},
   iconContainer: {
     left: -2.5,
   },

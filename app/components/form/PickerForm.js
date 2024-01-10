@@ -20,7 +20,7 @@ const PickerForm = ({
   label,
   options,
   topLabel,
-  margin = 10,
+  margin = 90,
   numOfColumns = 1,
   Component = PickerItem,
 }) => {
@@ -32,13 +32,13 @@ const PickerForm = ({
   };
 
   return (
-    <View style={[{ marginVertical: margin }]}>
+    <View style={[{ height: margin }]}>
       {topLabel && <Text style={styles.label}>{topLabel}:</Text>}
       <TouchableWithoutFeedback onPress={() => setShow(true)}>
         <View style={styles.container}>
           <MaterialCommunityIcons
             name="apps"
-            size={20}
+            size={22.5}
             color={colors["medium"]}
           />
           {values[name] ? (
@@ -50,7 +50,7 @@ const PickerForm = ({
           )}
           <MaterialCommunityIcons
             name="chevron-down"
-            size={23}
+            size={25}
             color={colors["medium"]}
           />
         </View>
@@ -88,25 +88,26 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors["white"],
     paddingVertical: 17,
-    borderRadius: 7.5,
+    borderRadius: 10,
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 15,
     overflow: "hidden",
-    borderWidth: 0.8,
-    borderColor: colors.medium,
+    borderWidth: 1.5,
+    borderColor: colors.light,
     marginBottom: -3,
   },
   text: {
     flex: 1,
     color: colors["medium"],
-    fontSize: 16,
+    fontSize: 16.5,
     marginLeft: 8,
+    fontFamily: "Inter_400Regular",
   },
   textValue: {
     flex: 1,
     color: colors["black"],
-    fontSize: 18,
+    fontSize: 16.5,
     marginLeft: 8,
   },
   title: {
@@ -142,14 +143,14 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
   },
   subModal: {
-    backgroundColor: colors.lighter,
     width: "90%",
+    borderRadius: 10,
+    paddingVertical: 25,
     alignSelf: "center",
-    paddingVertical: 5,
-    borderRadius: 15,
+    backgroundColor: colors.lighter,
   },
   label: {
     fontSize: 15.5,

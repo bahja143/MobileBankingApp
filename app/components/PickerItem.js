@@ -1,14 +1,22 @@
 import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
 
-import Text from "../components/CustomText";
 import colors from "../config/colors";
+import Text from "../components/CustomText";
 
 const PickerItem = ({ item, onPress }) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.container}>
-        <View style={styles.dot} />
-        <Text style={styles.text} medium>
+        <View style={styles.iconContainer}>
+          <FontAwesome
+            size={20}
+            name="bank"
+            style={styles.icon}
+            color={colors.primary}
+          />
+        </View>
+        <Text style={styles.text} semibold>
           {item.label}
         </Text>
       </View>
@@ -18,26 +26,27 @@ const PickerItem = ({ item, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 15,
-    marginVertical: 10,
+    borderRadius: 5,
+    marginVertical: 5,
+    paddingVertical: 10,
     flexDirection: "row",
+    marginHorizontal: 10,
+    paddingHorizontal: 7.5,
     alignContent: "center",
-    borderBottomWidth: 1,
-    borderBottomColor: colors.medium,
-    paddingVertical: 6,
-    paddingHorizontal: 6,
+    backgroundColor: colors.white,
+  },
+  iconContainer: {
+    padding: 10,
+    borderRadius: 5,
+    marginRight: 7.5,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.lighter,
   },
   text: {
-    fontSize: 17.5,
-    color: colors["medium"],
-  },
-  dot: {
-    width: 7,
-    height: 7,
-    borderRadius: 25,
-    backgroundColor: colors.primary,
+    fontSize: 15.5,
     alignSelf: "center",
-    marginRight: 7.5,
+    color: colors["black"],
   },
 });
 
