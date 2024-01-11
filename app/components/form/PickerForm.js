@@ -39,7 +39,7 @@ const PickerForm = ({
           <MaterialCommunityIcons
             name="apps"
             size={22.5}
-            color={colors["medium"]}
+            color={colors["primary"]}
           />
           {values[name] ? (
             <Text style={styles.textValue}>

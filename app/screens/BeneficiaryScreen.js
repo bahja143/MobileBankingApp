@@ -260,11 +260,11 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    marginHorizontal: 12.5,
+    marginHorizontal: 7.5,
     justifyContent: "center",
   },
   title: {
-    fontSize: 19,
+    fontSize: 18,
     textAlign: "center",
     color: colors.black,
   },

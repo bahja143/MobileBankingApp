@@ -116,11 +116,11 @@ export default function BeneficiariesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 7.5,
-    backgroundColor: colors.white,
+    paddingHorizontal: 5,
+    backgroundColor: colors.lighter,
   },
   title: {
-    fontSize: 19,
+    fontSize: 18,
     textAlign: "center",
     color: colors.black,
   },
@@ -128,31 +128,30 @@ const styles = StyleSheet.create({
     padding: 4,
     borderRadius: 5,
     marginRight: 10,
-    backgroundColor: colors.lighter,
+    backgroundColor: colors.white,
   },
   navCont: {
     marginTop: 15,
-    marginBottom: 15,
+    marginBottom: 25,
     flexDirection: "row",
     alignItems: "center",
   },
   itemSept: {
     height: 5,
-    backgroundColor: colors.white,
+    backgroundColor: colors.lighter,
   },
   iconContainer: {
     padding: 10,
     marginRight: 10,
     borderRadius: 10,
-    backgroundColor: colors.white,
+    backgroundColor: colors.lighter,
   },
   itemSubtitle: {
-    fontSize: 13,
     maxWidth: 270,
     color: colors.medium,
   },
   itemTitle: {
-    fontSize: 15,
+    fontSize: 15.5,
     marginBottom: 5,
     color: colors.black,
   },
@@ -167,7 +166,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 10,
+    backgroundColor: colors.white,
     justifyContent: "space-between",
-    backgroundColor: colors.lighter,
   },
 });
