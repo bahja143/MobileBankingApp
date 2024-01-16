@@ -1,7 +1,14 @@
+import { Formik } from "formik";
 import { useState } from "react";
 import Modal from "react-native-modal";
 
-import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import {
+  View,
+  FlatList,
+  StyleSheet,
+  RefreshControl,
+  TouchableOpacity,
+} from "react-native";
 import {
   Entypo,
   Octicons,
@@ -11,6 +18,9 @@ import {
 
 import colors from "../config/colors";
 import Text from "../components/CustomText";
+import ActivityIndicator from "../components/ActivityIndicator";
+
+import { InputField1, DatePickerInput, BtnForm1 } from "../components/form";
 
 const transactions = [
   {
@@ -45,10 +55,45 @@ const transactions = [
 
 export default function TransactionsScreen() {
   const [data] = useState([...transactions]);
+  const [filter, setFilter] = useState({
+    id: 0,
+    type: "All",
+    account: "",
+    endDate: "",
+    startDate: "",
+  });
   const [show, setShow] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleSubmit = (values) => {
+    if (
+      values["type"] === "All" &&
+      values["account"] === "" &&
+      values["endDate"] === "" &&
+      values["startDate"] === ""
+    )
+      return setShow(false);
+
+    setIsLoading(true);
+    setShow(false);
+
+    setTimeout(() => {
+      console.log(values);
+      setIsLoading(false);
+      setFilter({ ...values });
+    }, 3000);
+  };
+  const handelRefreshing = () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 3000);
+  };
 
   return (
     <>
+      <ActivityIndicator visible={isLoading} />
       <Modal
         isVisible={show}
         style={styles.modal}
@@ -67,6 +112,111 @@ export default function TransactionsScreen() {
               name="horizontal-rule"
             />
           </View>
+          <Formik
+            enableReinitialize
+            initialValues={filter}
+            onSubmit={handleSubmit}
+          >
+            {({ values, setFieldValue }) => (
+              <>
+                <View style={styles.modalBody}>
+                  <TouchableOpacity
+                    onPress={() => setFieldValue("type", "All")}
+                    style={[
+                      styles.modalItem,
+                      values["type"] === "All" && {
+                        backgroundColor: colors.primary,
+                      },
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        styles.modelItemText,
+                        values["type"] === "All" && { color: colors.white },
+                      ]}
+                      semibold
+                    >
+                      All
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={() => setFieldValue("type", "Received")}
+                    style={[
+                      styles.modalItem,
+                      values["type"] === "Received" && {
+                        backgroundColor: colors.primary,
+                      },
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        styles.modelItemText,
+                        values["type"] === "Received" && {
+                          color: colors.white,
+                        },
+                      ]}
+                      semibold
+                    >
+                      Received
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => setFieldValue("type", "Transfer")}
+                    style={[
+                      styles.modalItem,
+                      values["type"] === "Transfer" && {
+                        backgroundColor: colors.primary,
+                      },
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        styles.modelItemText,
+                        values["type"] === "Transfer" && {
+                          color: colors.white,
+                        },
+                      ]}
+                      semibold
+                    >
+                      Transfer
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.form}>
+                  <InputField1
+                    height={60}
+                    margin={90}
+                    icon="wallet"
+                    name="account"
+                    maxLength={13}
+                    placeholder="Account"
+                    keyboardType="numeric"
+                  />
+                  <View style={styles.dateContainer}>
+                    <DatePickerInput
+                      margin={95}
+                      height={60}
+                      fontSize={15}
+                      name="startDate"
+                      placeholder="From Date"
+                      maximumDate={new Date()}
+                    />
+                    <View style={styles.date} />
+                    <DatePickerInput
+                      margin={95}
+                      height={60}
+                      fontSize={15}
+                      name="endDate"
+                      placeholder="To Date"
+                      maximumDate={new Date()}
+                    />
+                  </View>
+                  <BtnForm1 textTransform="capitalize" title="Apply filter" />
+                </View>
+              </>
+            )}
+          </Formik>
         </View>
       </Modal>
       <View style={styles.container}>
@@ -75,7 +225,7 @@ export default function TransactionsScreen() {
             <Entypo size={30} color={colors.primary} name="chevron-left" />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setShow(true)} style={styles.search}>
-            <FontAwesome size={22} name="search" color={colors.medium} />
+            <FontAwesome size={20} name="search" color={colors.medium} />
             <Text style={styles.searchText} semibold>
               Search
             </Text>
@@ -83,6 +233,13 @@ export default function TransactionsScreen() {
         </View>
         <FlatList
           data={data}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              colors={[colors["primary"]]}
+              onRefresh={handelRefreshing}
+            />
+          }
           style={styles.flatlist}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
@@ -139,6 +296,39 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: colors.lighter,
   },
+  date: {
+    width: "5%",
+  },
+  dateContainer: {
+    width: "100%",
+    marginBottom: 5,
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  form: {
+    marginTop: 30,
+    paddingHorizontal: 20,
+  },
+  modelItemText: {
+    fontSize: 15,
+    color: colors.primary,
+  },
+  modalItem: {
+    height: 40,
+    width: 100,
+    borderWidth: 1.5,
+    borderRadius: 7.5,
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: colors.primary,
+    backgroundColor: colors.white,
+  },
+  modalBody: {
+    marginTop: 25,
+    flexDirection: "row",
+    paddingHorizontal: 20,
+    justifyContent: "space-between",
+  },
   filterTitleCont: {
     marginTop: -7.5,
     borderBottomWidth: 0.75,
@@ -161,25 +351,27 @@ const styles = StyleSheet.create({
   },
   filterCont: {
     bottom: 0,
-    height: 550,
     width: "100%",
-    borderTopEndRadius: 30,
-    borderTopLeftRadius: 30,
+    height: "90%",
+    borderTopEndRadius: 25,
+    borderTopLeftRadius: 25,
     backgroundColor: colors.white,
   },
   searchText: {
-    fontSize: 16,
+    fontSize: 15,
     marginLeft: 15,
     color: colors.medium,
   },
   search: {
     flex: 1,
-    borderWidth: 1.5,
+    borderWidth: 1,
     borderRadius: 100,
     flexDirection: "row",
+    alignItems: "center",
     marginHorizontal: 7.5,
     paddingHorizontal: 15,
     paddingVertical: 12.5,
+    borderColor: colors.light,
     borderColor: colors.light,
     backgroundColor: colors.white,
   },
@@ -231,7 +423,7 @@ const styles = StyleSheet.create({
   },
   itemTitle: {
     fontSize: 15,
-    marginBottom: 5,
+    marginBottom: 3,
     color: colors.black,
     textTransform: "capitalize",
   },

@@ -4,6 +4,7 @@ import {
   FlatList,
   Platform,
   StyleSheet,
+  RefreshControl,
   TouchableOpacity,
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
@@ -49,6 +50,15 @@ export default function NotificationsScreen() {
   const [refresh] = useState(false);
   const [loading] = useState(false);
   const [notifications] = useState([...data]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleRefreshing = () => {
+    setRefreshing(true);
+
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 3000);
+  };
 
   return (
     <>
@@ -64,6 +74,13 @@ export default function NotificationsScreen() {
         </View>
         {notifications?.length > 0 ? (
           <FlatList
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                colors={[colors["primary"]]}
+                onRefresh={handleRefreshing}
+              />
+            }
             refreshing={refresh}
             data={notifications.reverse((n) => new Date(n.date))}
             keyExtractor={(d) => d.Title}

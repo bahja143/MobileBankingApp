@@ -23,6 +23,7 @@ const InputField1 = ({
   required,
   isLoading,
   placeholder,
+  height = 62.5,
   password = false,
   maxWidth = "100%",
   ...otherProps
@@ -47,6 +48,7 @@ const InputField1 = ({
             : invalid
             ? colors.danger
             : colors.light,
+          height: height,
         },
       ]}
     >
@@ -129,7 +131,7 @@ const styles = StyleSheet.create({
     fontSize: 16.5,
     color: colors.black,
     marginHorizontal: 8,
-    fontFamily: "Inter_400Regular",
+    fontFamily: "Inter_500Medium",
     backgroundColor: colors.white,
   },
   spinnerContainer: {

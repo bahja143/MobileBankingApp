@@ -3,6 +3,7 @@ import {
   Image,
   FlatList,
   StyleSheet,
+  RefreshControl,
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
@@ -49,11 +50,27 @@ const transactions = [
 
 export default function DashboardScreen() {
   const [show, setShow] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleRefreshing = () => {
+    setRefreshing(true);
+
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 3000);
+  };
 
   return (
     <FlatList
       data={[1]}
       style={style.container}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          colors={[colors["primary"]]}
+          onRefresh={handleRefreshing}
+        />
+      }
       keyExtractor={(item) => item.toString()}
       renderItem={() => (
         <View>
