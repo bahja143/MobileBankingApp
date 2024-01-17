@@ -309,9 +309,9 @@ export default function TransferScreen() {
           </View>
           <TouchableOpacity
             onPress={() => setVisible(false)}
-            style={styles.modalBtn}
+            style={[styles.modalBtn, { paddingVertical: 10 }]}
           >
-            <Text style={styles.modalBtnText} bold>
+            <Text style={[styles.modalBtnText, { fontSize: 16 }]} bold>
               OK
             </Text>
           </TouchableOpacity>

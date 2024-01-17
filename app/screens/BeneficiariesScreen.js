@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Swipeable from "react-native-gesture-handler/Swipeable";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import {
   View,
@@ -90,7 +90,7 @@ const data = [
     Account: "1481311198646",
   },
   {
-    Id: 4,
+    Id: 14,
     Name: {
       firstName: "Bob",
       lastName: "Jack",
@@ -99,7 +99,7 @@ const data = [
     Account: "1400698080874",
   },
   {
-    Id: 5,
+    Id: 15,
     Name: {
       firstName: "Alice",
       lastName: "Irene",
@@ -108,7 +108,7 @@ const data = [
     Account: "7579333944348",
   },
   {
-    Id: 6,
+    Id: 16,
     Name: {
       firstName: "Harry",
       lastName: "Eve",
@@ -117,7 +117,7 @@ const data = [
     Account: "1194989860702",
   },
   {
-    Id: 7,
+    Id: 17,
     Name: {
       firstName: "Bob",
       lastName: "Harry",
@@ -126,7 +126,7 @@ const data = [
     Account: "9962878623715",
   },
   {
-    Id: 8,
+    Id: 18,
     Name: {
       firstName: "Frank",
       lastName: "Grace",
@@ -135,7 +135,7 @@ const data = [
     Account: "6382348098347",
   },
   {
-    Id: 9,
+    Id: 19,
     Name: {
       firstName: "Alice",
       lastName: "Diana",
@@ -144,7 +144,7 @@ const data = [
     Account: "1828359688819",
   },
   {
-    Id: 10,
+    Id: 110,
     Name: {
       firstName: "Charlie",
       lastName: "Jack",
@@ -156,9 +156,12 @@ const data = [
 
 export default function BeneficiariesScreen() {
   const [show, setShow] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [beneficiary, setBeneficiary] = useState({});
   const [refreshing, setRefreshing] = useState(false);
   const spinValue = useRef(new Animated.Value(0)).current;
   const spinValue1 = useRef(new Animated.Value(0)).current;
+  const [beneficiaries, setBeneficiaries] = useState([...data]);
   const spin = spinValue.interpolate({
     inputRange: [0, 1],
     outputRange: ["0deg", "45deg"],
@@ -167,6 +170,7 @@ export default function BeneficiariesScreen() {
     inputRange: [0, 1],
     outputRange: ["0deg", "45deg"],
   });
+  const swipeRef = useRef();
 
   const handleRefreshing = () => {
     setRefreshing(true);
@@ -206,9 +210,69 @@ export default function BeneficiariesScreen() {
       spinValue.setValue(0);
     }, 50);
   };
+  const handleConfirmDelete = () => {
+    setVisible(false);
+    swipeRef.current?.close();
+    swipeRef.current &&
+      setBeneficiaries([
+        ...beneficiaries.filter((b) => b.Id !== beneficiary.Id),
+      ]);
+  };
+  const handleDelete = (obj) => {
+    setBeneficiary(obj);
+    setVisible(true);
+  };
+  const handleCloseDeleteModal = () => {
+    swipeRef.current?.close();
+    setVisible(false);
+    setBeneficiary({});
+  };
 
   return (
     <>
+      <Modal
+        isVisible={visible}
+        animationIn="slideInUp"
+        animationOut="fadeOut"
+        animationOutTiming={50}
+      >
+        <View style={styles.modalDelete}>
+          <View style={styles.modalTrashIcon}>
+            <Ionicons name="trash-outline" size={32.5} color={colors.danger} />
+          </View>
+          <View style={styles.modalTextContainer}>
+            <Text style={styles.modalTitle} bold>
+              {`${beneficiary.Name?.firstName} ${beneficiary.Name?.middleName} ${beneficiary.Name?.lastName}`}
+            </Text>
+            <Text style={styles.modalText}>
+              Are you sure to delete this Beneficiary
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={() => handleConfirmDelete()}
+            style={[styles.modalBtn, { paddingVertical: 10 }]}
+          >
+            <Text style={[styles.modalBtnText]} bold>
+              Confirm Delete
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handleCloseDeleteModal}
+            style={[
+              styles.modalBtn,
+              {
+                borderWidth: 0,
+                paddingVertical: 11,
+                backgroundColor: colors.primary,
+              },
+            ]}
+          >
+            <Text style={[styles.modalBtnText, { color: colors.white }]} bold>
+              Cancel
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
       <Modal
         isVisible={show}
         style={styles.modal}
@@ -263,84 +327,102 @@ export default function BeneficiariesScreen() {
           </Text>
         </View>
 
-        <FlatList
-          data={data}
-          style={styles.flatlist}
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              colors={[colors["primary"]]}
-              onRefresh={handleRefreshing}
-            />
-          }
-          renderItem={({ item }) => (
-            <GestureHandlerRootView>
-              <Swipeable
-                renderLeftActions={() => (
-                  <TouchableOpacity style={styles.swipeLeft}>
-                    <Feather name="send" size={24} color={colors.white} />
-                    <Text semibold style={styles.swipeLeftText}>
-                      Send Money
-                    </Text>
-                  </TouchableOpacity>
-                )}
-                renderRightActions={() => (
-                  <View style={styles.swipeRight}>
-                    <TouchableOpacity style={styles.deleteAction}>
-                      <Ionicons
-                        name="trash-outline"
-                        size={22}
-                        color={colors.danger}
-                      />
-                      <Text semibold style={styles.deleteActionText}>
-                        Delete
+        {beneficiaries.length !== 0 ? (
+          <FlatList
+            data={beneficiaries}
+            contentContainerStyle={styles.flatlistContainer}
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                colors={[colors["primary"]]}
+                onRefresh={handleRefreshing}
+              />
+            }
+            renderItem={({ item }) => (
+              <GestureHandlerRootView>
+                <Swipeable
+                  key={item.Id}
+                  ref={swipeRef}
+                  renderLeftActions={() => (
+                    <TouchableOpacity style={styles.swipeLeft}>
+                      <Feather name="send" size={24} color={colors.white} />
+                      <Text semibold style={styles.swipeLeftText}>
+                        Send Money
                       </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.editAction}>
-                      <FontAwesome5
-                        name="edit"
-                        size={20}
-                        color={colors.white}
-                      />
-                      <Text semibold style={styles.editActionText}>
-                        Edit
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              >
-                <View style={styles.item}>
-                  <View style={styles.itemLeft}>
-                    <View style={styles.iconContainer}>
-                      <MaterialCommunityIcons
-                        size={30}
-                        color={colors.primary}
-                        name="account-convert"
-                      />
+                  )}
+                  renderRightActions={() => (
+                    <View style={styles.swipeRight}>
+                      <TouchableOpacity
+                        onPress={() => handleDelete(item)}
+                        style={styles.deleteAction}
+                      >
+                        <Ionicons
+                          name="trash-outline"
+                          size={22}
+                          color={colors.danger}
+                        />
+                        <Text semibold style={styles.deleteActionText}>
+                          Delete
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={styles.editAction}>
+                        <FontAwesome5
+                          name="edit"
+                          size={20}
+                          color={colors.white}
+                        />
+                        <Text semibold style={styles.editActionText}>
+                          Edit
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                >
+                  <View style={styles.item}>
+                    <View style={styles.itemLeft}>
+                      <View style={styles.iconContainer}>
+                        <MaterialCommunityIcons
+                          size={30}
+                          color={colors.primary}
+                          name="account-convert"
+                        />
+                      </View>
+                      <View>
+                        <Text style={styles.itemTitle} semibold>
+                          {`${item.Name.firstName} ${item.Name.middleName} ${item.Name.lastName}`}
+                        </Text>
+                        <Text style={styles.itemSubtitle} numberOfLines={1}>
+                          {item.Account} - Shabelle Bank
+                        </Text>
+                      </View>
                     </View>
                     <View>
-                      <Text style={styles.itemTitle} semibold>
-                        {`${item.Name.firstName} ${item.Name.middleName} ${item.Name.lastName}`}{" "}
-                      </Text>
-                      <Text style={styles.itemSubtitle} numberOfLines={1}>
-                        {item.Account} - Shabelle Bank jsdkhsjk kjgh
-                      </Text>
+                      <Octicons
+                        name="chevron-right"
+                        size={22}
+                        color={colors.medium}
+                      />
                     </View>
                   </View>
-                  <View>
-                    <Octicons
-                      name="chevron-right"
-                      size={22}
-                      color={colors.medium}
-                    />
-                  </View>
-                </View>
-              </Swipeable>
-            </GestureHandlerRootView>
-          )}
-          ItemSeparatorComponent={() => <View style={styles.itemSept} />}
-        />
+                </Swipeable>
+              </GestureHandlerRootView>
+            )}
+            ItemSeparatorComponent={() => <View style={styles.itemSept} />}
+          />
+        ) : (
+          <View style={styles.emptyContainer}>
+            <MaterialCommunityIcons
+              size={80}
+              color="rgba(0, 0, 0, .2)"
+              name="account-convert"
+            />
+            <Text semibold style={styles.emptyText}>
+              No beneficiary Available
+            </Text>
+          </View>
+        )}
       </View>
       <TouchableWithoutFeedback onPress={handelShowModal}>
         <View style={styles.iconContainerPlus}>
@@ -354,10 +436,23 @@ export default function BeneficiariesScreen() {
 }
 
 const styles = StyleSheet.create({
+  emptyContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.lighter,
+  },
+  emptyText: {
+    marginTop: 25,
+    color: "rgba(0, 0, 0,.25)",
+  },
   container: {
     flex: 1,
     paddingHorizontal: 5,
     backgroundColor: colors.lighter,
+  },
+  flatlistContainer: {
+    paddingVertical: 20,
   },
   swipeLeftText: {
     marginTop: 5,
@@ -404,6 +499,51 @@ const styles = StyleSheet.create({
     height: "100%",
     flexDirection: "row",
   },
+  modalTrashIcon: {
+    width: 55,
+    height: 55,
+    borderRadius: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.lighter,
+  },
+  modalBtn: {
+    width: "100%",
+    marginTop: 8,
+    borderWidth: 1.25,
+    borderRadius: 7.5,
+    paddingVertical: 15,
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: colors.light,
+    backgroundColor: colors.white,
+  },
+  modalBtnText: {
+    fontSize: 13,
+    color: colors.danger,
+  },
+  modalDelete: {
+    width: "100%",
+    borderRadius: 10,
+    paddingVertical: 10,
+    alignItems: "center",
+    paddingHorizontal: 20,
+    justifyContent: "center",
+    backgroundColor: colors.white,
+  },
+  modalTitle: {
+    fontSize: 14.5,
+    color: colors.black,
+  },
+  modalText: {
+    fontSize: 13,
+    marginBottom: 5,
+    color: colors.medium,
+  },
+  modalTextContainer: {
+    marginVertical: 10,
+    alignItems: "center",
+  },
   menuIconContainer: {
     width: 32.5,
     height: 32.5,
@@ -427,10 +567,6 @@ const styles = StyleSheet.create({
     right: 50,
     bottom: 115,
     position: "absolute",
-  },
-  flatlist: {
-    marginTop: 10,
-    paddingTop: 10,
   },
   modal: {
     padding: 0,
@@ -461,6 +597,7 @@ const styles = StyleSheet.create({
   },
   navCont: {
     marginTop: 15,
+    marginBottom: 10,
     flexDirection: "row",
     alignItems: "center",
   },

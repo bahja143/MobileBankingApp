@@ -7,7 +7,7 @@ import {
   RefreshControl,
   TouchableOpacity,
 } from "react-native";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, FontAwesome5 } from "@expo/vector-icons";
 
 import colors from "../config/colors";
 import Text from "../components/CustomText";
@@ -87,7 +87,12 @@ export default function NotificationsScreen() {
             renderItem={({ item }) => <Notification data={item} />}
           />
         ) : loading ? null : (
-          <Text style={styles.noDataText}>No notification</Text>
+          <View style={styles.emptyContainer}>
+            <FontAwesome5 size={65} name="bell" color="rgba(0, 0, 0, .2)" />
+            <Text semibold style={styles.emptyText}>
+              No Notification Available
+            </Text>
+          </View>
         )}
       </View>
     </>
@@ -95,6 +100,16 @@ export default function NotificationsScreen() {
 }
 
 const styles = StyleSheet.create({
+  emptyContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.lighter,
+  },
+  emptyText: {
+    marginTop: 25,
+    color: "rgba(0, 0, 0,.25)",
+  },
   container: {
     flex: 1,
     justifyContent: "center",
@@ -117,7 +132,7 @@ const styles = StyleSheet.create({
   },
   navCont: {
     marginTop: 10,
-    marginBottom: 25,
+    marginBottom: 10,
     paddingHorizontal: 7.5,
     flexDirection: "row",
     alignItems: "center",

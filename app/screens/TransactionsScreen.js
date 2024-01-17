@@ -22,7 +22,7 @@ import ActivityIndicator from "../components/ActivityIndicator";
 
 import { InputField1, DatePickerInput, BtnForm1 } from "../components/form";
 
-const transactions = [
+const data = [
   {
     id: 1,
     type: "Received",
@@ -51,10 +51,66 @@ const transactions = [
     amount: "10,000",
     Date: "Oct 29",
   },
+  {
+    id: 11,
+    type: "Received",
+    description: "Salary Shabelle Bank",
+    amount: "45,000",
+    Date: "Today",
+  },
+  {
+    id: 12,
+    type: "Transfer",
+    description: "To Bahja Abdulaziz Hassen",
+    amount: "100,000",
+    Date: "Dec 26",
+  },
+  {
+    id: 31,
+    type: "withdraw",
+    description: "Madina Branch",
+    amount: "25,000",
+    Date: "Oct 29",
+  },
+  {
+    id: 14,
+    type: "withdraw",
+    description: "Madina Branch",
+    amount: "10,000",
+    Date: "Oct 29",
+  },
+  {
+    id: 111,
+    type: "Received",
+    description: "Salary Shabelle Bank",
+    amount: "45,000",
+    Date: "Today",
+  },
+  {
+    id: 112,
+    type: "Transfer",
+    description: "To Bahja Abdulaziz Hassen",
+    amount: "100,000",
+    Date: "Dec 26",
+  },
+  {
+    id: 113,
+    type: "withdraw",
+    description: "Madina Branch",
+    amount: "25,000",
+    Date: "Oct 29",
+  },
+  {
+    id: 114,
+    type: "withdraw",
+    description: "Madina Branch",
+    amount: "10,000",
+    Date: "Oct 29",
+  },
 ];
 
 export default function TransactionsScreen() {
-  const [data] = useState([...transactions]);
+  const [transactions] = useState([...data]);
   const [filter, setFilter] = useState({
     id: 0,
     type: "All",
@@ -231,65 +287,91 @@ export default function TransactionsScreen() {
             </Text>
           </TouchableOpacity>
         </View>
-        <FlatList
-          data={data}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              colors={[colors["primary"]]}
-              onRefresh={handelRefreshing}
+        {transactions.length !== 0 ? (
+          <FlatList
+            data={transactions}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                colors={[colors["primary"]]}
+                onRefresh={handelRefreshing}
+              />
+            }
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.flatlistContainer}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity style={styles.item}>
+                <View style={styles.itemLeft}>
+                  <View style={styles.iconContainer}>
+                    <MaterialCommunityIcons
+                      size={32.5}
+                      name="history"
+                      color={colors.primary}
+                    />
+                  </View>
+                  <View>
+                    <Text style={styles.itemTitle} semibold>
+                      {item.type}
+                    </Text>
+                    <Text style={styles.itemSubtitle} semibold>
+                      {item.description}
+                    </Text>
+                  </View>
+                </View>
+                <View style={styles.itemRight}>
+                  <Text
+                    style={[
+                      styles.itemAmount,
+                      {
+                        color:
+                          item.type === "Received"
+                            ? colors.green
+                            : colors.danger,
+                      },
+                    ]}
+                    bold
+                  >
+                    {item.type === "Received"
+                      ? "+" + item.amount
+                      : "-" + item.amount}
+                  </Text>
+                  <Text style={styles.itemDate} semibold>
+                    {item.Date}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            )}
+            ItemSeparatorComponent={() => <View style={styles.itemSep} />}
+          />
+        ) : (
+          <View style={styles.emptyContainer}>
+            <MaterialCommunityIcons
+              size={80}
+              color="rgba(0, 0, 0, .2)"
+              name="history"
             />
-          }
-          style={styles.flatlist}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={styles.item}>
-              <View style={styles.itemLeft}>
-                <View style={styles.iconContainer}>
-                  <MaterialCommunityIcons
-                    size={32.5}
-                    name="history"
-                    color={colors.primary}
-                  />
-                </View>
-                <View>
-                  <Text style={styles.itemTitle} semibold>
-                    {item.type}
-                  </Text>
-                  <Text style={styles.itemSubtitle} semibold>
-                    {item.description}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.itemRight}>
-                <Text
-                  style={[
-                    styles.itemAmount,
-                    {
-                      color:
-                        item.type === "Received" ? colors.green : colors.danger,
-                    },
-                  ]}
-                  bold
-                >
-                  {item.type === "Received"
-                    ? "+" + item.amount
-                    : "-" + item.amount}
-                </Text>
-                <Text style={styles.itemDate} semibold>
-                  {item.Date}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          )}
-          ItemSeparatorComponent={() => <View style={styles.itemSep} />}
-        />
+            <Text semibold style={styles.emptyText}>
+              No transactions Available
+            </Text>
+          </View>
+        )}
       </View>
     </>
   );
 }
 
 const styles = StyleSheet.create({
+  emptyContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.lighter,
+  },
+  emptyText: {
+    marginTop: 25,
+    color: "rgba(0, 0, 0,.25)",
+  },
   container: {
     flex: 1,
     paddingHorizontal: 5,
@@ -383,12 +465,12 @@ const styles = StyleSheet.create({
   },
   navCont: {
     marginTop: 15,
-    marginBottom: 10,
+    marginBottom: 5,
     flexDirection: "row",
     alignItems: "center",
   },
-  flatlist: {
-    paddingTop: 10,
+  flatlistContainer: {
+    paddingVertical: 15,
   },
   itemSep: {
     height: 5,
