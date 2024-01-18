@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
@@ -24,6 +24,7 @@ import Modal from "react-native-modal";
 
 import colors from "../config/colors";
 import Text from "../components/CustomText";
+import ActivityIndicator from "../components/ActivityIndicator";
 
 const data = [
   {
@@ -156,12 +157,13 @@ const data = [
 
 export default function BeneficiariesScreen() {
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false);
   const [beneficiary, setBeneficiary] = useState({});
   const [refreshing, setRefreshing] = useState(false);
+  const [beneficiaries, setBeneficiaries] = useState([]);
   const spinValue = useRef(new Animated.Value(0)).current;
   const spinValue1 = useRef(new Animated.Value(0)).current;
-  const [beneficiaries, setBeneficiaries] = useState([...data]);
   const spin = spinValue.interpolate({
     inputRange: [0, 1],
     outputRange: ["0deg", "45deg"],
@@ -227,9 +229,20 @@ export default function BeneficiariesScreen() {
     setVisible(false);
     setBeneficiary({});
   };
+  const handleLoad = () => {
+    setBeneficiaries([...data]);
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+      handleLoad();
+    }, 3000);
+  }, []);
 
   return (
     <>
+      <ActivityIndicator visible={loading} />
       <Modal
         isVisible={visible}
         animationIn="slideInUp"
@@ -412,16 +425,18 @@ export default function BeneficiariesScreen() {
             ItemSeparatorComponent={() => <View style={styles.itemSept} />}
           />
         ) : (
-          <View style={styles.emptyContainer}>
-            <MaterialCommunityIcons
-              size={80}
-              color="rgba(0, 0, 0, .2)"
-              name="account-convert"
-            />
-            <Text semibold style={styles.emptyText}>
-              No beneficiary Available
-            </Text>
-          </View>
+          !loading && (
+            <View style={styles.emptyContainer}>
+              <MaterialCommunityIcons
+                size={70}
+                color="rgba(0, 0, 0, .2)"
+                name="account-convert"
+              />
+              <Text semibold style={styles.emptyText}>
+                No beneficiary available
+              </Text>
+            </View>
+          )
         )}
       </View>
       <TouchableWithoutFeedback onPress={handelShowModal}>
@@ -452,7 +467,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lighter,
   },
   flatlistContainer: {
-    paddingVertical: 20,
+    paddingVertical: 10,
   },
   swipeLeftText: {
     marginTop: 5,
@@ -585,12 +600,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   title: {
-    fontSize: 18,
+    fontSize: 17,
     textAlign: "center",
     color: colors.black,
   },
   navIconCont: {
-    padding: 4,
+    padding: 3,
     borderRadius: 5,
     marginRight: 10,
     backgroundColor: colors.white,

@@ -1,8 +1,8 @@
-import { Linking, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Entypo, Ionicons, FontAwesome } from "@expo/vector-icons";
+import { Linking, View, StyleSheet, TouchableOpacity } from "react-native";
 
-import Text from "../components/CustomText";
 import colors from "../config/colors";
+import Text from "../components/CustomText";
 
 export default function CustomerSupportScreen() {
   const handleEmail = () => {
@@ -75,12 +75,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lighter,
   },
   title: {
-    fontSize: 18,
+    fontSize: 17,
     textAlign: "center",
     color: colors.black,
   },
   navIconCont: {
-    padding: 4,
+    padding: 3,
     borderRadius: 5,
     marginRight: 10,
     backgroundColor: colors.white,
@@ -88,8 +88,8 @@ const styles = StyleSheet.create({
   navCont: {
     marginTop: 10,
     marginBottom: 25,
-    flexDirection: "row",
     alignItems: "center",
+    flexDirection: "row",
   },
   itemTitle: {
     fontSize: 15,

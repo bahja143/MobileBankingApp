@@ -304,14 +304,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   titleNav: {
-    fontSize: 18,
+    fontSize: 17,
     textAlign: "center",
     color: colors.white,
   },
   navIconCont: {
     borderRadius: 5,
     marginRight: 10,
-    paddingVertical: 4,
+    paddingVertical: 3,
     paddingHorizontal: 2,
     backgroundColor: colors.white,
   },

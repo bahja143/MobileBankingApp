@@ -1,5 +1,5 @@
-import { useEffect, useCallback, useState } from "react";
 import { StatusBar } from "react-native";
+import { useEffect, useCallback, useState } from "react";
 
 import {
   Inter_700Bold,
@@ -62,7 +62,7 @@ export default function App() {
     <>
       <Screen onLayout={onLayoutRootView}>
         <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
-        <NotificationsScreen />
+        <DashboardScreen />
       </Screen>
     </>
   );

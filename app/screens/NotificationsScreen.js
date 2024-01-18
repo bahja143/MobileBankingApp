@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   View,
   FlatList,
@@ -48,9 +48,9 @@ const data = [
 
 export default function NotificationsScreen() {
   const [refresh] = useState(false);
-  const [loading] = useState(false);
-  const [notifications] = useState([...data]);
+  const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [notifications, setNotifications] = useState([]);
 
   const handleRefreshing = () => {
     setRefreshing(true);
@@ -59,6 +59,16 @@ export default function NotificationsScreen() {
       setRefreshing(false);
     }, 3000);
   };
+  const handleLoad = () => {
+    setNotifications([...data]);
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      handleLoad();
+      setLoading(false);
+    }, 3000);
+  }, []);
 
   return (
     <>
@@ -69,7 +79,7 @@ export default function NotificationsScreen() {
             <Entypo name="chevron-left" size={30} color={colors.primary} />
           </TouchableOpacity>
           <Text style={styles.title} semibold>
-            Contact Support
+            Notifications
           </Text>
         </View>
         {notifications?.length > 0 ? (
@@ -90,7 +100,7 @@ export default function NotificationsScreen() {
           <View style={styles.emptyContainer}>
             <FontAwesome5 size={65} name="bell" color="rgba(0, 0, 0, .2)" />
             <Text semibold style={styles.emptyText}>
-              No Notification Available
+              No notification available
             </Text>
           </View>
         )}
@@ -112,7 +122,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: "center",
     backgroundColor: colors.white,
   },
   itemSep: {
@@ -120,12 +129,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lighter,
   },
   title: {
-    fontSize: 18,
+    fontSize: 17,
     textAlign: "center",
     color: colors.black,
   },
   navIconCont: {
-    padding: 4,
+    padding: 3,
     borderRadius: 5,
     marginRight: 10,
     backgroundColor: colors.lighter,

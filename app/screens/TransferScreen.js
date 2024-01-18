@@ -386,7 +386,7 @@ export default function TransferScreen() {
 
 const styles = StyleSheet.create({
   navIconCont: {
-    padding: 4,
+    padding: 3,
     borderRadius: 5,
     marginRight: 10,
     backgroundColor: colors.lighter,
@@ -396,7 +396,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     flexDirection: "row",
     alignItems: "center",
-    marginHorizontal: 12.5,
+    marginHorizontal: 10,
   },
   confirmBtnConfirmText: {
     fontSize: 16,
@@ -530,7 +530,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
-    fontSize: 18,
+    fontSize: 17,
     textAlign: "center",
     color: colors.black,
   },
