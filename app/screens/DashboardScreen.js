@@ -7,7 +7,7 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { AntDesign, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -16,8 +16,9 @@ import Text from "../components/CustomText";
 
 import Bg from "../assets/Bg.png";
 import Avatar from "../assets/avatar.png";
+import ActivityIndicator from "../components/ActivityIndicator";
 
-const transactions = [
+const data = [
   {
     id: 1,
     type: "Received",
@@ -50,7 +51,15 @@ const transactions = [
 
 export default function DashboardScreen() {
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [myAccount] = useState({
+    id: 1,
+    balance: 550000,
+    account: "0272010000033",
+    name: "Abdisalam Farah Abdi",
+  });
   const [refreshing, setRefreshing] = useState(false);
+  const [transactions, setTransactions] = useState([]);
 
   const handleRefreshing = () => {
     setRefreshing(true);
@@ -59,195 +68,254 @@ export default function DashboardScreen() {
       setRefreshing(false);
     }, 3000);
   };
+  const handleLoad = () => {
+    setTransactions([...data]);
+  };
+  const hideMiddleDigits = (accountNumber) => {
+    // Ensure account number is 13 digits long
+    if (accountNumber?.length !== 13) return accountNumber;
+
+    // Extract first and last digit
+    const firstDigit = accountNumber.substring(0, 2);
+    const lastDigit = accountNumber.substring(10);
+
+    // Create string of 10 asterisks to replace middle digits
+    const hiddenDigits = "**********"; // Adjust for desired number of hidden digits
+
+    // Combine the parts to create the hidden account number
+    const hiddenAccountNumber = firstDigit + hiddenDigits + lastDigit;
+
+    return hiddenAccountNumber;
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+      handleLoad();
+    }, 3000);
+  }, []);
 
   return (
-    <FlatList
-      data={[1]}
-      style={style.container}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          colors={[colors["primary"]]}
-          onRefresh={handleRefreshing}
-        />
-      }
-      keyExtractor={(item) => item.toString()}
-      renderItem={() => (
-        <View>
-          <ImageBackground source={Bg} style={style.topHeader}>
-            <View style={style.header}>
-              <View style={style.headerTextCont}>
-                <Text style={style.welcomeText} semibold>
-                  Welcome Back
-                </Text>
-                <Text style={style.name} bold>
-                  Abdisalam Farah ABDI
-                </Text>
-              </View>
-              <View style={style.rightNav}>
-                <TouchableOpacity
-                  style={[style.imageContainer, style.iconBell]}
-                >
-                  <MaterialCommunityIcons
-                    size={22}
-                    color={colors.primary}
-                    name="bell-badge-outline"
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity style={style.imageContainer}>
-                  <Image style={style.image} source={Avatar} />
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            <View style={style.myAccount}>
-              <Text style={style.myAccountText}>My Account</Text>
-              <Text style={style.accountNo} bold>
-                0272 0100 00033
-              </Text>
-            </View>
-          </ImageBackground>
-          <View style={style.myBalance}>
-            <Text style={style.accountBalanceText}>Account Balance</Text>
-            <View style={style.balanceCont}>
-              <Text style={style.accountBalanceNo} bold>
-                {show ? "ETB 550,000" : "**********"}
-              </Text>
-              <TouchableOpacity
-                style={style.showIcon}
-                onPress={() => (show ? setShow(false) : setShow(true))}
-              >
-                <Feather
-                  name={show ? "eye-off" : "eye"}
-                  size={22.5}
-                  color={colors.primary}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <Text style={style.title} bold>
-            Suggested Actions
-          </Text>
-          <View style={style.nav}>
-            <TouchableOpacity style={style.navCont}>
-              <View style={style.navItem}>
-                <MaterialCommunityIcons
-                  size={32}
-                  name="bank-transfer"
-                  color={colors.primary}
-                />
-                <Text style={style.navTitle} bold>
-                  Transfer
-                </Text>
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={style.navCont}>
-              <View style={style.navItem}>
-                <MaterialCommunityIcons
-                  size={27.5}
-                  color={colors.primary}
-                  name="account-multiple-outline"
-                />
-                <Text style={style.navTitle} bold>
-                  Beneficiary
-                </Text>
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={style.navCont}>
-              <View style={style.navItem}>
-                <AntDesign
-                  size={27.5}
-                  color={colors.primary}
-                  name="customerservice"
-                />
-                <Text style={style.navTitle} bold>
-                  Support
-                </Text>
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={style.navCont}>
-              <View style={style.navItem}>
-                <MaterialCommunityIcons
-                  size={27.5}
-                  name="history"
-                  color={colors.primary}
-                />
-                <Text style={style.navTitle} bold>
-                  History
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View style={style.tranTitleCont}>
-            <Text style={style.RecentText} bold>
-              Recent Transactions
-            </Text>
-
-            <TouchableOpacity>
-              <Text>See All</Text>
-            </TouchableOpacity>
-          </View>
-
-          <FlatList
-            data={transactions}
-            ItemSeparatorComponent={() => <View style={style.itemSep} />}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <TouchableOpacity style={style.TranCont}>
-                <View style={style.Tran} key={item}>
-                  <View style={style.TranTextCont}>
-                    <View style={style.TranIconCont}>
-                      <MaterialCommunityIcons
-                        size={32.5}
-                        color={colors.primary}
-                        name="credit-card-fast-outline"
-                      />
-                    </View>
-                    <View>
-                      <Text style={style.TranItemTitle} semibold>
-                        {item.type}
-                      </Text>
-                      <Text style={style.TranItemSub} semibold>
-                        {item.description}
-                      </Text>
-                    </View>
+    <>
+      <ActivityIndicator visible={loading} />
+      <View style={style.container}>
+        <FlatList
+          data={[1]}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              colors={[colors["primary"]]}
+              onRefresh={handleRefreshing}
+            />
+          }
+          keyExtractor={(item) => item.toString()}
+          renderItem={() => (
+            <>
+              <ImageBackground source={Bg} style={style.topHeader}>
+                <View style={style.header}>
+                  <View style={style.headerTextCont}>
+                    <Text style={style.welcomeText} semibold>
+                      Welcome Back
+                    </Text>
+                    <Text style={style.name} bold>
+                      {myAccount.name}
+                    </Text>
                   </View>
-
-                  <View style={style.TranNoCont}>
-                    <Text
-                      style={[
-                        style.TranNo,
-                        {
-                          color:
-                            item.type === "Received"
-                              ? colors.green
-                              : colors.danger,
-                        },
-                      ]}
-                      bold
+                  <View style={style.rightNav}>
+                    <TouchableOpacity
+                      style={[style.imageContainer, style.iconBell]}
                     >
-                      {item.type === "Received"
-                        ? "+" + item.amount
-                        : "-" + item.amount}
-                    </Text>
-                    <Text style={style.TranItemSub} semibold>
-                      {item.Date}
-                    </Text>
+                      <MaterialCommunityIcons
+                        size={22}
+                        color={colors.primary}
+                        name="bell-badge-outline"
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={style.imageContainer}>
+                      <Image style={style.image} source={Avatar} />
+                    </TouchableOpacity>
                   </View>
                 </View>
-              </TouchableOpacity>
-            )}
-          />
-        </View>
-      )}
-    />
+
+                <View style={style.myAccount}>
+                  <Text style={style.myAccountText}>My Account</Text>
+                  <Text style={style.accountNo} bold>
+                    {show
+                      ? myAccount.account
+                      : hideMiddleDigits(myAccount.account)}
+                  </Text>
+                </View>
+              </ImageBackground>
+              <View style={style.myBalance}>
+                <Text style={style.accountBalanceText}>Account Balance</Text>
+                <View style={style.balanceCont}>
+                  <Text style={style.accountBalanceNo} bold>
+                    {show
+                      ? loading
+                        ? "**********"
+                        : `ETB ${myAccount.balance}`
+                      : "**********"}
+                  </Text>
+                  <TouchableOpacity
+                    style={style.showIcon}
+                    onPress={() => (show ? setShow(false) : setShow(true))}
+                  >
+                    <Feather
+                      name={show ? "eye-off" : "eye"}
+                      size={22.5}
+                      color={colors.primary}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <Text style={style.title} bold>
+                Suggested Actions
+              </Text>
+              <View style={style.nav}>
+                <TouchableOpacity style={style.navCont}>
+                  <View style={style.navItem}>
+                    <MaterialCommunityIcons
+                      size={32}
+                      name="bank-transfer"
+                      color={colors.primary}
+                    />
+                    <Text style={style.navTitle} bold>
+                      Transfer
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={style.navCont}>
+                  <View style={style.navItem}>
+                    <MaterialCommunityIcons
+                      size={27.5}
+                      color={colors.primary}
+                      name="account-multiple-outline"
+                    />
+                    <Text style={style.navTitle} bold>
+                      Beneficiary
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={style.navCont}>
+                  <View style={style.navItem}>
+                    <AntDesign
+                      size={27.5}
+                      color={colors.primary}
+                      name="customerservice"
+                    />
+                    <Text style={style.navTitle} bold>
+                      Support
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={style.navCont}>
+                  <View style={style.navItem}>
+                    <MaterialCommunityIcons
+                      size={27.5}
+                      name="history"
+                      color={colors.primary}
+                    />
+                    <Text style={style.navTitle} bold>
+                      History
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View style={style.tranTitleCont}>
+                <Text style={style.RecentText} bold>
+                  Recent Transactions
+                </Text>
+
+                <TouchableOpacity>
+                  <Text>See All</Text>
+                </TouchableOpacity>
+              </View>
+              {transactions.length !== 0 ? (
+                <FlatList
+                  data={transactions}
+                  ItemSeparatorComponent={() => <View style={style.itemSep} />}
+                  keyExtractor={(item) => item.id.toString()}
+                  renderItem={({ item }) => (
+                    <TouchableOpacity style={style.TranCont}>
+                      <View style={style.Tran} key={item}>
+                        <View style={style.TranTextCont}>
+                          <View style={style.TranIconCont}>
+                            <MaterialCommunityIcons
+                              size={32.5}
+                              color={colors.primary}
+                              name="credit-card-fast-outline"
+                            />
+                          </View>
+                          <View>
+                            <Text style={style.TranItemTitle} semibold>
+                              {item.type}
+                            </Text>
+                            <Text style={style.TranItemSub} semibold>
+                              {item.description}
+                            </Text>
+                          </View>
+                        </View>
+
+                        <View style={style.TranNoCont}>
+                          <Text
+                            style={[
+                              style.TranNo,
+                              {
+                                color:
+                                  item.type === "Received"
+                                    ? colors.green
+                                    : colors.danger,
+                              },
+                            ]}
+                            bold
+                          >
+                            {item.type === "Received"
+                              ? "+" + item.amount
+                              : "-" + item.amount}
+                          </Text>
+                          <Text style={style.TranItemSub} semibold>
+                            {item.Date}
+                          </Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  )}
+                />
+              ) : (
+                <View style={style.emptyContainer}>
+                  <MaterialCommunityIcons
+                    size={70}
+                    color="rgba(0, 0, 0, .2)"
+                    name="credit-card-fast-outline"
+                  />
+                  <Text semibold style={style.emptyText}>
+                    No transaction available
+                  </Text>
+                </View>
+              )}
+            </>
+          )}
+        />
+      </View>
+    </>
   );
 }
 
 const style = StyleSheet.create({
+  emptyContainer: {
+    flex: 1,
+    paddingTop: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.lighter,
+  },
+  emptyText: {
+    marginTop: 25,
+    color: "rgba(0, 0, 0,.25)",
+  },
   container: {
     flex: 1,
     backgroundColor: colors.lighter,

@@ -96,7 +96,7 @@ export default function NotificationsScreen() {
             keyExtractor={(d) => d.Title}
             renderItem={({ item }) => <Notification data={item} />}
           />
-        ) : loading ? null : (
+        ) : (
           <View style={styles.emptyContainer}>
             <FontAwesome5 size={65} name="bell" color="rgba(0, 0, 0, .2)" />
             <Text semibold style={styles.emptyText}>

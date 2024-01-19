@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "react-native-modal";
 
 import {
@@ -110,7 +110,7 @@ const data = [
 ];
 
 export default function TransactionsScreen() {
-  const [transactions] = useState([...data]);
+  const [transactions, setTransactions] = useState([]);
   const [filter, setFilter] = useState({
     id: 0,
     type: "All",
@@ -119,7 +119,7 @@ export default function TransactionsScreen() {
     startDate: "",
   });
   const [show, setShow] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const handleSubmit = (values) => {
@@ -146,6 +146,16 @@ export default function TransactionsScreen() {
       setRefreshing(false);
     }, 3000);
   };
+  const handleLoad = () => {
+    setTransactions([...data]);
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+      handleLoad();
+    }, 3000);
+  }, []);
 
   return (
     <>

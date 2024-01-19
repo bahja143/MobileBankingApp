@@ -20,6 +20,7 @@ import DashboardScreen from "./app/screens/DashboardScreen";
 import BeneficiaryScreen from "./app/screens/BeneficiaryScreen";
 import TransactionsScreen from "./app/screens/TransactionsScreen";
 import BeneficiariesScreen from "./app/screens/BeneficiariesScreen";
+import QRCodeScannerScreen from "./app/screens/QRCodeScannerScreen";
 import NotificationsScreen from "./app/screens/NotificationsScreen";
 import TransferDetailScreen from "./app/screens/TransferDetailScreen";
 import CustomerSupportScreen from "./app/screens/CustomerSupportScreen";
@@ -62,7 +63,7 @@ export default function App() {
     <>
       <Screen onLayout={onLayoutRootView}>
         <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
-        <DashboardScreen />
+        <QRCodeScannerScreen />
       </Screen>
     </>
   );

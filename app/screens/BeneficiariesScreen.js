@@ -425,18 +425,16 @@ export default function BeneficiariesScreen() {
             ItemSeparatorComponent={() => <View style={styles.itemSept} />}
           />
         ) : (
-          !loading && (
-            <View style={styles.emptyContainer}>
-              <MaterialCommunityIcons
-                size={70}
-                color="rgba(0, 0, 0, .2)"
-                name="account-convert"
-              />
-              <Text semibold style={styles.emptyText}>
-                No beneficiary available
-              </Text>
-            </View>
-          )
+          <View style={styles.emptyContainer}>
+            <MaterialCommunityIcons
+              size={70}
+              color="rgba(0, 0, 0, .2)"
+              name="account-convert"
+            />
+            <Text semibold style={styles.emptyText}>
+              No beneficiary available
+            </Text>
+          </View>
         )}
       </View>
       <TouchableWithoutFeedback onPress={handelShowModal}>
