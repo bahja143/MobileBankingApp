@@ -5,7 +5,11 @@ import { Camera, FlashMode } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import { useRef, useEffect, useState } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  Ionicons,
+  AntDesign,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import {
   View,
   Linking,
@@ -21,12 +25,15 @@ import BarcodeScannerPeep from "../assets/sound/store-scanner-beep.mp3";
 
 export default function QRCodeScannerScreen() {
   const [flash, setFlash] = useState(false);
+  const [scanned, setScanned] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [cameraPer, setCameraPer] = useState(true);
+  const [invalidQr, setInvalidQr] = useState(false);
+  const [cameraPer, setCameraPer] = useState(false);
   const animatedValue = useRef(new Animated.Value(0)).current;
 
   const handleBarcodeScanned = async (e) => {
     console.log(e);
+    setScanned(true);
     await handlePlay();
   };
   const handlePlay = async () => {
@@ -51,8 +58,11 @@ export default function QRCodeScannerScreen() {
         );
 
         if (decodedBarcodeImage.length !== 0) {
-          console.log(decodedBarcodeImage[0].data);
+          handlePlay();
+          return console.log(JSON.parse(decodedBarcodeImage[0].data));
         }
+
+        return setInvalidQr(true);
       }
     }
     if (!canAskAgain) return setVisible(true);
@@ -66,12 +76,8 @@ export default function QRCodeScannerScreen() {
     }
   };
   const handleCameraPermission = async () => {
-    const { granted } = await Camera.requestCameraPermissionsAsync();
-
-    if (!granted) return setCameraPer(true);
-  };
-  const handleCloseCameraModal = async () => {
-    const { granted } = await Camera.requestCameraPermissionsAsync();
+    const { granted, canAskAgain } =
+      await Camera.requestCameraPermissionsAsync();
 
     if (!granted) return setCameraPer(true);
   };
@@ -96,6 +102,36 @@ export default function QRCodeScannerScreen() {
 
   return (
     <>
+      <Modal
+        isVisible={invalidQr}
+        animationOut="fadeOut"
+        animationIn="slideInUp"
+        animationOutTiming={50}
+      >
+        <View style={styles.modalDelete}>
+          <View style={styles.modalTrashIcon}>
+            <AntDesign name="qrcode" size={32.5} color={colors.danger} />
+          </View>
+          <View style={styles.modalTextContainer}>
+            <Text style={styles.modalTitle} bold>
+              Invalid QR Code
+            </Text>
+            <Text style={styles.modalText}>
+              Apologies, but it seems the QR code provided is invalid or not
+              recognized.
+            </Text>
+          </View>
+
+          <TouchableOpacity
+            onPress={() => setInvalidQr(false)}
+            style={[styles.modalBtn, { paddingVertical: 10 }]}
+          >
+            <Text style={[styles.modalBtnText]} bold>
+              Back
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
       <Modal
         isVisible={visible}
         animationIn="slideInUp"
@@ -158,30 +194,17 @@ export default function QRCodeScannerScreen() {
               Camera Permission
             </Text>
             <Text style={styles.modalText}>
-              You need to allow this app to access your camera
+              Kindly grant camera permission to this application for seamless QR
+              code scanning. Your cooperation is appreciated
             </Text>
           </View>
+
           <TouchableOpacity
             onPress={handleOpenSettings}
-            style={[
-              styles.modalBtn,
-              {
-                borderWidth: 0,
-                paddingVertical: 11,
-                backgroundColor: colors.primary,
-              },
-            ]}
-          >
-            <Text style={[styles.modalBtnText, { color: colors.white }]} bold>
-              Go to settings
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => setVisible(false)}
             style={[styles.modalBtn, { paddingVertical: 10 }]}
           >
             <Text style={[styles.modalBtnText]} bold>
-              Back
+              Go to settings
             </Text>
           </TouchableOpacity>
         </View>
@@ -199,9 +222,9 @@ export default function QRCodeScannerScreen() {
       <Camera
         ratio="16:9"
         focusDepth={1}
-        flashMode={flash ? FlashMode.torch : FlashMode.off}
         style={styles.container}
-        onBarCodeScanned={handleBarcodeScanned}
+        onBarCodeScanned={!scanned ? handleBarcodeScanned : null}
+        flashMode={flash ? FlashMode.torch : FlashMode.off}
       >
         <View style={styles.access}>
           <TouchableOpacity onPress={handleMedia} style={styles.accessBtn}>
@@ -224,18 +247,20 @@ export default function QRCodeScannerScreen() {
           <View style={styles.focusContainer}>
             <View style={styles.topFocus} />
             <View style={styles.focus}>
-              <Animated.View
-                style={[
-                  styles.line,
-                  { transform: [{ translateY: animatedValue }] },
-                ]}
-              >
-                <View style={styles.qrCodeLine} />
-              </Animated.View>
+              {!scanned ? (
+                <Animated.View
+                  style={[
+                    styles.line,
+                    { transform: [{ translateY: animatedValue }] },
+                  ]}
+                >
+                  <View style={styles.qrCodeLine} />
+                </Animated.View>
+              ) : null}
             </View>
             <View style={styles.topFocus} />
           </View>
-          <View style={styles.topFocus} />
+          <View style={[styles.topFocus, { top: -0.5 }]} />
           <Text semibold style={styles.cameraText}>
             Align QR code to fill inside the frame
           </Text>
@@ -287,6 +312,7 @@ const styles = StyleSheet.create({
   modalText: {
     fontSize: 13,
     marginBottom: 5,
+    textAlign: "center",
     color: colors.medium,
   },
   modalTextContainer: {
@@ -296,10 +322,10 @@ const styles = StyleSheet.create({
   accessBtn: {
     width: 40,
     height: 40,
-    borderRadius: 5,
+    borderRadius: 2.5,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.white,
+    backgroundColor: colors.lighter,
   },
   access: {
     width: "100%",
@@ -337,14 +363,17 @@ const styles = StyleSheet.create({
     color: colors.white,
   },
   navText: {
-    color: colors.black,
+    fontSize: 15,
+    color: colors.lighter,
   },
   navIconCont: {
     marginRight: 10,
     borderRadius: 5,
-    paddingVertical: 7.5,
+    borderWidth: 1,
+    paddingVertical: 5,
     paddingHorizontal: 10,
-    backgroundColor: colors.lighter,
+    borderColor: colors.lighter,
+    backgroundColor: colors.primary,
   },
   navCont: {
     paddingVertical: 10,

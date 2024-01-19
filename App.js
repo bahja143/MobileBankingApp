@@ -15,6 +15,7 @@ import colors from "./app/config/colors";
 import Screen from "./app/components/Screen";
 
 import ReceiptScreen from "./app/screens/ReceiptScreen";
+import MyQRCodeScreen from "./app/screens/MyQRCodeScreen";
 import TransferScreen from "./app/screens/TransferScreen";
 import DashboardScreen from "./app/screens/DashboardScreen";
 import BeneficiaryScreen from "./app/screens/BeneficiaryScreen";
@@ -63,7 +64,7 @@ export default function App() {
     <>
       <Screen onLayout={onLayoutRootView}>
         <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
-        <QRCodeScannerScreen />
+        <TransferScreen />
       </Screen>
     </>
   );
