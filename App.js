@@ -15,16 +15,21 @@ import colors from "./app/config/colors";
 import Screen from "./app/components/Screen";
 
 import ReceiptScreen from "./app/screens/ReceiptScreen";
+import BranchLocation from "./app/screens/BranchLocation";
 import MyQRCodeScreen from "./app/screens/MyQRCodeScreen";
 import TransferScreen from "./app/screens/TransferScreen";
+import BranchesScreen from "./app/screens/BranchesScreen";
 import DashboardScreen from "./app/screens/DashboardScreen";
 import BeneficiaryScreen from "./app/screens/BeneficiaryScreen";
 import TransactionsScreen from "./app/screens/TransactionsScreen";
+import ExchangeRateScreen from "./app/screens/ExchangeRateScreen";
 import BeneficiariesScreen from "./app/screens/BeneficiariesScreen";
 import QRCodeScannerScreen from "./app/screens/QRCodeScannerScreen";
 import NotificationsScreen from "./app/screens/NotificationsScreen";
 import TransferDetailScreen from "./app/screens/TransferDetailScreen";
 import CustomerSupportScreen from "./app/screens/CustomerSupportScreen";
+
+import ExchangeNav from "./app/navigation/ExchangeNav";
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -64,7 +69,7 @@ export default function App() {
     <>
       <Screen onLayout={onLayoutRootView}>
         <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
-        <TransferScreen />
+        <ExchangeNav />
       </Screen>
     </>
   );
