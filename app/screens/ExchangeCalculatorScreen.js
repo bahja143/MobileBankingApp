@@ -4,11 +4,7 @@ import colors from "../config/colors";
 import Text from "../components/CustomText";
 
 export default function ExchangeCalculatorScreen() {
-  return (
-    <View style={styles.container}>
-      <Text>Calculator</Text>
-    </View>
-  );
+  return <View style={styles.container}></View>;
 }
 
 const styles = StyleSheet.create({

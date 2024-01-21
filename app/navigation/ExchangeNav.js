@@ -15,18 +15,27 @@ const Tab = createMaterialTopTabNavigator();
 const TabNav = () => (
   <Tab.Navigator
     screenOptions={{
-      tabBarIndicatorStyle: {
-        height: "100%",
-        backgroundColor: colors.primary,
-      },
       tabBarStyle: styles.topNavCont,
       tabBarLabelStyle: styles.topNavLabel,
-      tabBarActiveTintColor: colors.white,
-      tabBarShowLabel: { color: colors.white },
+      tabBarIndicatorStyle: styles.tabBarIndicatorStyle,
     }}
   >
-    <Tab.Screen options={{}} name="Currency" component={ExchangeRateScreen} />
-    <Tab.Screen name="Calculator" component={ExchangeCalculatorScreen} />
+    <Tab.Screen
+      options={{
+        tabBarActiveTintColor: colors.white,
+        tabBarInactiveTintColor: colors.primary,
+      }}
+      name="Exchange Rate"
+      component={ExchangeRateScreen}
+    />
+    <Tab.Screen
+      options={{
+        tabBarActiveTintColor: colors.white,
+        tabBarInactiveTintColor: colors.primary,
+      }}
+      name="Convertor"
+      component={ExchangeCalculatorScreen}
+    />
   </Tab.Navigator>
 );
 
@@ -56,24 +65,27 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: colors.primary,
   },
+  tabBarIndicatorStyle: {
+    height: "100%",
+    color: colors.white,
+    backgroundColor: colors.primary,
+  },
   topNavLabel: {
-    fontSize: 13,
-    color: colors.primary,
+    fontSize: 13.5,
     fontFamily: "Inter_500Medium",
   },
   topNavCont: {
     elevation: 0,
-    borderRadius: 25,
+    borderRadius: 10,
     overflow: "hidden",
-    backgroundColor: colors.white,
   },
   body: {
     width: "100%",
-    paddingTop: 25,
     height: "100%",
+    paddingTop: 20,
     paddingHorizontal: 5,
-    borderTopEndRadius: 25,
-    borderTopLeftRadius: 25,
+    borderTopEndRadius: 20,
+    borderTopLeftRadius: 20,
     backgroundColor: colors.lighter,
   },
   titleNav: {

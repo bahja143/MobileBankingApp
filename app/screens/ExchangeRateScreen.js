@@ -7,17 +7,24 @@ import Text from "../components/CustomText";
 const data = [
   {
     id: 1,
-    buy: 150.621,
-    sell: 150.624,
-    currency: "US",
+    buy: 53.1589,
+    sell: 52.1166,
+    currency: "USD",
     url: require("../assets/US.png"),
   },
   {
     id: 2,
-    buy: 175.541,
-    sell: 176.654,
-    currency: "EU",
+    buy: 54.0254,
+    sell: 52.9661,
+    currency: "EUR",
     url: require("../assets/EU.png"),
+  },
+  {
+    id: 3,
+    buy: 60.6612,
+    sell: 59.4718,
+    currency: "GBP",
+    url: require("../assets/British.png"),
   },
 ];
 
@@ -48,13 +55,13 @@ export default function ExchangeRateScreen() {
 
             <Text style={styles.itemPrice} semibold>
               {item.buy}{" "}
-              <Text semibold style={styles.itemSubt}>
+              <Text semibold style={styles.itemSub}>
                 BIRR
               </Text>
             </Text>
             <Text style={styles.itemPrice} semibold>
               {item.sell}{" "}
-              <Text semibold style={styles.itemSubt}>
+              <Text semibold style={styles.itemSub}>
                 BIRR
               </Text>
             </Text>
@@ -68,9 +75,9 @@ export default function ExchangeRateScreen() {
 
 const styles = StyleSheet.create({
   bodyTitle: {
-    fontSize: 14.5,
+    fontSize: 15,
     color: colors.black,
-    textTransform: "uppercase",
+    textTransform: "capitalize",
   },
   bodyTitleCont: {
     marginTop: 20,
@@ -79,12 +86,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   itemSept: {
-    height: 5,
+    height: 7,
     backgroundColor: colors.lighter,
   },
-  itemSubt: {
-    fontSize: 9.5,
+  itemSub: {
+    fontSize: 11,
     color: colors.medium,
+    textTransform: "capitalize",
   },
   itemPrice: {
     fontSize: 16,
@@ -95,7 +103,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   itemTitle: {
-    fontSize: 18,
+    fontSize: 17,
     marginLeft: 5,
     color: colors.primary,
   },
@@ -105,7 +113,7 @@ const styles = StyleSheet.create({
   },
   item: {
     width: "100%",
-    borderRadius: 7.5,
+    borderRadius: 10,
     paddingVertical: 10,
     alignItems: "center",
     flexDirection: "row",
