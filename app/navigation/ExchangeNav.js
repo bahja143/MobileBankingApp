@@ -62,7 +62,6 @@ export default function ExchangeNav() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-between",
     backgroundColor: colors.primary,
   },
   tabBarIndicatorStyle: {
@@ -72,7 +71,7 @@ const styles = StyleSheet.create({
   },
   topNavLabel: {
     fontSize: 13.5,
-    fontFamily: "Inter_500Medium",
+    fontFamily: "Inter_700Bold",
   },
   topNavCont: {
     elevation: 0,
@@ -80,12 +79,11 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   body: {
-    width: "100%",
-    height: "100%",
-    paddingTop: 20,
+    flex: 1,
+    paddingTop: 15,
     paddingHorizontal: 5,
-    borderTopEndRadius: 20,
-    borderTopLeftRadius: 20,
+    borderTopEndRadius: 10,
+    borderTopLeftRadius: 15,
     backgroundColor: colors.lighter,
   },
   titleNav: {

@@ -32,7 +32,7 @@ export default function ExchangeRateScreen() {
   const [rate] = useState([...data]);
 
   return (
-    <>
+    <View style={styles.container}>
       <View style={styles.bodyTitleCont}>
         <View />
         <Text style={styles.bodyTitle} bold>
@@ -69,19 +69,22 @@ export default function ExchangeRateScreen() {
         )}
         ItemSeparatorComponent={() => <View style={styles.itemSept} />}
       />
-    </>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   bodyTitle: {
-    fontSize: 15,
+    fontSize: 15.5,
     color: colors.black,
     textTransform: "capitalize",
   },
   bodyTitleCont: {
-    marginTop: 20,
-    marginBottom: 5,
+    marginTop: 15,
+    marginBottom: 8,
     flexDirection: "row",
     justifyContent: "space-around",
   },
@@ -90,13 +93,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lighter,
   },
   itemSub: {
-    fontSize: 11,
+    fontSize: 12,
     color: colors.medium,
     textTransform: "capitalize",
   },
   itemPrice: {
-    fontSize: 16,
-    color: colors.black,
+    fontSize: 16.25,
+    color: "rgba(0, 0, 0, 0.75)",
   },
   itemFlagContainer: {
     flexDirection: "row",
