@@ -69,7 +69,7 @@ export default function App() {
     <>
       <Screen onLayout={onLayoutRootView}>
         <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
-        {/* <ExchangeNav /> */}
+        <QRCodeScannerScreen />
       </Screen>
     </>
   );
