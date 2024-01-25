@@ -27,8 +27,12 @@ import ExchangeRateScreen from "./app/screens/ExchangeRateScreen";
 import BeneficiariesScreen from "./app/screens/BeneficiariesScreen";
 import QRCodeScannerScreen from "./app/screens/QRCodeScannerScreen";
 import NotificationsScreen from "./app/screens/NotificationsScreen";
+import UpdateNextKinScreen from "./app/screens/UpdateNextKinScreen";
+import UpdateAddressScreen from "./app/screens/UpdateAddressScreen";
 import TransferDetailScreen from "./app/screens/TransferDetailScreen";
 import CustomerSupportScreen from "./app/screens/CustomerSupportScreen";
+import UpdateBasicInfoScreen from "./app/screens/UpdateBasicInfoScreen";
+import UpdateContactInfoScreen from "./app/screens/UpdateContactInfoScreen";
 
 import ExchangeNav from "./app/navigation/ExchangeNav";
 

@@ -70,6 +70,7 @@ const InputField1 = ({
         onFocus={handleFocus}
         style={[styles.input]}
         placeholder={placeholder}
+        cursorColor={colors.primary}
         secureTextEntry={password && show}
       />
       {required ? (
