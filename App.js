@@ -20,6 +20,7 @@ import MyQRCodeScreen from "./app/screens/MyQRCodeScreen";
 import TransferScreen from "./app/screens/TransferScreen";
 import BranchesScreen from "./app/screens/BranchesScreen";
 import DashboardScreen from "./app/screens/DashboardScreen";
+import UserProfileScreen from "./app/screens/UserProfileScreen";
 import BeneficiaryScreen from "./app/screens/BeneficiaryScreen";
 import TransactionsScreen from "./app/screens/TransactionsScreen";
 import ExchangeRateScreen from "./app/screens/ExchangeRateScreen";
@@ -69,7 +70,7 @@ export default function App() {
     <>
       <Screen onLayout={onLayoutRootView}>
         <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
-        <QRCodeScannerScreen />
+        <UserProfileScreen />
       </Screen>
     </>
   );

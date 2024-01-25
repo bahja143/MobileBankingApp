@@ -87,6 +87,9 @@ export default function DashboardScreen() {
 
     return hiddenAccountNumber;
   };
+  const formatNumberWithSpaces = (number) => {
+    return number.toString().replace(/\B(?=(\d{5})+(?!\d))/g, " ");
+  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -141,7 +144,7 @@ export default function DashboardScreen() {
                   <Text style={style.myAccountText}>My Account</Text>
                   <Text style={style.accountNo} bold>
                     {show
-                      ? myAccount.account
+                      ? formatNumberWithSpaces(myAccount.account)
                       : hideMiddleDigits(myAccount.account)}
                   </Text>
                 </View>
@@ -153,7 +156,7 @@ export default function DashboardScreen() {
                     {show
                       ? loading
                         ? "**********"
-                        : `ETB ${myAccount.balance}`
+                        : `ETB ${myAccount.balance.toLocaleString()}`
                       : "**********"}
                   </Text>
                   <TouchableOpacity
@@ -434,7 +437,7 @@ const style = StyleSheet.create({
     alignItems: "center",
   },
   accountBalanceNo: {
-    fontSize: 16.5,
+    fontSize: 17,
     color: colors.black,
   },
   accountBalanceText: {
