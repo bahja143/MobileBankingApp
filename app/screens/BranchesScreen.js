@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   navCont: {
-    marginTop: 15,
+    marginTop: 10,
     marginBottom: 5,
     flexDirection: "row",
     alignItems: "center",

@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   navCont: {
-    paddingTop: 15,
+    paddingTop: 10,
     marginLeft: -5,
     paddingBottom: 10,
     flexDirection: "row",

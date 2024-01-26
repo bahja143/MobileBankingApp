@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   navCont: {
-    marginTop: 15,
+    marginTop: 10,
     marginLeft: 5,
     marginBottom: 25,
     flexDirection: "row",

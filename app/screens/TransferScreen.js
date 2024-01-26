@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lighter,
   },
   navCont: {
-    marginTop: 15,
+    marginTop: 10,
     marginBottom: 40,
     flexDirection: "row",
     alignItems: "center",

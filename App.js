@@ -23,7 +23,6 @@ import DashboardScreen from "./app/screens/DashboardScreen";
 import UserProfileScreen from "./app/screens/UserProfileScreen";
 import BeneficiaryScreen from "./app/screens/BeneficiaryScreen";
 import TransactionsScreen from "./app/screens/TransactionsScreen";
-import ExchangeRateScreen from "./app/screens/ExchangeRateScreen";
 import BeneficiariesScreen from "./app/screens/BeneficiariesScreen";
 import QRCodeScannerScreen from "./app/screens/QRCodeScannerScreen";
 import NotificationsScreen from "./app/screens/NotificationsScreen";
@@ -74,7 +73,6 @@ export default function App() {
     <>
       <Screen onLayout={onLayoutRootView}>
         <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
-        <UserProfileScreen />
       </Screen>
     </>
   );
