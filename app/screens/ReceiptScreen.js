@@ -10,8 +10,8 @@ import { Audio } from "expo-av";
 import colors from "../config/colors";
 import Text from "../components/CustomText";
 
-import Logo from "../assets/Logo.png";
 import Ding from "../assets/sound/Ding.mp3";
+import Logo from "../assets/images/Logo.png";
 import Done from "../assets/animation/Done.json";
 
 export default function ReceiptScreen() {

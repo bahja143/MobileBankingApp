@@ -14,8 +14,8 @@ import { AntDesign, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../config/colors";
 import Text from "../components/CustomText";
 
-import Bg from "../assets/Bg.png";
-import Avatar from "../assets/avatar.png";
+import Bg from "../assets/images/Bg.png";
+import Avatar from "../assets/images/avatar.png";
 import ActivityIndicator from "../components/ActivityIndicator";
 
 const data = [

@@ -9,7 +9,7 @@ const data = [
     id: 1,
     currency: "ETB",
     placeholder: "00.0 Birr",
-    url: require("../assets/Ethiopia.png"),
+    url: require("../assets/images/Ethiopia.png"),
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ const data = [
     sell: 52.1166,
     currency: "USD",
     placeholder: "00.0 $",
-    url: require("../assets/US.png"),
+    url: require("../assets/images/US.png"),
   },
   {
     id: 3,
@@ -25,7 +25,7 @@ const data = [
     sell: 52.9661,
     currency: "EUR",
     placeholder: "00.0 €",
-    url: require("../assets/EU.png"),
+    url: require("../assets/images/EU.png"),
   },
   {
     id: 4,
@@ -33,7 +33,7 @@ const data = [
     sell: 59.4718,
     currency: "GBP",
     placeholder: "00.0 £",
-    url: require("../assets/British.png"),
+    url: require("../assets/images/British.png"),
   },
 ];
 

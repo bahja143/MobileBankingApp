@@ -9,7 +9,7 @@ import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import colors from "../config/colors";
 import Text from "../components/CustomText";
 
-import Logo from "../assets/Logo.png";
+import Logo from "../assets/images/Logo.png";
 
 export default function MyQRCodeScreen() {
   const [isSave, setIsSave] = useState(false);

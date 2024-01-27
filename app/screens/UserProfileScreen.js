@@ -22,7 +22,7 @@ import colors from "../config/colors";
 import Text from "../components/CustomText";
 import ActivityIndicator from "../components/ActivityIndicator";
 
-import Avatar from "../assets/avatar.png";
+import Avatar from "../assets/images/avatar.png";
 
 export default function UserProfileScreen() {
   const [imageUri, setImageUri] = useState("");

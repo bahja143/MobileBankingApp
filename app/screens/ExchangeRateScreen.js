@@ -10,21 +10,21 @@ const data = [
     buy: 53.1589,
     sell: 52.1166,
     currency: "USD",
-    url: require("../assets/US.png"),
+    url: require("../assets/images/US.png"),
   },
   {
     id: 2,
     buy: 54.0254,
     sell: 52.9661,
     currency: "EUR",
-    url: require("../assets/EU.png"),
+    url: require("../assets/images/EU.png"),
   },
   {
     id: 3,
     buy: 60.6612,
     sell: 59.4718,
     currency: "GBP",
-    url: require("../assets/British.png"),
+    url: require("../assets/images/British.png"),
   },
 ];
 

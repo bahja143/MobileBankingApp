@@ -1,5 +1,5 @@
-import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Feather, FontAwesome5, FontAwesome, Entypo } from "@expo/vector-icons";
+import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import * as MediaLibrary from "expo-media-library";
 import ViewShot from "react-native-view-shot";
 import { useRef, useState } from "react";
@@ -7,8 +7,7 @@ import * as Share from "expo-sharing";
 
 import colors from "../config/colors";
 import Text from "../components/CustomText";
-
-import Logo from "../assets/Logo.png";
+import Logo from "../assets/images/Logo.png";
 
 export default function TransferDetailScreen() {
   const ref = useRef();
