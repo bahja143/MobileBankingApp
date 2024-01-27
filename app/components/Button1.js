@@ -3,16 +3,34 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 import colors from "../config/colors";
 
-const Button1 = ({ title, textTransform, onPress, margin = 10 }) => {
+const Button1 = ({
+  title,
+  color,
+  onPress,
+  textTransform,
+  backgroundColor,
+  margin = 10,
+}) => {
   return (
     <TouchableOpacity
-      style={[styles.container, { marginVertical: margin }]}
+      style={[
+        styles.container,
+        {
+          marginVertical: margin,
+          backgroundColor: backgroundColor
+            ? colors[backgroundColor]
+            : colors.primary,
+        },
+      ]}
       onPress={onPress}
     >
       <Text
         style={[
           styles.text,
-          { textTransform: textTransform ? "capitalize" : "uppercase" },
+          {
+            textTransform: textTransform ? "capitalize" : "uppercase",
+            color: color ? colors[color] : colors.white,
+          },
         ]}
       >
         {title}
