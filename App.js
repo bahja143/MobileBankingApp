@@ -16,7 +16,6 @@ import Screen from "./app/components/Screen";
 
 import WelcomeScreen from "./app/screens/WelcomeScreen";
 import ReceiptScreen from "./app/screens/ReceiptScreen";
-import BranchLocation from "./app/screens/BranchLocation";
 import MyQRCodeScreen from "./app/screens/MyQRCodeScreen";
 import TransferScreen from "./app/screens/TransferScreen";
 import BranchesScreen from "./app/screens/BranchesScreen";
@@ -29,6 +28,7 @@ import QRCodeScannerScreen from "./app/screens/QRCodeScannerScreen";
 import NotificationsScreen from "./app/screens/NotificationsScreen";
 import UpdateNextKinScreen from "./app/screens/UpdateNextKinScreen";
 import UpdateAddressScreen from "./app/screens/UpdateAddressScreen";
+import BranchLocationScreen from "./app/screens/BranchLocationScreen";
 import TransferDetailScreen from "./app/screens/TransferDetailScreen";
 import CustomerSupportScreen from "./app/screens/CustomerSupportScreen";
 import UpdateBasicInfoScreen from "./app/screens/UpdateBasicInfoScreen";
