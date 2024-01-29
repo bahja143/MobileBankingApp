@@ -3,13 +3,18 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import colors from "../config/colors";
 import Text from "../components/CustomText";
 
-export default function Button({ margin = 10, title, ...props }) {
+export default function Button({
+  margin = 10,
+  textTransform,
+  title,
+  ...props
+}) {
   return (
     <TouchableOpacity
       style={[styles.container, { marginTop: margin }]}
       {...props}
     >
-      <Text style={styles.text} bold>
+      <Text style={[styles.text, { textTransform: textTransform }]} bold>
         {title}
       </Text>
     </TouchableOpacity>
@@ -18,13 +23,14 @@ export default function Button({ margin = 10, title, ...props }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.primary,
-    paddingVertical: 15,
     width: "100%",
-    alignItems: "center",
     borderRadius: 7.5,
+    paddingVertical: 17,
+    alignItems: "center",
+    backgroundColor: colors.primary,
   },
   text: {
+    fontSize: 15,
     color: colors.white,
     textTransform: "uppercase",
   },

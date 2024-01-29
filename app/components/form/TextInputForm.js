@@ -13,7 +13,8 @@ export default function TextInputForm({
   error,
   label,
   optional,
-  margin = 10,
+  labelColor,
+  height = 105,
   errorMessage,
   autoCapitalize,
   password = false,
@@ -23,7 +24,7 @@ export default function TextInputForm({
     useFormikContext();
 
   return (
-    <View style={[{ marginVertical: margin }]}>
+    <View style={[{ height: height }]}>
       {optional && <Text style={styles.optional}>(Optional)</Text>}
       <TextField
         icon={icon}
@@ -32,6 +33,7 @@ export default function TextInputForm({
         {...otherProps}
         password={password}
         value={values[name]}
+        labelColor={labelColor}
         autoCapitalize={autoCapitalize}
         onChangeText={handleChange(name)}
         onBlur={() => setFieldTouched(name)}
@@ -47,13 +49,13 @@ export default function TextInputForm({
 
 const styles = StyleSheet.create({
   errorLabel: {
-    fontSize: 13,
+    fontSize: 12,
     marginLeft: 2.5,
     marginBottom: -10,
     color: colors.danger,
   },
   optional: {
-    alignSelf: "flex-end",
     bottom: 2,
+    alignSelf: "flex-end",
   },
 });

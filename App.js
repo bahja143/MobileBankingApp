@@ -14,6 +14,7 @@ import * as SplashScreen from "expo-splash-screen";
 import colors from "./app/config/colors";
 import Screen from "./app/components/Screen";
 
+import SignInScreen from "./app/screens/SignInScreen";
 import WelcomeScreen from "./app/screens/WelcomeScreen";
 import ReceiptScreen from "./app/screens/ReceiptScreen";
 import MyQRCodeScreen from "./app/screens/MyQRCodeScreen";
@@ -22,12 +23,14 @@ import BranchesScreen from "./app/screens/BranchesScreen";
 import DashboardScreen from "./app/screens/DashboardScreen";
 import UserProfileScreen from "./app/screens/UserProfileScreen";
 import BeneficiaryScreen from "./app/screens/BeneficiaryScreen";
+import VerificationScreen from "./app/screens/VerificationScreen";
 import TransactionsScreen from "./app/screens/TransactionsScreen";
 import BeneficiariesScreen from "./app/screens/BeneficiariesScreen";
 import QRCodeScannerScreen from "./app/screens/QRCodeScannerScreen";
 import NotificationsScreen from "./app/screens/NotificationsScreen";
 import UpdateNextKinScreen from "./app/screens/UpdateNextKinScreen";
 import UpdateAddressScreen from "./app/screens/UpdateAddressScreen";
+import ForgotPasswordScreen from "./app/screens/ForgotPasswordScreen";
 import BranchLocationScreen from "./app/screens/BranchLocationScreen";
 import TransferDetailScreen from "./app/screens/TransferDetailScreen";
 import CustomerSupportScreen from "./app/screens/CustomerSupportScreen";
@@ -74,7 +77,7 @@ export default function App() {
     <>
       <Screen onLayout={onLayoutRootView}>
         <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
-        <WelcomeScreen />
+        <ForgotPasswordScreen />
       </Screen>
     </>
   );

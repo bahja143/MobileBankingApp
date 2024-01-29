@@ -21,13 +21,26 @@ export default function WelcomeScreen() {
         </Text>
       </View>
 
-      <Button
-        margin={8}
-        color="primary"
-        title="Get Started"
-        backgroundColor="white"
-        textTransform="capitalize"
-      />
+      <View style={styles.btnContainer}>
+        <Button
+          margin={6}
+          color="primary"
+          title="Sign in"
+          backgroundColor="white"
+          textTransform="capitalize"
+        />
+
+        <Button
+          margin={6}
+          color="white"
+          borderWidth={1.5}
+          borderRadius={10}
+          textTransform="none"
+          title="I'm new to the app"
+          borderColor={colors.white}
+          backgroundColor="transparent"
+        />
+      </View>
     </ImageBackground>
   );
 }
@@ -42,15 +55,18 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     justifyContent: "space-between",
   },
+  btnContainer: {
+    width: "100%",
+  },
   subTitle: {
-    fontSize: 19,
+    fontSize: 18,
     color: "#00ff00",
   },
   titleCont: {
     alignItems: "center",
   },
   title: {
-    fontSize: 19,
+    fontSize: 18,
     marginTop: 20,
     color: colors.white,
     textTransform: "uppercase",

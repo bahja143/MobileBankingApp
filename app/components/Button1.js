@@ -1,15 +1,19 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 
+import Text from "./CustomText";
 import colors from "../config/colors";
 
 const Button1 = ({
   title,
   color,
   onPress,
-  textTransform,
-  backgroundColor,
   margin = 10,
+  textTransform,
+  borderColor,
+  borderRadius = 10,
+  borderWidth,
+  backgroundColor,
 }) => {
   return (
     <TouchableOpacity
@@ -20,6 +24,9 @@ const Button1 = ({
           backgroundColor: backgroundColor
             ? colors[backgroundColor]
             : colors.primary,
+          borderColor: borderColor,
+          borderWidth: borderWidth,
+          borderRadius: borderRadius,
         },
       ]}
       onPress={onPress}
@@ -28,10 +35,11 @@ const Button1 = ({
         style={[
           styles.text,
           {
-            textTransform: textTransform ? "capitalize" : "uppercase",
+            textTransform: textTransform ? textTransform : "uppercase",
             color: color ? colors[color] : colors.white,
           },
         ]}
+        semibold
       >
         {title}
       </Text>
@@ -49,11 +57,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   text: {
-    fontSize: 16,
-    fontWeight: "700",
+    fontSize: 16.5,
     color: colors["white"],
     textTransform: "uppercase",
-    fontFamily: "Inter_400Regular",
   },
 });
 

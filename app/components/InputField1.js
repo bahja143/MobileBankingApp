@@ -117,11 +117,11 @@ const InputField1 = ({
 
 const styles = StyleSheet.create({
   container: {
-    height: 62.5,
     width: "100%",
     borderRadius: 10,
     borderWidth: 1.5,
     overflow: "hidden",
+    paddingVertical: 15,
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 15,

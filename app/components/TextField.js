@@ -9,6 +9,7 @@ const TextField = ({
   icon,
   label,
   password,
+  labelColor,
   width = "100%",
   autoCapitalize,
   disabled = false,
@@ -19,9 +20,9 @@ const TextField = ({
 
   return (
     <>
-      <View style={styles.labelCont}>
+      <View style={[styles.labelCont, { color: labelColor }]}>
         {icon}
-        <Text style={styles.label} semibold>
+        <Text style={[styles.label, { color: labelColor }]} semibold>
           {label}:
         </Text>
       </View>
@@ -29,7 +30,7 @@ const TextField = ({
         style={[
           styles.container,
           {
-            borderColor: isFocused ? colors.primary : colors.medium,
+            borderColor: isFocused ? colors.primary : colors.light,
             backgroundColor: disabled ? colors.lighter : colors.white,
           },
         ]}
@@ -51,9 +52,9 @@ const TextField = ({
             onPress={() => setShow((sh) => (sh ? false : true))}
           >
             {show ? (
-              <Ionicons name="eye" size={22} color={colors.medium} />
+              <Ionicons name="eye" size={22} color={colors.primary} />
             ) : (
-              <Ionicons name="eye-off" size={22} color={colors.medium} />
+              <Ionicons name="eye-off" size={22} color={colors.primary} />
             )}
           </TouchableOpacity>
         ) : null}
@@ -64,14 +65,15 @@ const TextField = ({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 5,
-    paddingRight: 20,
-    borderWidth: 0.8,
+    borderWidth: 1.5,
+    paddingLeft: 15,
+    borderRadius: 10,
+    paddingRight: 35,
     overflow: "hidden",
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 10,
-    backgroundColor: colors.white,
+    paddingHorizontal: 5,
+    backgroundColor: colors.light,
   },
   label: {
     marginLeft: 8,
@@ -85,12 +87,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   input: {
-    width: "90%",
-    fontSize: 15,
-    marginRight: 20,
+    fontSize: 16,
+    paddingRight: 10,
+    paddingVertical: 13,
     color: colors.medium,
-    paddingVertical: 12,
-    paddingHorizontal: 7.5,
     fontFamily: "Inter_500Medium",
   },
 });
