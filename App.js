@@ -14,6 +14,7 @@ import * as SplashScreen from "expo-splash-screen";
 import colors from "./app/config/colors";
 import Screen from "./app/components/Screen";
 
+import SignUpScreen from "./app/screens/SignUpScreen";
 import SignInScreen from "./app/screens/SignInScreen";
 import WelcomeScreen from "./app/screens/WelcomeScreen";
 import ReceiptScreen from "./app/screens/ReceiptScreen";
@@ -78,7 +79,6 @@ export default function App() {
     <>
       <Screen onLayout={onLayoutRootView}>
         <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
-        <CreatePasswordScreen />
       </Screen>
     </>
   );

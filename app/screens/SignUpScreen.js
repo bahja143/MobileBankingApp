@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import { Entypo, Octicons, AntDesign, FontAwesome5 } from "@expo/vector-icons";
+import { Entypo, AntDesign } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 import { useState } from "react";
 import { Formik } from "formik";
@@ -16,21 +16,19 @@ import colors from "../config/colors";
 import Text from "../components/CustomText";
 import ActivityIndicator from "../components/ActivityIndicator";
 
-import { InputField1, PickerForm, BtnForm1 } from "../components/form";
+import { InputField1, BtnForm1 } from "../components/form";
 
 const schema = Yup.object({
   id: Yup.number(),
-  bankId: Yup.number().label("Bank"),
   accountNo: Yup.string()
     .min(13, "Invalid Account No.")
     .required()
     .label("Account"),
-  amount: Yup.number("Amount must be Number")
-    .typeError("Amount must be Number")
+  mobile: Yup.string("")
+    .min(10, "Invalid Mobile No.")
     .required()
-    .label("Amount"),
+    .label("Mobile No."),
   isAccountValid: Yup.boolean().required(),
-  description: Yup.string().label("Description"),
 });
 
 const data = [
@@ -125,49 +123,31 @@ const data = [
     Account: "1481311198646",
   },
 ];
-const banks = [
-  { id: 1, name: "Shabelle Bank" },
-  { id: 2, name: "Awash Bank" },
-  { id: 3, name: "Commercial Bank" },
-  { id: 4, name: "Dashen Bank" },
-];
 
-export default function TransferScreen() {
+export default function SignUpScreen() {
   const [transfer, setTransfer] = useState({
     id: 0,
-    amount: "",
-    bankId: 1,
-    comment: "",
+    mobile: "",
     accountNo: "",
     isAccountValid: true,
   });
-  const [myAccount] = useState({
-    id: 1,
-    name: "Abdisalam Farah Abdi",
-    accountNo: "0272010000033",
-    balance: 125,
-  });
-  const [account, setAccount] = useState({});
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
 
   const handleSubmit = (transfer) => {
     if (loading) return setIsLoading(true);
-    if (!transfer["isAccountValid"]) return;
-    if (transfer.amount >= myAccount.balance) return setVisible(true);
+    if (!transfer["isAccountValid"]) return setVisible(true);
 
     Keyboard.dismiss();
     setIsLoading(true);
     setTimeout(() => {
       setTransfer(transfer);
-      setShowConfirm(true);
       console.log("submitted: ", transfer);
       setIsLoading(false);
     }, 3000);
   };
-  const handleCheckAccountNo = (accountNo, setFieldValue, values) => {
+  const handleCheckAccountNo = (accountNo, setFieldValue) => {
     setLoading(true);
 
     setTimeout(() => {
@@ -184,7 +164,6 @@ export default function TransferScreen() {
         setIsLoading(false);
 
         if (account) {
-          setAccount(account);
           setFieldValue("accountNo", accountNo);
           setFieldValue("isAccountValid", true);
 
@@ -200,97 +179,6 @@ export default function TransferScreen() {
     <>
       <ActivityIndicator visible={isLoading} />
       <Modal
-        swipeDirection="down"
-        isVisible={showConfirm}
-        animationIn="slideInUp"
-        animationInTiming={500}
-        animationOutTiming={600}
-        animationOut="slideOutDown"
-        style={styles.modalContainer}
-        backdropTransitionInTiming={500}
-        backdropTransitionOutTiming={600}
-        onSwipeComplete={() => setShowConfirm(false)}
-        onBackdropPress={() => setShowConfirm(false)}
-      >
-        <View style={styles.confirmModal}>
-          <View style={styles.subConfirmModal}>
-            <Octicons name="horizontal-rule" size={40} color={colors.light} />
-            <View style={styles.confirmIconContainer}>
-              <FontAwesome5 name="exclamation" size={25} color={colors.white} />
-            </View>
-            <Text style={styles.confirmModalTitle} semibold>
-              Confirm Transaction
-            </Text>
-            <View style={styles.confirmBalanceCont}>
-              <Text style={styles.confirmBalance} bold>
-                {transfer.amount}.00
-              </Text>
-            </View>
-          </View>
-
-          <View style={styles.detail}>
-            <View style={styles.detailItem}>
-              <Text style={styles.detailItemLabel} semibold>
-                To Account Name:
-              </Text>
-
-              <Text style={styles.detailItemValue} bold>
-                {account.Name?.firstName} {account.Name?.middleName}{" "}
-                {account.Name?.lastName}
-              </Text>
-            </View>
-
-            <View style={styles.detailItem}>
-              <Text style={styles.detailItemLabel} semibold>
-                To Account No:
-              </Text>
-
-              <Text style={styles.detailItemValue} bold>
-                {account.Account}
-              </Text>
-            </View>
-
-            <View style={styles.detailItem}>
-              <Text style={styles.detailItemLabel} semibold>
-                Date:
-              </Text>
-
-              <View style={styles.detailDate}>
-                <Text style={styles.detailItemValue} bold>
-                  {new Date().toDateString()}
-                </Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.confirmBtnCont}>
-            <TouchableOpacity
-              onPress={() => setVisible(false)}
-              style={[styles.modalBtn, styles.confirmBtnConfirm]}
-            >
-              <Text
-                style={[styles.modalBtnText, styles.confirmBtnConfirmText]}
-                semibold
-              >
-                CONFIRM
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => setShowConfirm(false)}
-              style={[styles.modalBtn, styles.confirmBtnClose]}
-            >
-              <Text
-                style={[styles.modalBtnText, styles.confirmBtnCloseText]}
-                semibold
-              >
-                Go Back
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-      <Modal
         isVisible={visible}
         animationIn="slideInUp"
         animationInTiming={500}
@@ -303,9 +191,11 @@ export default function TransferScreen() {
           <AntDesign name="closecircleo" size={40} color={colors.danger} />
           <View style={styles.modalTextContainer}>
             <Text style={styles.modalTitle} bold>
-              Failed Transaction!
+              Invalid account!
             </Text>
-            <Text style={styles.modalText}>You don't have enough balance</Text>
+            <Text style={styles.modalText}>
+              PLease check your Account Number or Mobile Number
+            </Text>
           </View>
           <TouchableOpacity
             onPress={() => setVisible(false)}
@@ -322,7 +212,7 @@ export default function TransferScreen() {
           <Entypo name="chevron-left" size={30} color={colors.primary} />
         </TouchableOpacity>
         <Text style={styles.title} semibold>
-          Transfer Money
+          Onboarding
         </Text>
       </View>
       <ScrollView
@@ -338,17 +228,10 @@ export default function TransferScreen() {
           >
             {({ values, setFieldValue }) => (
               <>
-                <PickerForm
-                  label="Bank"
-                  name="bankId"
-                  icon="align-justify"
-                  autoCapitalize="words"
-                  options={banks.map((b) => ({ id: b.id, label: b.name }))}
-                />
                 <InputField1
                   required
-                  maxLength={13}
                   icon="wallet"
+                  maxLength={13}
                   name="accountNo"
                   isLoading={loading}
                   keyboardType="numeric"
@@ -362,18 +245,16 @@ export default function TransferScreen() {
                     values["isAccountValid"] ? null : "Invalid Account No."
                   }
                 />
+
                 <InputField1
-                  name="amount"
-                  placeholder="0.00"
-                  icon="money-bill-alt"
+                  name="mobile"
+                  maxLength={10}
+                  icon="mobile-alt"
                   keyboardType="numeric"
+                  placeholder="09xxxxxxx"
+                  value={values["accountNo"]}
                 />
-                <InputField1
-                  name="comment"
-                  icon="align-justify"
-                  autoCapitalize="words"
-                  placeholder="Comment"
-                />
+
                 <BtnForm1 title="NEXT" margin={7.5} />
               </>
             )}
@@ -397,94 +278,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginHorizontal: 10,
-  },
-  confirmBtnConfirmText: {
-    fontSize: 16,
-    textTransform: "capitalize",
-  },
-  confirmBtnConfirm: {
-    height: 50,
-    justifyContent: "center",
-  },
-  confirmBtnCloseText: {
-    fontSize: 16,
-    color: colors.primary,
-    textTransform: "capitalize",
-  },
-  confirmBtnClose: {
-    height: 50,
-    justifyContent: "center",
-    backgroundColor: colors.secondary,
-  },
-  confirmBtnCont: {
-    marginHorizontal: 15,
-  },
-  detailDate: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  detailItemLabel: {
-    color: colors.medium,
-  },
-  detailItemValue: {
-    color: colors.black,
-    alignItems: "baseline",
-    textTransform: "capitalize",
-  },
-  detailItem: {
-    marginVertical: 15,
-    paddingBottom: 7.5,
-    flexDirection: "row",
-    borderBottomWidth: 1,
-    justifyContent: "space-between",
-    borderBottomColor: colors.lighter,
-  },
-  detail: {
-    marginTop: 30,
-    marginHorizontal: 10,
-  },
-  confirmBalanceCont: {
-    width: 200,
-    height: 50,
-    marginTop: 5,
-    borderRadius: 5,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: colors.secondary,
-  },
-  confirmBalance: {
-    fontSize: 22,
-    color: colors.black,
-  },
-  confirmIconContainer: {
-    width: 50,
-    height: 50,
-    marginTop: -7.5,
-    borderRadius: 50,
-    marginBottom: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: colors.primary,
-  },
-  confirmModalTitle: {
-    marginTop: 5,
-    color: colors.medium,
-  },
-  modalContainer: {
-    width: "100%",
-    justifyContent: "flex-end",
-  },
-  subConfirmModal: {
-    alignItems: "center",
-  },
-  confirmModal: {
-    width: "100%",
-    marginLeft: -20,
-    marginBottom: -25,
-    paddingBottom: 40,
-    borderTopEndRadius: 20,
-    borderTopLeftRadius: 20,
-    backgroundColor: colors.white,
   },
   modalBtn: {
     width: "100%",
@@ -514,6 +307,7 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   modalText: {
+    textAlign: "center",
     color: colors.medium,
     textTransform: "capitalize",
   },

@@ -12,6 +12,7 @@ const InputForm1 = ({
   required,
   maxWidth,
   password,
+  maxLength,
   isLoading,
   margin = 90,
   errorMessage,
@@ -27,6 +28,7 @@ const InputForm1 = ({
         password={password}
         maxWidth={maxWidth}
         value={values[name]}
+        maxLength={maxLength}
         isLoading={isLoading}
         onChangeText={(text) => {
           setFieldValue(name, text);

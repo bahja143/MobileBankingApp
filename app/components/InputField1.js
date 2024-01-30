@@ -21,6 +21,7 @@ const InputField1 = ({
   onBlur,
   invalid,
   required,
+  maxLength,
   isLoading,
   placeholder,
   height = 62.5,
@@ -67,6 +68,7 @@ const InputField1 = ({
         value={value}
         {...otherProps}
         password={password}
+        maxLength={maxLength}
         onFocus={handleFocus}
         style={[styles.input]}
         placeholder={placeholder}

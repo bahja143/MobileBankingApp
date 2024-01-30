@@ -306,11 +306,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   modalTitle: {
-    fontSize: 14.5,
+    top: -5,
+    fontSize: 15,
     color: colors.black,
   },
   modalText: {
-    fontSize: 13,
     marginBottom: 5,
     textAlign: "center",
     color: colors.medium,
