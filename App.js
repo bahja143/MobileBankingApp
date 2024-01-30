@@ -30,6 +30,7 @@ import QRCodeScannerScreen from "./app/screens/QRCodeScannerScreen";
 import NotificationsScreen from "./app/screens/NotificationsScreen";
 import UpdateNextKinScreen from "./app/screens/UpdateNextKinScreen";
 import UpdateAddressScreen from "./app/screens/UpdateAddressScreen";
+import CreatePasswordScreen from "./app/screens/CreatePasswordScreen";
 import ForgotPasswordScreen from "./app/screens/ForgotPasswordScreen";
 import BranchLocationScreen from "./app/screens/BranchLocationScreen";
 import TransferDetailScreen from "./app/screens/TransferDetailScreen";
@@ -77,7 +78,7 @@ export default function App() {
     <>
       <Screen onLayout={onLayoutRootView}>
         <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
-        <ForgotPasswordScreen />
+        <CreatePasswordScreen />
       </Screen>
     </>
   );
