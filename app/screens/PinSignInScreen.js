@@ -16,7 +16,7 @@ import Text from "../components/CustomText";
 import Logo from "../assets/images/Logo.png";
 
 export default function PinSignInScreen() {
-  const [myPin] = useState("643864");
+  const [myPin] = useState("6438");
   const [pin, setPing] = useState("");
   const shake = useRef(new Animated.Value(0.5)).current;
   const [isFingerAvailable, setFingerAvailable] = useState(false);
@@ -24,14 +24,17 @@ export default function PinSignInScreen() {
   const handleTouch = (num) => {
     setPing((e) => e + num);
 
-    if (pin.length === 5) {
+    if (pin.length === 3) {
       if (pin + num === myPin) {
         return console.log("Success");
       }
 
       Vibration.vibrate(100);
       handleIncorrectPin();
-      return setPing("");
+      setTimeout(() => {
+        setPing("");
+      }, 500);
+      return;
     }
   };
   const handleDelete = () => {
@@ -109,19 +112,6 @@ export default function PinSignInScreen() {
             style={[
               styles.pin,
               pin.length >= 4 && { backgroundColor: colors.primary },
-            ]}
-          />
-          <View
-            style={[
-              styles.pin,
-              pin.length >= 5 && { backgroundColor: colors.primary },
-            ]}
-          />
-
-          <View
-            style={[
-              styles.pin,
-              pin.length >= 6 && { backgroundColor: colors.primary },
             ]}
           />
         </View>
@@ -268,7 +258,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 2,
     borderRadius: 25,
-    marginHorizontal: 7.5,
+    marginHorizontal: 14,
     borderColor: colors.primary,
   },
   bottomText: {
