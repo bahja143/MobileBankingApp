@@ -300,6 +300,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
+    marginBottom: 15,
     color: colors.black,
   },
   logo: {
