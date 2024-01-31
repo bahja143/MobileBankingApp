@@ -14,6 +14,8 @@ import * as SplashScreen from "expo-splash-screen";
 import colors from "./app/config/colors";
 import Screen from "./app/components/Screen";
 
+import ExchangeNav from "./app/navigation/ExchangeNav";
+
 import SignUpScreen from "./app/screens/SignUpScreen";
 import SignInScreen from "./app/screens/SignInScreen";
 import WelcomeScreen from "./app/screens/WelcomeScreen";
@@ -21,6 +23,7 @@ import ReceiptScreen from "./app/screens/ReceiptScreen";
 import MyQRCodeScreen from "./app/screens/MyQRCodeScreen";
 import TransferScreen from "./app/screens/TransferScreen";
 import BranchesScreen from "./app/screens/BranchesScreen";
+import PinSignInScreen from "./app/screens/PinSignInScreen";
 import DashboardScreen from "./app/screens/DashboardScreen";
 import UserProfileScreen from "./app/screens/UserProfileScreen";
 import BeneficiaryScreen from "./app/screens/BeneficiaryScreen";
@@ -38,8 +41,6 @@ import TransferDetailScreen from "./app/screens/TransferDetailScreen";
 import CustomerSupportScreen from "./app/screens/CustomerSupportScreen";
 import UpdateBasicInfoScreen from "./app/screens/UpdateBasicInfoScreen";
 import UpdateContactInfoScreen from "./app/screens/UpdateContactInfoScreen";
-
-import ExchangeNav from "./app/navigation/ExchangeNav";
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -76,10 +77,9 @@ export default function App() {
   }
 
   return (
-    <>
-      <Screen onLayout={onLayoutRootView}>
-        <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
-      </Screen>
-    </>
+    <Screen onLayout={onLayoutRootView}>
+      <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
+      <PinSignInScreen />
+    </Screen>
   );
 }
