@@ -1,20 +1,18 @@
-import { Entypo, Feather } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 import {
   View,
-  Image,
   Platform,
   Keyboard,
   StyleSheet,
-  TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
+import * as Yup from "yup";
 import { Formik } from "formik";
 import { useState } from "react";
-import * as Yup from "yup";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
 import Text from "../components/CustomText";
-import Logo from "../assets/images/Logo.png";
 import ActivityIndicator from "../components/ActivityIndicator";
 
 import { TextInputForm, BtnForm } from "../components/form";
@@ -24,15 +22,10 @@ const schema = Yup.object({
     .min(10, "Invalid Mobile No.")
     .required()
     .label("Mobile No."),
-  password: Yup.string()
-    .min(6, "Invalid Password")
-    .required()
-    .label("Password"),
 });
-export default function SignInScreen() {
+export default function ForgotCredentialScreen() {
   const [info] = useState({
     mobile: "",
-    password: "",
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -64,7 +57,16 @@ export default function SignInScreen() {
           >
             {() => (
               <>
-                <Image style={styles.logo} source={Logo} />
+                <View style={styles.iconContainer}>
+                  <MaterialCommunityIcons
+                    size={60}
+                    name="lock-question"
+                    color={colors["primary"]}
+                  />
+                </View>
+                <Text style={styles.title} semibold>
+                  Reset Credential
+                </Text>
                 <TextInputForm
                   name="mobile"
                   maxLength={10}
@@ -75,22 +77,8 @@ export default function SignInScreen() {
                     <Entypo name="mobile" size={22} color={colors.primary} />
                   }
                 />
-                <TextInputForm
-                  password={true}
-                  name="password"
-                  label="Password"
-                  icon={
-                    <Feather name="lock" size={22} color={colors.primary} />
-                  }
-                />
-                <View style={styles.btnCont}>
-                  <BtnForm textTransform="capitalize" title="SIGN IN" />
-                  <TouchableOpacity style={styles.forgetPass}>
-                    <Text bold style={styles.forgetText}>
-                      Forgot password?
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+
+                <BtnForm textTransform="capitalize" title="Forgot Password" />
               </>
             )}
           </Formik>
@@ -108,6 +96,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: colors.white,
   },
+  title: {
+    fontSize: 17,
+    marginTop: 15,
+    marginBottom: 40,
+    textAlign: "center",
+    color: colors["medium"],
+  },
+  iconContainer: {
+    width: 125,
+    height: 125,
+    borderRadius: 75,
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors["lighter"],
+  },
   forgetText: {
     color: colors.primary,
   },
@@ -115,19 +119,11 @@ const styles = StyleSheet.create({
     top: 15,
     alignSelf: "flex-end",
   },
-  title: {
-    fontSize: 22,
-    marginBottom: 50,
-    textAlign: "center",
-  },
   logo: {
     top: -140,
     width: 110,
     height: 90,
     alignSelf: "center",
     position: "absolute",
-  },
-  btnCont: {
-    marginTop: 5,
   },
 });

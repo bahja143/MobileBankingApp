@@ -7,16 +7,19 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
 } from "react-native";
-
-import colors from "../config/colors";
-import Text from "./CustomText";
-
 import Modal from "react-native-modal";
 
-export default function PinCodeModal() {
+import Text from "./CustomText";
+import colors from "../config/colors";
+import SuspendModal from "./SuspendModal";
+
+export default function PinCodeModal({ isVisible }) {
   const inputRef = useRef(null);
   const [myPin] = useState("6438");
   const [pin, setPing] = useState("");
+  const [show, setShow] = useState(true);
+  const [maxTry, setMaxTry] = useState(0);
+  const [visible, setVisible] = useState(false);
   const shake = useRef(new Animated.Value(0.5)).current;
 
   const handleTouch = (num) => {
@@ -27,10 +30,16 @@ export default function PinCodeModal() {
         return console.log("Success");
       }
 
+      if (1 + maxTry === 5) {
+        setShow(false);
+        return setVisible(true);
+      }
+
+      setMaxTry(maxTry + 1);
       handleIncorrectPin();
+      Vibration.vibrate(100);
       setTimeout(() => {
         setPing("");
-        Vibration.vibrate(100);
       }, 500);
       return;
     }
@@ -59,68 +68,71 @@ export default function PinCodeModal() {
   };
 
   return (
-    <Modal style={styles.modal} isVisible>
-      <TouchableWithoutFeedback
-        style={styles.container}
-        onPress={handleOpenKeyboard}
-      >
-        <View style={styles.container}>
-          <TextInput
-            value={pin}
-            ref={inputRef}
-            keyboardType="numeric"
-            style={styles.textInput}
-            cursorColor={colors.white}
-            onChangeText={handleTouch}
-          />
-          <Text semibold style={styles.title}>
-            Please enter your pin
-          </Text>
-          <Text style={styles.subTitle}>
-            For your security, your banking session has timed out due to
-            inactivity
-          </Text>
-          <Animated.View
-            style={[
-              styles.pinView,
-              {
-                transform: [
-                  {
-                    translateX: shake.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [-15, 15],
-                    }),
-                  },
-                ],
-              },
-            ]}
-          >
-            <View style={styles.pinContainer}>
-              <View style={styles.pin}>
-                {pin.length >= 1 ? <View style={styles.pinDot} /> : null}
-              </View>
+    <>
+      <SuspendModal isVisible={visible} type="PIN" />
+      <Modal style={styles.modal} isVisible={isVisible && show ? true : false}>
+        <TouchableWithoutFeedback
+          style={styles.container}
+          onPress={handleOpenKeyboard}
+        >
+          <View style={styles.container}>
+            <TextInput
+              value={pin}
+              ref={inputRef}
+              keyboardType="numeric"
+              style={styles.textInput}
+              cursorColor={colors.white}
+              onChangeText={handleTouch}
+            />
+            <Text semibold style={styles.title}>
+              Please enter your pin
+            </Text>
+            <Text style={styles.subTitle}>
+              For your security, your banking session has timed out due to
+              inactivity
+            </Text>
+            <Animated.View
+              style={[
+                styles.pinView,
+                {
+                  transform: [
+                    {
+                      translateX: shake.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [-15, 15],
+                      }),
+                    },
+                  ],
+                },
+              ]}
+            >
+              <View style={styles.pinContainer}>
+                <View style={styles.pin}>
+                  {pin.length >= 1 ? <View style={styles.pinDot} /> : null}
+                </View>
 
-              <View style={styles.pin}>
-                {pin.length >= 2 ? <View style={styles.pinDot} /> : null}
-              </View>
-              <View style={styles.pin}>
-                {pin.length >= 3 ? <View style={styles.pinDot} /> : null}
-              </View>
+                <View style={styles.pin}>
+                  {pin.length >= 2 ? <View style={styles.pinDot} /> : null}
+                </View>
+                <View style={styles.pin}>
+                  {pin.length >= 3 ? <View style={styles.pinDot} /> : null}
+                </View>
 
-              <View style={styles.pin}>
-                {pin.length >= 4 ? <View style={styles.pinDot} /> : null}
+                <View style={styles.pin}>
+                  {pin.length >= 4 ? <View style={styles.pinDot} /> : null}
+                </View>
               </View>
-            </View>
-          </Animated.View>
-        </View>
-      </TouchableWithoutFeedback>
-    </Modal>
+            </Animated.View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: 200,
+    height: 190,
     width: "95%",
     borderRadius: 10,
     overflow: "hidden",
@@ -129,35 +141,35 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   subTitle: {
-    width: 290,
+    width: 300,
     lineHeight: 20,
     textAlign: "center",
     color: colors.medium,
   },
   title: {
     top: -10,
-    fontSize: 16,
+    fontSize: 17,
     textAlign: "center",
     color: colors.primary,
   },
   pinDot: {
-    top: 20,
-    width: 12,
-    height: 12,
+    top: 15,
+    width: 10,
+    height: 10,
     borderRadius: 50,
     alignSelf: "center",
     backgroundColor: colors.primary,
   },
   pin: {
-    width: 60,
-    height: 50,
+    width: 50,
+    height: 40,
     borderBottomWidth: 5,
     backgroundColor: colors.white,
     borderBottomColor: "rgba(0, 0, 0, 0.3)",
   },
   pinContainer: {
     width: "100%",
-    marginTop: 10,
+    marginTop: 20,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-evenly",

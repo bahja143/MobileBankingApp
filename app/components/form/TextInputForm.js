@@ -1,10 +1,9 @@
 import { View, StyleSheet } from "react-native";
 import { useFormikContext } from "formik";
 
-import colors from "../../config/colors";
-
 import Text from "../CustomText";
 import TextField from "../TextField";
+import colors from "../../config/colors";
 
 export default function TextInputForm({
   icon,
@@ -171,6 +170,7 @@ const styles = StyleSheet.create({
   },
   passStatCont: {
     marginTop: 7,
+    marginBottom: -3,
     marginHorizontal: 6,
     flexDirection: "row",
     justifyContent: "space-between",

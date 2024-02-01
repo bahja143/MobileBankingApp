@@ -6,6 +6,7 @@ import {
   Inter_300Light,
   Inter_500Medium,
   Inter_400Regular,
+  Inter_600SemiBold,
 } from "@expo-google-fonts/inter";
 
 import * as Font from "expo-font";
@@ -18,14 +19,15 @@ import ExchangeNav from "./app/navigation/ExchangeNav";
 import PinCodeModal from "./app/components/PinCodeModal";
 
 import SignUpScreen from "./app/screens/SignUpScreen";
-import SignInScreen from "./app/screens/SignInScreen";
 import WelcomeScreen from "./app/screens/WelcomeScreen";
 import ReceiptScreen from "./app/screens/ReceiptScreen";
 import MyQRCodeScreen from "./app/screens/MyQRCodeScreen";
 import TransferScreen from "./app/screens/TransferScreen";
 import BranchesScreen from "./app/screens/BranchesScreen";
+import ChangePinScreen from "./app/screens/ChangePinScreen";
 import PinSignInScreen from "./app/screens/PinSignInScreen";
 import DashboardScreen from "./app/screens/DashboardScreen";
+import CreatePinScreen from "./app/screens/CreatePinScreen";
 import UserProfileScreen from "./app/screens/UserProfileScreen";
 import BeneficiaryScreen from "./app/screens/BeneficiaryScreen";
 import VerificationScreen from "./app/screens/VerificationScreen";
@@ -35,8 +37,10 @@ import QRCodeScannerScreen from "./app/screens/QRCodeScannerScreen";
 import NotificationsScreen from "./app/screens/NotificationsScreen";
 import UpdateNextKinScreen from "./app/screens/UpdateNextKinScreen";
 import UpdateAddressScreen from "./app/screens/UpdateAddressScreen";
+import ChangePasswordScreen from "./app/screens/ChangePasswordScreen";
+import PasswordSignInScreen from "./app/screens/PasswordSignInScreen";
 import CreatePasswordScreen from "./app/screens/CreatePasswordScreen";
-import ForgotPasswordScreen from "./app/screens/ForgotPasswordScreen";
+import ForgotCredentialScreen from "./app/screens/ForgotCredentialScreen";
 import BranchLocationScreen from "./app/screens/BranchLocationScreen";
 import TransferDetailScreen from "./app/screens/TransferDetailScreen";
 import CustomerSupportScreen from "./app/screens/CustomerSupportScreen";
@@ -54,6 +58,7 @@ export default function App() {
           Inter_300Light,
           Inter_500Medium,
           Inter_400Regular,
+          Inter_600SemiBold,
         });
 
         await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -80,7 +85,6 @@ export default function App() {
   return (
     <Screen onLayout={onLayoutRootView}>
       <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
-      <PinSignInScreen />
     </Screen>
   );
 }

@@ -12,12 +12,15 @@ import * as LocalAuthentication from "expo-local-authentication";
 
 import colors from "../config/colors";
 import Text from "../components/CustomText";
+import SuspendModal from "../components/SuspendModal";
 
 import Logo from "../assets/images/Logo.png";
 
 export default function PinSignInScreen() {
   const [myPin] = useState("6438");
   const [pin, setPing] = useState("");
+  const [maxTry, setMaxTry] = useState(0);
+  const [visible, setVisible] = useState(false);
   const shake = useRef(new Animated.Value(0.5)).current;
   const [isFingerAvailable, setFingerAvailable] = useState(false);
 
@@ -29,6 +32,9 @@ export default function PinSignInScreen() {
         return console.log("Success");
       }
 
+      if (1 + maxTry === 5) return setVisible(true);
+
+      setMaxTry(maxTry + 1);
       Vibration.vibrate(100);
       handleIncorrectPin();
       setTimeout(() => {
@@ -69,176 +75,183 @@ export default function PinSignInScreen() {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Image style={styles.logo} source={Logo} />
-      <Text style={styles.title} semibold>
-        Welcome back, <Text bold>Abdisalam Farah!</Text>
-      </Text>
-      <Animated.View
-        style={[
-          styles.pinView,
-          {
-            transform: [
-              {
-                translateX: shake.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [-15, 15],
-                }),
-              },
-            ],
-          },
-        ]}
-      >
-        <View style={styles.pinContainer}>
-          <View
-            style={[
-              styles.pin,
-              pin.length >= 1 && { backgroundColor: colors.primary },
-            ]}
-          />
-          <View
-            style={[
-              styles.pin,
-              pin.length >= 2 && { backgroundColor: colors.primary },
-            ]}
-          />
-          <View
-            style={[
-              styles.pin,
-              pin.length >= 3 && { backgroundColor: colors.primary },
-            ]}
-          />
-          <View
-            style={[
-              styles.pin,
-              pin.length >= 4 && { backgroundColor: colors.primary },
-            ]}
-          />
-        </View>
-      </Animated.View>
-      <View style={styles.body}>
-        <View style={styles.subBody}>
-          <TouchableOpacity
-            onPress={() => handleTouch(1)}
-            style={styles.numCont}
-          >
-            <Text semibold style={styles.number}>
-              1
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => handleTouch(2)}
-            style={styles.numCont}
-          >
-            <Text semibold style={styles.number}>
-              2
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => handleTouch(3)}
-            style={styles.numCont}
-          >
-            <Text semibold style={styles.number}>
-              3
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.subBody}>
-          <TouchableOpacity
-            onPress={() => handleTouch(4)}
-            style={styles.numCont}
-          >
-            <Text semibold style={styles.number}>
-              4
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => handleTouch(5)}
-            style={styles.numCont}
-          >
-            <Text semibold style={styles.number}>
-              5
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => handleTouch(6)}
-            style={styles.numCont}
-          >
-            <Text semibold style={styles.number}>
-              6
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.subBody}>
-          <TouchableOpacity
-            onPress={() => handleTouch(7)}
-            style={styles.numCont}
-          >
-            <Text semibold style={styles.number}>
-              7
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => handleTouch(8)}
-            style={styles.numCont}
-          >
-            <Text semibold style={styles.number}>
-              8
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => handleTouch(9)}
-            style={styles.numCont}
-          >
-            <Text semibold style={styles.number}>
-              9
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.subBody}>
-          {isFingerAvailable ? (
+    <>
+      <SuspendModal isVisible={visible} type="PIN" />
+      <View style={styles.container}>
+        <Image style={styles.logo} source={Logo} />
+        <Text style={styles.title} semibold>
+          Welcome back, <Text bold>Abdisalam Farah!</Text>
+        </Text>
+        <Animated.View
+          style={[
+            styles.pinView,
+            {
+              transform: [
+                {
+                  translateX: shake.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [-15, 15],
+                  }),
+                },
+              ],
+            },
+          ]}
+        >
+          <View style={styles.pinContainer}>
+            <View
+              style={[
+                styles.pin,
+                pin.length >= 1 && { backgroundColor: colors.primary },
+              ]}
+            />
+            <View
+              style={[
+                styles.pin,
+                pin.length >= 2 && { backgroundColor: colors.primary },
+              ]}
+            />
+            <View
+              style={[
+                styles.pin,
+                pin.length >= 3 && { backgroundColor: colors.primary },
+              ]}
+            />
+            <View
+              style={[
+                styles.pin,
+                pin.length >= 4 && { backgroundColor: colors.primary },
+              ]}
+            />
+          </View>
+        </Animated.View>
+        <View style={styles.body}>
+          <View style={styles.subBody}>
             <TouchableOpacity
+              onPress={() => handleTouch(1)}
+              style={styles.numCont}
+            >
+              <Text semibold style={styles.number}>
+                1
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => handleTouch(2)}
+              style={styles.numCont}
+            >
+              <Text semibold style={styles.number}>
+                2
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => handleTouch(3)}
+              style={styles.numCont}
+            >
+              <Text semibold style={styles.number}>
+                3
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.subBody}>
+            <TouchableOpacity
+              onPress={() => handleTouch(4)}
+              style={styles.numCont}
+            >
+              <Text semibold style={styles.number}>
+                4
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => handleTouch(5)}
+              style={styles.numCont}
+            >
+              <Text semibold style={styles.number}>
+                5
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => handleTouch(6)}
+              style={styles.numCont}
+            >
+              <Text semibold style={styles.number}>
+                6
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.subBody}>
+            <TouchableOpacity
+              onPress={() => handleTouch(7)}
+              style={styles.numCont}
+            >
+              <Text semibold style={styles.number}>
+                7
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => handleTouch(8)}
+              style={styles.numCont}
+            >
+              <Text semibold style={styles.number}>
+                8
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => handleTouch(9)}
+              style={styles.numCont}
+            >
+              <Text semibold style={styles.number}>
+                9
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.subBody}>
+            {isFingerAvailable ? (
+              <TouchableOpacity
+                style={[styles.numCont, { backgroundColor: colors.white }]}
+              >
+                <Ionicons
+                  size={30}
+                  color={colors.primary}
+                  name="finger-print-sharp"
+                />
+              </TouchableOpacity>
+            ) : (
+              <View
+                style={[styles.numCont, { backgroundColor: colors.white }]}
+              />
+            )}
+            <TouchableOpacity
+              onPress={() => handleTouch(0)}
+              style={styles.numCont}
+            >
+              <Text semibold style={styles.number}>
+                0
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={handleDelete}
               style={[styles.numCont, { backgroundColor: colors.white }]}
             >
-              <Ionicons
-                size={30}
-                color={colors.primary}
-                name="finger-print-sharp"
-              />
+              <Feather size={29} name="delete" color={colors.primary} />
             </TouchableOpacity>
-          ) : (
-            <View style={[styles.numCont, { backgroundColor: colors.white }]} />
-          )}
-          <TouchableOpacity
-            onPress={() => handleTouch(0)}
-            style={styles.numCont}
-          >
-            <Text semibold style={styles.number}>
-              0
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={handleDelete}
-            style={[styles.numCont, { backgroundColor: colors.white }]}
-          >
-            <Feather size={29} name="delete" color={colors.primary} />
-          </TouchableOpacity>
+          </View>
         </View>
+        <TouchableOpacity>
+          <Text style={styles.bottomText} semibold>
+            Forgot PIN Code?
+          </Text>
+        </TouchableOpacity>
       </View>
-      <Text style={styles.bottomText} semibold>
-        Log in using credentials
-      </Text>
-    </View>
+    </>
   );
 }
 
@@ -258,12 +271,12 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 2,
     borderRadius: 25,
-    marginHorizontal: 14,
+    marginHorizontal: 12,
     borderColor: colors.primary,
   },
   bottomText: {
     top: 30,
-    fontSize: 15,
+    fontSize: 16,
     color: colors.primary,
   },
   number: {

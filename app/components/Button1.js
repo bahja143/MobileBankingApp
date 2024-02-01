@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   text: {
-    fontSize: 16.5,
+    fontSize: 16,
     color: colors["white"],
     textTransform: "uppercase",
   },
