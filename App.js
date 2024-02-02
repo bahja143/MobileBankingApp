@@ -85,6 +85,7 @@ export default function App() {
   return (
     <Screen onLayout={onLayoutRootView}>
       <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
+      <PinSignInScreen />
     </Screen>
   );
 }

@@ -13,6 +13,7 @@ import * as LocalAuthentication from "expo-local-authentication";
 import colors from "../config/colors";
 import Text from "../components/CustomText";
 import SuspendModal from "../components/SuspendModal";
+import ActivityIndicator from "../components/ActivityIndicator";
 
 import Logo from "../assets/images/Logo.png";
 
@@ -21,6 +22,7 @@ export default function PinSignInScreen() {
   const [pin, setPing] = useState("");
   const [maxTry, setMaxTry] = useState(0);
   const [visible, setVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const shake = useRef(new Animated.Value(0.5)).current;
   const [isFingerAvailable, setFingerAvailable] = useState(false);
 
@@ -69,6 +71,26 @@ export default function PinSignInScreen() {
     const response = await LocalAuthentication.hasHardwareAsync();
     setFingerAvailable(response);
   };
+  const handleFingerprintAuthentication = async () => {
+    const { error, success } = await LocalAuthentication.authenticateAsync({
+      cancelLabel: "Cancel",
+      disableDeviceFallback: true,
+    });
+
+    if (success) {
+      setPing(myPin);
+      setIsLoading(true);
+      return setTimeout(() => {
+        setIsLoading(false);
+      }, 3000);
+    }
+
+    if (error === "lockout") {
+      await LocalAuthentication.authenticateAsync({
+        cancelLabel: "Cancel",
+      });
+    }
+  };
 
   useEffect(() => {
     HandleCheckFingerPrint();
@@ -76,6 +98,7 @@ export default function PinSignInScreen() {
 
   return (
     <>
+      <ActivityIndicator visible={isLoading} />
       <SuspendModal isVisible={visible} type="PIN" />
       <View style={styles.container}>
         <Image style={styles.logo} source={Logo} />
@@ -215,6 +238,7 @@ export default function PinSignInScreen() {
           <View style={styles.subBody}>
             {isFingerAvailable ? (
               <TouchableOpacity
+                onPress={handleFingerprintAuthentication}
                 style={[styles.numCont, { backgroundColor: colors.white }]}
               >
                 <Ionicons
