@@ -40,11 +40,11 @@ import UpdateAddressScreen from "./app/screens/UpdateAddressScreen";
 import ChangePasswordScreen from "./app/screens/ChangePasswordScreen";
 import PasswordSignInScreen from "./app/screens/PasswordSignInScreen";
 import CreatePasswordScreen from "./app/screens/CreatePasswordScreen";
-import ForgotCredentialScreen from "./app/screens/ForgotCredentialScreen";
 import BranchLocationScreen from "./app/screens/BranchLocationScreen";
 import TransferDetailScreen from "./app/screens/TransferDetailScreen";
 import CustomerSupportScreen from "./app/screens/CustomerSupportScreen";
 import UpdateBasicInfoScreen from "./app/screens/UpdateBasicInfoScreen";
+import ForgotCredentialScreen from "./app/screens/ForgotCredentialScreen";
 import UpdateContactInfoScreen from "./app/screens/UpdateContactInfoScreen";
 
 export default function App() {
@@ -85,7 +85,7 @@ export default function App() {
   return (
     <Screen onLayout={onLayoutRootView}>
       <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
-      <PinSignInScreen />
+      <BeneficiariesScreen />
     </Screen>
   );
 }

@@ -640,7 +640,6 @@ const styles = StyleSheet.create({
   item: {
     borderRadius: 10,
     paddingVertical: 10,
-    marginHorizontal: 5,
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 10,

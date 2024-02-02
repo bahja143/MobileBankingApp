@@ -4,9 +4,9 @@ import colors from "../config/colors";
 import Text from "../components/CustomText";
 
 export default function Button({
+  title,
   margin = 10,
   textTransform,
-  title,
   ...props
 }) {
   return (

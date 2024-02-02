@@ -24,7 +24,7 @@ const InputField1 = ({
   maxLength,
   isLoading,
   placeholder,
-  height = 62.5,
+  height = 62,
   password = false,
   maxWidth = "100%",
   ...otherProps

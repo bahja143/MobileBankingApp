@@ -1,25 +1,28 @@
-import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 
 import Text from "./CustomText";
 import colors from "../config/colors";
 
 const Button1 = ({
+  bold,
   title,
   color,
   onPress,
-  margin = 10,
-  textTransform,
+  height = 55,
   borderColor,
-  borderRadius = 10,
+  margin = 10,
   borderWidth,
+  textTransform,
+  semibold = true,
   backgroundColor,
+  borderRadius = 10,
 }) => {
   return (
     <TouchableOpacity
       style={[
         styles.container,
         {
+          height: height,
           marginVertical: margin,
           backgroundColor: backgroundColor
             ? colors[backgroundColor]
@@ -39,7 +42,8 @@ const Button1 = ({
             color: color ? colors[color] : colors.white,
           },
         ]}
-        semibold
+        bold={bold}
+        semibold={semibold}
       >
         {title}
       </Text>

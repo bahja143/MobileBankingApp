@@ -26,13 +26,15 @@ const PickerItem = ({ item, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 5,
-    marginVertical: 5,
+    borderWidth: 1.5,
+    borderRadius: 10,
+    marginVertical: 3,
     paddingVertical: 10,
+    marginHorizontal: 5,
     flexDirection: "row",
-    marginHorizontal: 10,
-    paddingHorizontal: 7.5,
     alignContent: "center",
+    paddingHorizontal: 7.5,
+    borderColor: colors.light,
     backgroundColor: colors.white,
   },
   iconContainer: {
@@ -46,7 +48,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15.5,
     alignSelf: "center",
-    color: colors["black"],
+    color: colors["medium"],
   },
 });
 

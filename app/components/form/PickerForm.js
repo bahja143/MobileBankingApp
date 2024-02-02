@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { useFormikContext } from "formik";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   View,
-  Modal,
   FlatList,
   StyleSheet,
   TouchableWithoutFeedback,
 } from "react-native";
 
-import colors from "../../config/colors";
+import Modal from "react-native-modal";
+
 import Text from "../CustomText";
+import colors from "../../config/colors";
 
 import PickerItem from "../PickerItem";
 import ErrorMessage from "../ErrorMessage";
@@ -38,7 +39,7 @@ const PickerForm = ({
         <View style={styles.container}>
           <MaterialCommunityIcons
             name="apps"
-            size={22.5}
+            size={23}
             color={colors["primary"]}
           />
           {values[name] ? (
@@ -60,24 +61,34 @@ const PickerForm = ({
           <ErrorMessage message={errors[name]} />
         </View>
       ) : null}
-      <Modal visible={show} transparent>
-        <View style={styles.modalContainer}>
-          <View style={styles.subModal}>
-            <FlatList
-              data={options}
-              keyExtractor={(option) => option.id.toString()}
-              renderItem={({ item }) => (
-                <Component
-                  item={item}
-                  onPress={() => {
-                    setShow(false);
-                    handleSelect(item);
-                  }}
-                />
-              )}
-              numColumns={numOfColumns}
+      <Modal
+        onBackdropPress={() => setShow(false)}
+        style={styles.modal}
+        isVisible={show}
+      >
+        <View style={styles.subModal}>
+          <TouchableWithoutFeedback onPress={() => setShow(false)}>
+            <AntDesign
+              size={27}
+              name="closecircleo"
+              color={colors.black}
+              style={styles.iconClose}
             />
-          </View>
+          </TouchableWithoutFeedback>
+          <FlatList
+            data={options}
+            keyExtractor={(option) => option.id.toString()}
+            renderItem={({ item }) => (
+              <Component
+                item={item}
+                onPress={() => {
+                  setShow(false);
+                  handleSelect(item);
+                }}
+              />
+            )}
+            numColumns={numOfColumns}
+          />
         </View>
       </Modal>
     </View>
@@ -97,18 +108,26 @@ const styles = StyleSheet.create({
     borderColor: colors.light,
     marginBottom: -3,
   },
+  iconClose: {
+    top: -10,
+    right: 10,
+    marginVertical: 5,
+    color: colors.medium,
+    alignSelf: "flex-end",
+  },
   text: {
     flex: 1,
     color: colors["medium"],
     fontSize: 16.5,
     marginLeft: 8,
-    fontFamily: "Inter_400Regular",
+    fontFamily: "Inter_500Medium",
   },
   textValue: {
     flex: 1,
     color: colors["black"],
-    fontSize: 16.5,
+    fontSize: 16,
     marginLeft: 8,
+    fontFamily: "Inter_500Medium",
   },
   title: {
     textAlign: "center",
@@ -140,25 +159,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 20,
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
-  },
   subModal: {
-    width: "90%",
+    width: "100%",
     borderRadius: 10,
-    paddingVertical: 25,
+    paddingVertical: 20,
     alignSelf: "center",
-    backgroundColor: colors.lighter,
+    backgroundColor: colors.white,
   },
   label: {
+    marginLeft: 4,
     fontSize: 15.5,
     marginBottom: 5,
-    marginLeft: 4,
   },
   modal: {
-    backgroundColor: "red",
+    margin: 0,
+    paddingHorizontal: 12,
   },
   errorMessage: {
     top: 10,

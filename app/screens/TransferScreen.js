@@ -6,16 +6,17 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import { Entypo, Octicons, AntDesign, FontAwesome5 } from "@expo/vector-icons";
-import Modal from "react-native-modal";
-import { useState } from "react";
-import { Formik } from "formik";
 import * as Yup from "yup";
+import { Formik } from "formik";
+import { useState } from "react";
+import Modal from "react-native-modal";
+import { Entypo, Octicons, AntDesign, FontAwesome5 } from "@expo/vector-icons";
 
 import colors from "../config/colors";
 import Text from "../components/CustomText";
-import ActivityIndicator from "../components/ActivityIndicator";
 
+import ActivityIndicator from "../components/ActivityIndicator";
+import ConfirmPinCodeModal from "../components/ConfirmPinCodeModal";
 import { InputField1, PickerForm, BtnForm1 } from "../components/form";
 
 const schema = Yup.object({
@@ -152,8 +153,9 @@ export default function TransferScreen() {
   const [visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [showConfirmPin, setShowConfirmPin] = useState(false);
 
-  const handleSubmit = (transfer) => {
+  const handleTransfer = (transfer) => {
     if (loading) return setIsLoading(true);
     if (!transfer["isAccountValid"]) return;
     if (transfer.amount >= myAccount.balance) return setVisible(true);
@@ -163,11 +165,10 @@ export default function TransferScreen() {
     setTimeout(() => {
       setTransfer(transfer);
       setShowConfirm(true);
-      console.log("submitted: ", transfer);
       setIsLoading(false);
     }, 3000);
   };
-  const handleCheckAccountNo = (accountNo, setFieldValue, values) => {
+  const handleCheckAccountNo = (accountNo, setFieldValue) => {
     setLoading(true);
 
     setTimeout(() => {
@@ -195,10 +196,31 @@ export default function TransferScreen() {
       }
     }, 5000);
   };
+  const handleSubmit = () => {
+    setShowConfirmPin(false);
+    setIsLoading(true);
+    setTimeout(() => {
+      console.log("submitted: ", transfer);
+      setIsLoading(false);
+    }, 3000);
+  };
+  const handleConfirm = () => {
+    setShowConfirm(false);
+    setShowConfirmPin(true);
+  };
+  const handleClose = () => {
+    setShowConfirm(true);
+    setShowConfirmPin(false);
+  };
 
   return (
     <>
       <ActivityIndicator visible={isLoading} />
+      <ConfirmPinCodeModal
+        onClose={handleClose}
+        onSubmit={handleSubmit}
+        isVisible={showConfirmPin}
+      />
       <Modal
         swipeDirection="down"
         isVisible={showConfirm}
@@ -234,7 +256,7 @@ export default function TransferScreen() {
                 To Account Name:
               </Text>
 
-              <Text style={styles.detailItemValue} bold>
+              <Text style={styles.detailItemValue} semibold>
                 {account.Name?.firstName} {account.Name?.middleName}{" "}
                 {account.Name?.lastName}
               </Text>
@@ -245,7 +267,7 @@ export default function TransferScreen() {
                 To Account No:
               </Text>
 
-              <Text style={styles.detailItemValue} bold>
+              <Text style={styles.detailItemValue} semibold>
                 {account.Account}
               </Text>
             </View>
@@ -256,7 +278,7 @@ export default function TransferScreen() {
               </Text>
 
               <View style={styles.detailDate}>
-                <Text style={styles.detailItemValue} bold>
+                <Text style={styles.detailItemValue} semibold>
                   {new Date().toDateString()}
                 </Text>
               </View>
@@ -265,7 +287,7 @@ export default function TransferScreen() {
 
           <View style={styles.confirmBtnCont}>
             <TouchableOpacity
-              onPress={() => setVisible(false)}
+              onPress={handleConfirm}
               style={[styles.modalBtn, styles.confirmBtnConfirm]}
             >
               <Text
@@ -332,9 +354,9 @@ export default function TransferScreen() {
         <View style={styles.container}>
           <Formik
             enableReinitialize
-            onSubmit={handleSubmit}
             initialValues={transfer}
             validationSchema={schema}
+            onSubmit={handleTransfer}
           >
             {({ values, setFieldValue }) => (
               <>
@@ -374,7 +396,7 @@ export default function TransferScreen() {
                   autoCapitalize="words"
                   placeholder="Comment"
                 />
-                <BtnForm1 title="NEXT" margin={7.5} />
+                <BtnForm1 bold title="NEXT" margin={7.5} />
               </>
             )}
           </Formik>
@@ -417,16 +439,18 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondary,
   },
   confirmBtnCont: {
-    marginHorizontal: 15,
+    marginHorizontal: 5,
   },
   detailDate: {
     flexDirection: "row",
     alignItems: "center",
   },
   detailItemLabel: {
+    fontSize: 14.5,
     color: colors.medium,
   },
   detailItemValue: {
+    fontSize: 14.5,
     color: colors.black,
     alignItems: "baseline",
     textTransform: "capitalize",
@@ -441,7 +465,7 @@ const styles = StyleSheet.create({
   },
   detail: {
     marginTop: 30,
-    marginHorizontal: 10,
+    marginHorizontal: 5,
   },
   confirmBalanceCont: {
     width: 200,
