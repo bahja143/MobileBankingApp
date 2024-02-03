@@ -21,6 +21,7 @@ import PinCodeModal from "./app/components/PinCodeModal";
 import SignUpScreen from "./app/screens/SignUpScreen";
 import WelcomeScreen from "./app/screens/WelcomeScreen";
 import ReceiptScreen from "./app/screens/ReceiptScreen";
+import SettingsScreen from "./app/screens/SettingsScreen";
 import MyQRCodeScreen from "./app/screens/MyQRCodeScreen";
 import TransferScreen from "./app/screens/TransferScreen";
 import BranchesScreen from "./app/screens/BranchesScreen";
@@ -46,6 +47,7 @@ import CustomerSupportScreen from "./app/screens/CustomerSupportScreen";
 import UpdateBasicInfoScreen from "./app/screens/UpdateBasicInfoScreen";
 import ForgotCredentialScreen from "./app/screens/ForgotCredentialScreen";
 import UpdateContactInfoScreen from "./app/screens/UpdateContactInfoScreen";
+import AlertCustomizationScreen from "./app/screens/AlertCustomizationScreen";
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -85,7 +87,7 @@ export default function App() {
   return (
     <Screen onLayout={onLayoutRootView}>
       <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
-      <BeneficiariesScreen />
+      <AlertCustomizationScreen />
     </Screen>
   );
 }

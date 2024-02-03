@@ -19,11 +19,12 @@
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/stack": "^6.3.10",
     "crypto-js": "^4.1.1",
-    "expo": "^49.0.6",
+    "expo": "^49.0.0",
     "expo-av": "~13.4.1",
     "expo-barcode-scanner": "~12.5.3",
     "expo-camera": "~13.4.4",
     "expo-image-picker": "~14.3.2",
+    "expo-local-authentication": "~13.4.1",
     "expo-location": "~16.1.0",
     "expo-media-library": "~15.4.1",
     "expo-notifications": "~0.20.1",
@@ -42,6 +43,7 @@
     "react": "18.2.0",
     "react-native": "0.72.6",
     "react-native-awesome-alerts": "^2.0.0",
+    "react-native-custom-switch-new": "^1.0.3",
     "react-native-flash-message": "^0.4.2",
     "react-native-gesture-handler": "~2.12.0",
     "react-native-image-slider-box": "^2.0.7",
@@ -58,8 +60,7 @@
     "react-native-svg-uri": "^0.0.1",
     "react-native-tab-view": "^3.5.2",
     "react-native-view-shot": "3.7.0",
-    "yup": "^0.32.11",
-    "expo-local-authentication": "~13.4.1"
+    "yup": "^0.32.11"
   },
   "resolutions": {
     "react-native-permissions": "^3.8.0"

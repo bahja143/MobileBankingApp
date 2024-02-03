@@ -9,4 +9,5 @@ export default {
   primary: "#357fc2",
   lighter: "#e9e9ed",
   secondary: "#dcebfe",
+  mediumBlack: "#999999",
 };
