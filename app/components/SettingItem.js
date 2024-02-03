@@ -8,7 +8,6 @@ export default function SettingItem({ label, value, name, icon, onChange }) {
   const handleOnSwitch = () => {
     onChange(name, true);
   };
-
   const handleOnSwitchReverse = () => {
     onChange(name, false);
   };
@@ -17,7 +16,7 @@ export default function SettingItem({ label, value, name, icon, onChange }) {
     <View style={styles.item}>
       <View style={styles.leftItem}>
         {icon}
-        <Text style={styles.itemTitle} semibold>
+        <Text semibold style={styles.itemTitle}>
           {label}
         </Text>
       </View>
@@ -38,7 +37,8 @@ export default function SettingItem({ label, value, name, icon, onChange }) {
 
 const styles = StyleSheet.create({
   itemTitle: {
-    fontSize: 15.5,
+    width: 260,
+    fontSize: 15,
     marginLeft: 7.5,
     color: colors.medium,
   },
@@ -53,5 +53,6 @@ const styles = StyleSheet.create({
   },
   leftItem: {
     flexDirection: "row",
+    alignItems: "center",
   },
 });
