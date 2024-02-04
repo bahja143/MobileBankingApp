@@ -1,5 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { Ionicons, Feather } from "@expo/vector-icons";
+import {
+  Octicons,
+  Ionicons,
+  Feather,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import {
   View,
   Image,
@@ -242,7 +247,7 @@ export default function PinSignInScreen() {
                 style={[styles.numCont, { backgroundColor: colors.white }]}
               >
                 <Ionicons
-                  size={30}
+                  size={35}
                   color={colors.primary}
                   name="finger-print-sharp"
                 />
@@ -269,11 +274,48 @@ export default function PinSignInScreen() {
             </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity>
-          <Text style={styles.bottomText} semibold>
+        <TouchableOpacity style={styles.bottomCont}>
+          <Text style={styles.bottomText} bold>
             Forgot PIN Code?
           </Text>
         </TouchableOpacity>
+
+        <View style={styles.actionsCont}>
+          <TouchableOpacity style={styles.actionItem}>
+            <View style={styles.actionIcon}>
+              <Octicons name="location" size={25} color={colors.white} />
+            </View>
+            <Text style={styles.actionTitle} semibold>
+              LOCATOR
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.actionItem}>
+            <View style={styles.actionIcon}>
+              <MaterialCommunityIcons
+                size={25}
+                name="currency-usd"
+                color={colors.white}
+              />
+            </View>
+            <Text style={styles.actionTitle} semibold>
+              EXCHANGER
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.actionItem}>
+            <View style={styles.actionIcon}>
+              <MaterialCommunityIcons
+                size={25}
+                name="help"
+                color={colors.white}
+              />
+            </View>
+            <Text style={styles.actionTitle} semibold>
+              HELP
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </>
   );
@@ -286,9 +328,35 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: colors.white,
   },
+  actionItem: {
+    alignItems: "center",
+  },
+  actionTitle: {
+    top: 7.5,
+    fontSize: 11,
+    color: colors.black,
+  },
+  actionIcon: {
+    width: 43.5,
+    height: 43.5,
+    elevation: 3,
+    borderRadius: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.primary,
+  },
+  actionsCont: {
+    top: 30,
+    width: "100%",
+    borderRadius: 7.5,
+    paddingVertical: 11,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    backgroundColor: colors.lighter,
+  },
   pinContainer: {
-    marginTop: 25,
-    marginBottom: 20,
+    marginVertical: 18,
     flexDirection: "row",
   },
   pin: {
@@ -298,9 +366,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     borderColor: colors.primary,
   },
+  bottomCont: {
+    top: 15,
+    marginTop: 5,
+  },
   bottomText: {
-    top: 30,
-    fontSize: 16,
+    fontSize: 15,
     color: colors.primary,
   },
   number: {
@@ -309,31 +380,31 @@ const styles = StyleSheet.create({
   },
   numCont: {
     width: 77,
-    height: 77,
+    height: 75,
     borderRadius: 10,
+    marginHorizontal: 15,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: colors.lighter,
   },
   subBody: {
     width: "100%",
-    marginVertical: 10,
+    marginVertical: 11,
     flexDirection: "row",
-    justifyContent: "space-evenly",
   },
   body: {
-    marginTop: 30,
     justifyContent: "space-evenly",
   },
   title: {
     fontSize: 16,
-    marginBottom: 15,
+    marginBottom: 10,
     color: colors.black,
   },
   logo: {
+    top: -5,
     width: 100,
     height: 85,
-    marginBottom: 17,
+    marginBottom: 10,
     alignSelf: "center",
   },
 });

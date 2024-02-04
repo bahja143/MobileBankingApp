@@ -89,13 +89,14 @@ export default function PasswordSignInScreen() {
         keyboardShouldPersistTaps="always"
         contentContainerStyle={styles.container}
       >
+        <View />
         <Formik
           initialValues={info}
           onSubmit={handleSubmit}
           validationSchema={schema}
         >
           {({ handleSubmit }) => (
-            <>
+            <View>
               <View style={styles.logoContainer}>
                 <Image style={styles.logo} source={Logo} />
                 <Text semibold style={styles.errorMessage}>
@@ -145,7 +146,7 @@ export default function PasswordSignInScreen() {
                   </TouchableOpacity>
                 </View>
               </View>
-            </>
+            </View>
           )}
         </Formik>
 
@@ -194,11 +195,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 7.5,
-    justifyContent: "center",
     backgroundColor: colors.white,
+    justifyContent: "space-between",
   },
   actionItem: {
-    top: -2,
     alignItems: "center",
   },
   actionTitle: {
@@ -216,10 +216,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   actionsCont: {
-    top: 75,
     width: "100%",
+    marginBottom: 15,
     borderRadius: 7.5,
-    paddingVertical: 10,
+    paddingVertical: 11,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-evenly",
