@@ -1,4 +1,10 @@
-import { Entypo, Feather } from "@expo/vector-icons";
+import {
+  Entypo,
+  Feather,
+  Octicons,
+  FontAwesome5,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import {
   View,
   Image,
@@ -9,7 +15,8 @@ import {
 } from "react-native";
 import * as Yup from "yup";
 import { Formik } from "formik";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import * as LocalAuthentication from "expo-local-authentication";
 
 import colors from "../config/colors";
 import Text from "../components/CustomText";
@@ -31,11 +38,15 @@ const schema = Yup.object({
     .label("Password"),
 });
 export default function PasswordSignInScreen() {
-  const [myInfo] = useState({ mobile: "0907005112", password: "Mysoul24@" });
+  const [myInfo] = useState({
+    mobile: "0907005112",
+    password: "Mysoul24@",
+  });
   const [info] = useState({
     mobile: "",
     password: "",
   });
+  const [isFingerAvailable, setFingerAvailable] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -61,6 +72,14 @@ export default function PasswordSignInScreen() {
       return setErrorMessage("Invalid credentials!");
     }, 3000);
   };
+  const HandleCheckFingerPrint = async () => {
+    const response = await LocalAuthentication.hasHardwareAsync();
+    setFingerAvailable(response);
+  };
+
+  useEffect(() => {
+    HandleCheckFingerPrint();
+  }, []);
 
   return (
     <>
@@ -102,15 +121,70 @@ export default function PasswordSignInScreen() {
               />
               <View style={styles.btnCont}>
                 <BtnForm textTransform="capitalize" title="SIGN IN" />
-                <TouchableOpacity style={styles.forgetPass}>
-                  <Text bold style={styles.forgetText}>
-                    Forgot password?
-                  </Text>
-                </TouchableOpacity>
+
+                <View
+                  style={[
+                    styles.bottomCont,
+                    !isFingerAvailable && { justifyContent: "flex-end" },
+                  ]}
+                >
+                  {isFingerAvailable ? (
+                    <TouchableOpacity style={styles.fingerPrinter}>
+                      <FontAwesome5
+                        size={40}
+                        name="fingerprint"
+                        color={colors.primary}
+                      />
+                    </TouchableOpacity>
+                  ) : null}
+
+                  <TouchableOpacity>
+                    <Text bold style={styles.forgetText}>
+                      Forgot password?
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </>
           )}
         </Formik>
+
+        <View style={styles.actionsCont}>
+          <TouchableOpacity style={styles.actionItem}>
+            <View style={styles.actionIcon}>
+              <Octicons name="location" size={25} color={colors.white} />
+            </View>
+            <Text style={styles.actionTitle} semibold>
+              LOCATOR
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.actionItem}>
+            <View style={styles.actionIcon}>
+              <MaterialCommunityIcons
+                size={25}
+                name="currency-usd"
+                color={colors.white}
+              />
+            </View>
+            <Text style={styles.actionTitle} semibold>
+              EXCHANGER
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.actionItem}>
+            <View style={styles.actionIcon}>
+              <MaterialCommunityIcons
+                size={25}
+                name="help"
+                color={colors.white}
+              />
+            </View>
+            <Text style={styles.actionTitle} semibold>
+              HELP
+            </Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </>
   );
@@ -123,6 +197,48 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: colors.white,
   },
+  actionItem: {
+    top: -2,
+    alignItems: "center",
+  },
+  actionTitle: {
+    top: 7.5,
+    fontSize: 11,
+    color: colors.black,
+  },
+  actionIcon: {
+    width: 43.5,
+    height: 43.5,
+    elevation: 3,
+    borderRadius: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.primary,
+  },
+  actionsCont: {
+    top: 75,
+    width: "100%",
+    borderRadius: 7.5,
+    paddingVertical: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    backgroundColor: colors.lighter,
+  },
+  bottomCont: {
+    marginTop: 15,
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+  },
+  fingerPrinter: {
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: colors.secondary,
+  },
+  forgotCont: {
+    alignItems: "flex-end",
+  },
   errorMessage: {
     fontSize: 16,
     color: colors.danger,
@@ -130,21 +246,13 @@ const styles = StyleSheet.create({
   forgetText: {
     color: colors.primary,
   },
-  forgetPass: {
-    top: 15,
-    alignSelf: "flex-end",
-  },
   logoContainer: {
     marginBottom: 35,
     alignSelf: "center",
   },
   logo: {
-    width: 110,
+    width: 130,
     height: 100,
-    marginBottom: 10,
     alignSelf: "center",
-  },
-  btnCont: {
-    marginTop: 5,
   },
 });
