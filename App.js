@@ -16,7 +16,7 @@ import colors from "./app/config/colors";
 import Screen from "./app/components/Screen";
 
 import ExchangeNav from "./app/navigation/ExchangeNav";
-import PinCodeModal from "./app/components/PinCodeModal";
+import SessionAndPushNotification from "./app/components/SessionAndPushNotification";
 
 import SignUpScreen from "./app/screens/SignUpScreen";
 import WelcomeScreen from "./app/screens/WelcomeScreen";
@@ -87,7 +87,7 @@ export default function App() {
   return (
     <Screen onLayout={onLayoutRootView}>
       <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
-      <PinSignInScreen />
+      <SessionAndPushNotification />
     </Screen>
   );
 }

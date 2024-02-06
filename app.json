@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "MobileBankingApp",
-    "slug": "MobileBankingApp",
+    "name": "Shabelle Bank",
+    "slug": "Shabelle Bank",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./app/assets/images/icon.png",
@@ -17,13 +17,18 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "buildNumber": "1.0.10",
+      "supportsTablet": true,
+      "bundleIdentifier": "et.shabellebank.mobilebanking"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./app/assets/images/icon.png",
         "backgroundColor": "#357fc2"
-      }
+      },
+      "package": "et.shabellebank.mobilebanking",
+      "googleServicesFile": "./app/google-services.json",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./app/assets/images/icon.png"

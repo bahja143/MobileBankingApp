@@ -8,8 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useState, useEffect } from "react";
-
-import { AntDesign, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
 import Text from "../components/CustomText";
@@ -177,12 +176,8 @@ export default function DashboardScreen() {
               <View style={style.nav}>
                 <TouchableOpacity style={style.navCont}>
                   <View style={style.navItem}>
-                    <MaterialCommunityIcons
-                      size={32}
-                      name="bank-transfer"
-                      color={colors.primary}
-                    />
-                    <Text style={style.navTitle} bold>
+                    <Feather size={29} name="send" color={colors.primary} />
+                    <Text style={style.navTitle} semibold>
                       Transfer
                     </Text>
                   </View>
@@ -191,11 +186,11 @@ export default function DashboardScreen() {
                 <TouchableOpacity style={style.navCont}>
                   <View style={style.navItem}>
                     <MaterialCommunityIcons
-                      size={27.5}
+                      size={30}
                       color={colors.primary}
                       name="account-multiple-outline"
                     />
-                    <Text style={style.navTitle} bold>
+                    <Text style={style.navTitle} semibold>
                       Beneficiary
                     </Text>
                   </View>
@@ -203,13 +198,13 @@ export default function DashboardScreen() {
 
                 <TouchableOpacity style={style.navCont}>
                   <View style={style.navItem}>
-                    <AntDesign
-                      size={27.5}
+                    <MaterialCommunityIcons
+                      size={30}
+                      name="history"
                       color={colors.primary}
-                      name="customerservice"
                     />
-                    <Text style={style.navTitle} bold>
-                      Support
+                    <Text style={style.navTitle} semibold>
+                      History
                     </Text>
                   </View>
                 </TouchableOpacity>
@@ -217,12 +212,12 @@ export default function DashboardScreen() {
                 <TouchableOpacity style={style.navCont}>
                   <View style={style.navItem}>
                     <MaterialCommunityIcons
-                      size={27.5}
-                      name="history"
+                      size={29}
+                      name="qrcode-scan"
                       color={colors.primary}
                     />
-                    <Text style={style.navTitle} bold>
-                      History
+                    <Text style={style.navTitle} semibold>
+                      My QR
                     </Text>
                   </View>
                 </TouchableOpacity>
@@ -344,7 +339,7 @@ const style = StyleSheet.create({
     color: colors.danger,
   },
   TranItemSub: {
-    fontSize: 11.5,
+    fontSize: 12.5,
     color: colors.medium,
   },
   TranItemTitle: {
@@ -392,14 +387,15 @@ const style = StyleSheet.create({
     alignItems: "center",
   },
   navTitle: {
-    fontSize: 10,
+    top: 5,
+    fontSize: 11.5,
     color: colors.black,
     textAlign: "center",
   },
   navItem: {
     width: 80,
     height: 75,
-    padding: 8,
+    padding: 5,
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",

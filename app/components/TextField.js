@@ -9,10 +9,10 @@ const TextField = ({
   icon,
   label,
   password,
-  labelColor,
   width = "100%",
   autoCapitalize,
   disabled = false,
+  labelColor = colors.black,
   ...props
 }) => {
   const [isFocused, setIsFocused] = useState(false);

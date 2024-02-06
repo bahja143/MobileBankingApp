@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "803143237583",
+    "project_id": "donewithit-9008e",
+    "storage_bucket": "donewithit-9008e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:803143237583:android:5248eace2950b7e8791cba",
+        "android_client_info": {
+          "package_name": "et.shabellebank.mobilebanking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "803143237583-9tal9iu284k4pvuv9usjdqqib1g1k6uf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUHTwAQ4G73GUAEYgNVJgGUweEJIF0ntU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "803143237583-9tal9iu284k4pvuv9usjdqqib1g1k6uf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

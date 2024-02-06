@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -7,6 +7,8 @@ import Text from "../components/CustomText";
 
 import SettingItem from "../components/SettingItem";
 import ActivityIndicator from "../components/ActivityIndicator";
+
+import cache from "../utility/cache";
 
 export default function AlertCustomizationScreen() {
   const [settings, setSettings] = useState({
@@ -18,31 +20,61 @@ export default function AlertCustomizationScreen() {
 
   const handleLoginSettings = (name, value) => {
     setIsLoading(true);
+    setSettings((s) => ({ ...s, login: { ...s.login, [name]: value } }));
 
     setTimeout(() => {
       setIsLoading(false);
-      setSettings((s) => ({ ...s, login: { ...s.login, [name]: value } }));
+      handleStoreCache({
+        ...settings,
+        login: { ...settings.login, [name]: value },
+      });
     }, 2000);
   };
   const handleTransSettings = (name, value) => {
     setIsLoading(true);
+    setSettings((s) => ({
+      ...s,
+      transactions: { ...s.transactions, [name]: value },
+    }));
 
     setTimeout(() => {
       setIsLoading(false);
+      handleStoreCache({
+        ...settings,
+        transactions: { ...settings.transactions, [name]: value },
+      });
     }, 2000);
   };
   const handleProfileSettings = (name, value) => {
     setIsLoading(true);
+    setSettings((s) => ({
+      ...s,
+      profile: { ...s.profile, [name]: value },
+    }));
 
     setTimeout(() => {
       setIsLoading(false);
-
-      setSettings((s) => ({
-        ...s,
-        profile: { ...s.profile, [name]: value },
-      }));
+      handleStoreCache({
+        ...settings,
+        profile: { ...settings.profile, [name]: value },
+      });
     }, 2000);
   };
+  const handleStoreCache = async (sett) => {
+    await cache.setItemAsync("AlertSettings", sett);
+  };
+  const handleGetCache = async () => {
+    const sett = await cache.getItemAsync("AlertSettings");
+
+    setIsLoading(false);
+    if (!sett) return;
+
+    setSettings({ ...sett });
+  };
+
+  useEffect(() => {
+    handleGetCache();
+  }, []);
 
   return (
     <>

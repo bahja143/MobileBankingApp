@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   View,
   Platform,
   Keyboard,
   StyleSheet,
+  TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
-import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
-import * as Yup from "yup";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Formik } from "formik";
+import * as Yup from "yup";
 
 import colors from "../config/colors";
-
 import Text from "../components/CustomText";
 import ActivityIndicator from "../components/ActivityIndicator";
 
@@ -24,8 +24,13 @@ const schema = Yup.object({
     .label("Code"),
 });
 
-export default function VerificationScreen({ route }) {
+export default function VerificationScreen() {
   const [data] = useState({ code: "" });
+  const [timer, setTimer] = useState(120);
+  const timeOutCallback = useCallback(
+    () => setTimer((currTimer) => currTimer - 1),
+    []
+  );
   const [loading, setIsLoading] = useState(false);
 
   const handleSubmit = (values) => {
@@ -37,6 +42,16 @@ export default function VerificationScreen({ route }) {
       console.log(values);
     }, 3000);
   };
+  const resetTimer = function () {
+    console.log("Hello");
+    if (!timer) {
+      setTimer(120);
+    }
+  };
+
+  useEffect(() => {
+    timer > 0 && setTimeout(timeOutCallback, 1000);
+  }, [timer, timeOutCallback]);
 
   return (
     <>
@@ -51,17 +66,15 @@ export default function VerificationScreen({ route }) {
         >
           <View>
             <View style={styles.iconContainer}>
-              <FontAwesome5
-                size={60}
-                name="envelope-open-text"
-                color={colors["primary"]}
-              />
+              <Text style={styles.timer} bold>
+                {timer}
+              </Text>
             </View>
             <Text style={styles.title} bold>
               Verification
             </Text>
             <Text style={styles.subtitle} semibold>
-              You will get a OTP via <Text style={styles.bold}>SMS</Text>
+              You will get a OTP via <Text bold>0907005112</Text>
             </Text>
           </View>
 
@@ -74,11 +87,11 @@ export default function VerificationScreen({ route }) {
               <>
                 <TextInputForm
                   name="code"
-                  placeholder="Enter OTP"
-                  keyboardType="numeric"
                   maxLength={4}
-                  style={styles.code}
                   label="Enter OTP"
+                  placeholder="Enter"
+                  style={styles.code}
+                  keyboardType="numeric"
                   icon={
                     <MaterialCommunityIcons
                       size={25}
@@ -93,12 +106,19 @@ export default function VerificationScreen({ route }) {
           </View>
         </KeyboardAvoidingView>
 
-        <Text style={styles.text} semibold>
-          Didn't receive the verification OTP?{" "}
-          <Text style={styles.resend} bold>
-            Resend again
+        <View style={styles.BottomTextCont}>
+          <Text style={styles.bottomText} semibold>
+            Didn't receive the verification OTP?
           </Text>
-        </Text>
+          <TouchableOpacity disabled={timer !== 0} onPress={resetTimer}>
+            <Text
+              style={[styles.resend, timer !== 0 && { color: colors.medium }]}
+              bold
+            >
+              Resend again
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </>
   );
@@ -110,14 +130,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: colors.white,
   },
+  timer: {
+    fontSize: 40,
+    color: colors.primary,
+  },
   iconContainer: {
-    width: 125,
-    height: 125,
+    width: 140,
+    height: 140,
+    borderWidth: 1.5,
     borderRadius: 75,
     alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors["lighter"],
+    borderColor: colors.secondary,
+    backgroundColor: colors["white"],
   },
   title: {
     fontSize: 18,
@@ -142,10 +168,14 @@ const styles = StyleSheet.create({
     letterSpacing: 10,
     textAlign: "center",
   },
-  text: {
+  bottomText: {
+    color: colors["medium"],
+  },
+  BottomTextCont: {
     marginTop: 25,
     textAlign: "center",
-    color: colors["medium"],
+    alignItems: "center",
+    justifyContent: "center",
   },
   resend: {
     color: colors["primary"],

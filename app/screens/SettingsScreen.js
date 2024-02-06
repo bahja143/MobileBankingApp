@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import {
   Entypo,
@@ -16,6 +16,8 @@ import Setting from "../components/Setting";
 import SettingItem from "../components/SettingItem";
 import ActivityIndicator from "../components/ActivityIndicator";
 
+import cache from "../utility/cache";
+
 export default function SettingsScreen() {
   const [settings, setSettings] = useState({
     pin: true,
@@ -26,12 +28,27 @@ export default function SettingsScreen() {
 
   const handleSettings = (name, value) => {
     setIsLoading(true);
+    setSettings((s) => ({ ...s, [name]: value }));
 
     setTimeout(() => {
       setIsLoading(false);
-      setSettings((s) => ({ ...s, [name]: value }));
+      handleStoreCache({ ...settings, [name]: value });
     }, 2000);
   };
+  const handleStoreCache = async (sett) => {
+    await cache.setItemAsync("settings", sett);
+  };
+  const handleGetCache = async () => {
+    const sett = await cache.getItemAsync("settings");
+    setIsLoading(false);
+    if (!sett) return;
+
+    setSettings({ ...sett });
+  };
+
+  useEffect(() => {
+    handleGetCache();
+  }, []);
 
   return (
     <>
@@ -52,7 +69,7 @@ export default function SettingsScreen() {
           <Setting
             label="Customize your notifications"
             icon={
-              <Entypo size={26} color={colors.primary} name="notification" />
+              <Entypo size={25} color={colors.primary} name="notification" />
             }
           />
 
@@ -61,7 +78,7 @@ export default function SettingsScreen() {
             onChange={handleSettings}
             value={settings["notify"]}
             label="Receive notifications on this device"
-            icon={<AntDesign size={26} name="warning" color={colors.danger} />}
+            icon={<AntDesign size={25} name="warning" color={colors.yellow} />}
           />
         </View>
 
@@ -71,14 +88,14 @@ export default function SettingsScreen() {
           </Text>
           <Setting
             label="Change Password"
-            icon={<Octicons name="key" size={26} color={colors.primary} />}
+            icon={<Octicons name="key" size={25} color={colors.primary} />}
           />
 
           <Setting
             label="Change PIN"
             icon={
               <MaterialCommunityIcons
-                size={26}
+                size={25}
                 color={colors.primary}
                 name="form-textbox-password"
               />
@@ -89,7 +106,7 @@ export default function SettingsScreen() {
             label="Forgot PIN"
             icon={
               <MaterialCommunityIcons
-                size={26}
+                size={25}
                 color={colors.yellow}
                 name="lock-open-variant-outline"
               />
@@ -158,6 +175,7 @@ const styles = StyleSheet.create({
   },
   navCont: {
     marginTop: 8,
+    marginBottom: 5,
     marginHorizontal: 5,
     flexDirection: "row",
     alignItems: "center",

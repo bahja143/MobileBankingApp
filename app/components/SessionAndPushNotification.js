@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   View,
   Easing,
@@ -8,19 +8,37 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
 } from "react-native";
+import * as Device from "expo-device";
 import Modal from "react-native-modal";
+import Constants from "expo-constants";
+import * as Notifications from "expo-notifications";
 
 import Text from "./CustomText";
 import colors from "../config/colors";
 import SuspendModal from "./SuspendModal";
 
-export default function PinCodeModal({ isVisible }) {
+const IDLE_TIMEOUT = 1 * 60 * 1000;
+const PROJECT_ID = "36f17d24-cd4f-4a6c-a87d-551b2d46005c";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
+export default function SessionAndPushNotification() {
   const inputRef = useRef(null);
   const [myPin] = useState("6438");
   const [pin, setPing] = useState("");
+  const inactivityTimer = useRef(null);
+  const [token, setToken] = useState("");
   const [show, setShow] = useState(true);
   const [maxTry, setMaxTry] = useState(0);
+  const lastInteraction = useRef(Date.now());
   const [visible, setVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const shakeAnim = useRef(new Animated.Value(0)).current;
 
   const handleTouch = (num) => {
@@ -70,6 +88,88 @@ export default function PinCodeModal({ isVisible }) {
   const handleOpenKeyboard = () => {
     inputRef.current.focus();
   };
+  const handleSendPushNotification = async () => {
+    const message = {
+      to: token,
+      sound: "default",
+      title: "Original Title",
+      body: "And here is the body!",
+      data: { someData: "goes here" },
+    };
+
+    console.log("Hello");
+
+    const response = await fetch("https://exp.host/--/api/v2/push/send", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Accept-encoding": "gzip, deflate",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(message),
+    });
+
+    console.log("Response:", response);
+  };
+  const handleRegisterPushNotifications = async () => {
+    let token;
+
+    if (Platform.OS === "android") {
+      Notifications.setNotificationChannelAsync("default", {
+        name: "default",
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: "#FF231F7C",
+      });
+    }
+
+    if (Device.isDevice) {
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== "granted") {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== "granted") {
+        alert("Failed to get push token for push notification!");
+        return;
+      }
+      token = await Notifications.getExpoPushTokenAsync({
+        projectId: PROJECT_ID,
+      });
+      console.log(token);
+    } else {
+      alert("Must use physical device for Push Notifications");
+    }
+
+    handleSendPushNotification();
+    return setToken(token.data);
+  };
+
+  useEffect(() => {
+    handleRegisterPushNotifications();
+    const resetTimer = () => {
+      clearTimeout(inactivityTimer.current);
+      lastInteraction.current = Date.now();
+    };
+
+    inactivityTimer.current = setTimeout(() => {
+      // Handle inactivity timeout
+      setIsVisible(true);
+    }, IDLE_TIMEOUT);
+
+    // Add event listeners for user interactions
+    const touchListener = () => resetTimer();
+    const keyboardListener = () => resetTimer();
+
+    // ... other event listeners
+
+    return () => {
+      clearTimeout(inactivityTimer.current);
+      // Remove event listeners
+    };
+  }, []);
 
   return (
     <>
@@ -92,8 +192,8 @@ export default function PinCodeModal({ isVisible }) {
               Please enter your PIN
             </Text>
             <Text style={styles.subTitle}>
-              For your security, your banking session has timed out due to
-              inactivity
+              For your security, your banking session has timed out{" "}
+              <Text bold>due to inactivity</Text>
             </Text>
             <Animated.View style={{ transform: [{ translateX: shakeAnim }] }}>
               <View style={styles.pinContainer}>
@@ -131,8 +231,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   subTitle: {
-    width: 300,
-    lineHeight: 20,
+    width: 325,
+    fontSize: 15,
+    lineHeight: 21,
     textAlign: "center",
     color: colors.medium,
   },

@@ -15,8 +15,8 @@ export default function Setting({ label, icon }) {
       </View>
       <Octicons
         style={styles.chevronIcon}
-        name="chevron-right"
         size={22}
+        name="chevron-right"
         color={colors.medium}
       />
     </TouchableOpacity>
@@ -30,14 +30,14 @@ const styles = StyleSheet.create({
     color: colors.medium,
   },
   chevronIcon: {
-    marginRight: 3,
+    marginRight: 5,
   },
   item: {
     marginBottom: 3,
+    paddingVertical: 12,
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 12.5,
-    paddingHorizontal: 12.5,
+    paddingHorizontal: 11,
     backgroundColor: colors.white,
     justifyContent: "space-between",
   },

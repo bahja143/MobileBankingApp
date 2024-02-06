@@ -1,15 +1,11 @@
-import { View, StyleSheet } from "react-native";
-import CustomSwitch from "react-native-custom-switch-new";
+import { Switch, View, StyleSheet } from "react-native";
 
 import Text from "./CustomText";
 import colors from "../config/colors";
 
-export default function SettingItem({ label, value, name, icon, onChange }) {
-  const handleOnSwitch = () => {
-    onChange(name, true);
-  };
-  const handleOnSwitchReverse = () => {
-    onChange(name, false);
+export default function SettingItem({ icon, name, label, value, onChange }) {
+  const handleOnChange = (value) => {
+    onChange(name, value);
   };
 
   return (
@@ -20,22 +16,22 @@ export default function SettingItem({ label, value, name, icon, onChange }) {
           {label}
         </Text>
       </View>
-      <CustomSwitch
-        buttonWidth={21}
-        switchWidth={49}
-        startOnLeft={value}
-        buttonPadding={3.15}
-        onSwitch={handleOnSwitch}
-        buttonColor={colors.white}
-        onSwitchReverse={handleOnSwitchReverse}
-        onSwitchBackgroundColor={colors.primary}
-        switchBackgroundColor={colors.mediumBlack}
+      <Switch
+        value={value}
+        checked={value}
+        style={styles.switch}
+        thumbColor={colors.white}
+        onValueChange={handleOnChange}
+        trackColor={{ false: colors.mediumBlack, true: colors.primary }}
       />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  switch: {
+    transform: [{ scaleX: 1.15 }, { scaleY: 1.15 }],
+  },
   itemTitle: {
     width: 260,
     fontSize: 15,
@@ -44,10 +40,10 @@ const styles = StyleSheet.create({
   },
   item: {
     marginBottom: 3,
+    paddingVertical: 4,
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 12.5,
-    paddingHorizontal: 12.5,
+    paddingHorizontal: 10,
     backgroundColor: colors.white,
     justifyContent: "space-between",
   },
