@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Shabelle Bank",
-    "slug": "Shabelle Bank",
+    "slug": "ShabelleBank",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./app/assets/images/icon.png",
@@ -13,9 +13,11 @@
     },
     "updates": {
       "fallbackToCacheTimeout": 0,
-      "url": "https://u.expo.dev/a22768fd-01fe-415f-9232-f9479910be3f"
+      "url": "https://u.expo.dev/a6060cc5-bcb3-48bd-9852-25ee9af2dfe9"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "buildNumber": "1.0.10",
       "supportsTablet": true,
@@ -32,6 +34,27 @@
     },
     "web": {
       "favicon": "./app/assets/images/icon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "color": "#357fc2",
+          "icon": "./app/assets/images/icon.png",
+          "sounds": [
+            "./app/assets/sound/mixkit-confirmation-tone.wav"
+          ]
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "a6060cc5-bcb3-48bd-9852-25ee9af2dfe9"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "owner": "abdi143"
   }
 }

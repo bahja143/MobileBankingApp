@@ -1,5 +1,5 @@
-import { StatusBar } from "react-native";
-import { useEffect, useCallback, useState } from "react";
+import { StatusBar, PanResponder, AppState } from "react-native";
+import { useEffect, useCallback, useState, useRef } from "react";
 
 import {
   Inter_700Bold,
@@ -11,6 +11,7 @@ import {
 
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import * as Notifications from "expo-notifications";
 
 import colors from "./app/config/colors";
 import Screen from "./app/components/Screen";
@@ -49,8 +50,57 @@ import ForgotCredentialScreen from "./app/screens/ForgotCredentialScreen";
 import UpdateContactInfoScreen from "./app/screens/UpdateContactInfoScreen";
 import AlertCustomizationScreen from "./app/screens/AlertCustomizationScreen";
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
+
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [lastInteraction, setLastInteraction] = useState(new Date()); // Track last interaction time
+  const [idleTime, setIdleTime] = useState(0); // Track inactivity duration
+  const IDLE_THRESHOLD = 0.25 * 60 * 1000; // Logout after 5 minutes of inactivity (in milliseconds)
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true, // Handle any touch event
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderGrant: () => {
+        setLastInteraction(new Date()); // Reset idle time on interaction
+      },
+    })
+  ).current;
+
+  // Use a ref to store the interval ID for efficient clearing
+  const inactivityTimerRef = useRef(null);
+
+  const handleExpoNotification = async () => {
+    if (isVisible) return;
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Shabelle Bank! 🔒",
+        body: "For your security, your banking session has timed out due to inactivity",
+      },
+      trigger: null,
+    });
+  };
+
+  useEffect(() => {
+    const updateIdleTime = () => {
+      const now = new Date();
+      setIdleTime(now.getTime() - lastInteraction.getTime()); // Update idle time in milliseconds
+    };
+
+    // Start the interval when the component mounts or re-renders
+    inactivityTimerRef.current = setInterval(updateIdleTime, 1000); // Check every second
+
+    // Clear the interval on cleanup
+    return () => clearInterval(inactivityTimerRef.current);
+  }, [lastInteraction]);
 
   useEffect(() => {
     async function prepare() {
@@ -74,6 +124,17 @@ export default function App() {
     prepare();
   }, []);
 
+  useEffect(() => {
+    // if (isVisible) return;
+    if (idleTime >= IDLE_THRESHOLD) {
+      // Logout logic here (clear tokens, redirect to login screen, etc.)
+      setIsVisible(true);
+      handleExpoNotification();
+      setLastInteraction(new Date());
+      console.log("Logged out due to inactivity!");
+    }
+  }, [idleTime]);
+
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
       await SplashScreen.hideAsync();
@@ -85,9 +146,15 @@ export default function App() {
   }
 
   return (
-    <Screen onLayout={onLayoutRootView}>
-      <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
-      <SessionAndPushNotification />
-    </Screen>
+    <>
+      <SessionAndPushNotification
+        isVisible={isVisible}
+        setIsVisible={setIsVisible}
+      />
+      <Screen onLayout={onLayoutRootView} {...panResponder.panHandlers}>
+        <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
+        <DashboardScreen />
+      </Screen>
+    </>
   );
 }

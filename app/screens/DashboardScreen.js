@@ -177,7 +177,7 @@ export default function DashboardScreen() {
                 <TouchableOpacity style={style.navCont}>
                   <View style={style.navItem}>
                     <Feather size={29} name="send" color={colors.primary} />
-                    <Text style={style.navTitle} semibold>
+                    <Text style={style.navTitle} bold>
                       Transfer
                     </Text>
                   </View>
@@ -190,7 +190,7 @@ export default function DashboardScreen() {
                       color={colors.primary}
                       name="account-multiple-outline"
                     />
-                    <Text style={style.navTitle} semibold>
+                    <Text style={style.navTitle} bold>
                       Beneficiary
                     </Text>
                   </View>
@@ -203,7 +203,7 @@ export default function DashboardScreen() {
                       name="history"
                       color={colors.primary}
                     />
-                    <Text style={style.navTitle} semibold>
+                    <Text style={style.navTitle} bold>
                       History
                     </Text>
                   </View>
@@ -216,7 +216,7 @@ export default function DashboardScreen() {
                       name="qrcode-scan"
                       color={colors.primary}
                     />
-                    <Text style={style.navTitle} semibold>
+                    <Text style={style.navTitle} bold>
                       My QR
                     </Text>
                   </View>
@@ -387,18 +387,16 @@ const style = StyleSheet.create({
     alignItems: "center",
   },
   navTitle: {
-    top: 5,
     fontSize: 11.5,
     color: colors.black,
     textAlign: "center",
   },
   navItem: {
-    width: 80,
+    width: 81,
     height: 75,
-    padding: 5,
     borderRadius: 10,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     backgroundColor: colors.lighter,
   },
   nav: {

@@ -380,7 +380,6 @@ const styles = StyleSheet.create({
   },
   itemValue: {
     marginTop: 7.5,
-    fontSize: 13,
     color: colors.medium,
   },
   item: {

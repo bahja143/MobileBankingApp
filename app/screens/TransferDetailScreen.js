@@ -405,7 +405,6 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   itemValue: {
-    fontSize: 13,
     marginTop: 7.5,
     color: colors.medium,
   },
