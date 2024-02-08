@@ -1,4 +1,4 @@
-import { StatusBar, PanResponder, AppState } from "react-native";
+import { StatusBar, PanResponder } from "react-native";
 import { useEffect, useCallback, useState, useRef } from "react";
 
 import {
@@ -17,6 +17,7 @@ import colors from "./app/config/colors";
 import Screen from "./app/components/Screen";
 
 import ExchangeNav from "./app/navigation/ExchangeNav";
+import HomeNavigation from "./app/navigation/HomeNavigation";
 import SessionAndPushNotification from "./app/components/SessionAndPushNotification";
 
 import SignUpScreen from "./app/screens/SignUpScreen";
@@ -49,6 +50,7 @@ import UpdateBasicInfoScreen from "./app/screens/UpdateBasicInfoScreen";
 import ForgotCredentialScreen from "./app/screens/ForgotCredentialScreen";
 import UpdateContactInfoScreen from "./app/screens/UpdateContactInfoScreen";
 import AlertCustomizationScreen from "./app/screens/AlertCustomizationScreen";
+import MyAccountScreen from "./app/screens/MyAccountScreen";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -63,7 +65,7 @@ export default function App() {
   const [isVisible, setIsVisible] = useState(false);
   const [lastInteraction, setLastInteraction] = useState(new Date()); // Track last interaction time
   const [idleTime, setIdleTime] = useState(0); // Track inactivity duration
-  const IDLE_THRESHOLD = 0.25 * 60 * 1000; // Logout after 5 minutes of inactivity (in milliseconds)
+  const IDLE_THRESHOLD = 50 * 60 * 1000; // Logout after 5 minutes of inactivity (in milliseconds)
 
   const panResponder = useRef(
     PanResponder.create({
@@ -89,18 +91,18 @@ export default function App() {
     });
   };
 
-  useEffect(() => {
-    const updateIdleTime = () => {
-      const now = new Date();
-      setIdleTime(now.getTime() - lastInteraction.getTime()); // Update idle time in milliseconds
-    };
+  // useEffect(() => {
+  //   const updateIdleTime = () => {
+  //     const now = new Date();
+  //     setIdleTime(now.getTime() - lastInteraction.getTime()); // Update idle time in milliseconds
+  //   };
 
-    // Start the interval when the component mounts or re-renders
-    inactivityTimerRef.current = setInterval(updateIdleTime, 1000); // Check every second
+  //   // Start the interval when the component mounts or re-renders
+  //   inactivityTimerRef.current = setInterval(updateIdleTime, 1000); // Check every second
 
-    // Clear the interval on cleanup
-    return () => clearInterval(inactivityTimerRef.current);
-  }, [lastInteraction]);
+  //   // Clear the interval on cleanup
+  //   return () => clearInterval(inactivityTimerRef.current);
+  // }, [lastInteraction]);
 
   useEffect(() => {
     async function prepare() {
@@ -124,16 +126,16 @@ export default function App() {
     prepare();
   }, []);
 
-  useEffect(() => {
-    // if (isVisible) return;
-    if (idleTime >= IDLE_THRESHOLD) {
-      // Logout logic here (clear tokens, redirect to login screen, etc.)
-      setIsVisible(true);
-      handleExpoNotification();
-      setLastInteraction(new Date());
-      console.log("Logged out due to inactivity!");
-    }
-  }, [idleTime]);
+  // useEffect(() => {
+  //   // if (isVisible) return;
+  //   if (idleTime >= IDLE_THRESHOLD) {
+  //     // Logout logic here (clear tokens, redirect to login screen, etc.)
+  //     setIsVisible(true);
+  //     handleExpoNotification();
+  //     setLastInteraction(new Date());
+  //     console.log("Logged out due to inactivity!");
+  //   }
+  // }, [idleTime]);
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
@@ -147,13 +149,13 @@ export default function App() {
 
   return (
     <>
-      <SessionAndPushNotification
+      {/* <SessionAndPushNotification
         isVisible={isVisible}
         setIsVisible={setIsVisible}
-      />
-      <Screen onLayout={onLayoutRootView} {...panResponder.panHandlers}>
+      /> */}
+      <Screen onLayout={onLayoutRootView}>
         <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
-        <DashboardScreen />
+        <HomeNavigation />
       </Screen>
     </>
   );
