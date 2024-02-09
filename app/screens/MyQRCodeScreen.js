@@ -4,6 +4,7 @@ import QRCode from "react-native-qrcode-svg";
 import ViewShot from "react-native-view-shot";
 import * as MediaLibrary from "expo-media-library";
 import { Entypo, FontAwesome, Feather } from "@expo/vector-icons";
+import FlashMessage, { showMessage } from "react-native-flash-message";
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 
 import colors from "../config/colors";
@@ -21,7 +22,12 @@ export default function MyQRCodeScreen({ navigation }) {
   const ref = useRef();
 
   const handleCapture = async () => {
-    if (isSave) return;
+    if (isSave)
+      return showMessage({
+        type: "success",
+        message: "QR Code",
+        description: "Successfully saved to your gallery",
+      });
 
     ref.current?.capture().then(async (uri) => {
       await MediaLibrary.saveToLibraryAsync(uri);
@@ -36,6 +42,17 @@ export default function MyQRCodeScreen({ navigation }) {
 
   return (
     <>
+      <FlashMessage
+        position="top"
+        backgroundColor={colors.primary}
+        textStyle={{ textAlign: "center", color: colors.primary }}
+        titleStyle={{
+          fontSize: 18,
+          textAlign: "center",
+          color: colors.primary,
+        }}
+        style={{ backgroundColor: colors.secondary }}
+      />
       <View style={styles.container}>
         <View style={styles.navCont}>
           <TouchableOpacity
@@ -60,7 +77,7 @@ export default function MyQRCodeScreen({ navigation }) {
             </View>
             <View style={styles.qr}>
               <QRCode
-                size={275}
+                size={300}
                 logo={Logo}
                 logoSize={65}
                 style={styles.qr}
@@ -80,7 +97,7 @@ export default function MyQRCodeScreen({ navigation }) {
                   ]}
                 >
                   <Feather
-                    size={23}
+                    size={20}
                     name="download"
                     color={colors.primary}
                     style={isSave && { color: colors.medium }}
@@ -99,24 +116,14 @@ export default function MyQRCodeScreen({ navigation }) {
 
                 <TouchableOpacity
                   onPress={handleShare}
-                  style={[
-                    styles.btnClose,
-                    isSave && { backgroundColor: colors.lighter },
-                  ]}
+                  style={[styles.btnClose]}
                 >
                   <FontAwesome
-                    size={23}
+                    size={20}
                     name="share-square-o"
                     color={colors.primary}
                   />
-                  <Text
-                    style={[
-                      styles.btnText,
-                      styles.btnCloseText,
-                      isSave && { color: colors.medium },
-                    ]}
-                    semibold
-                  >
+                  <Text style={[styles.btnText, styles.btnCloseText]} semibold>
                     Share
                   </Text>
                 </TouchableOpacity>
@@ -140,7 +147,14 @@ export default function MyQRCodeScreen({ navigation }) {
         options={{ fileName: "ShabelleBankQRCode" }}
       >
         <View style={styles.body}>
-          <View style={styles.qrContainer}>
+          <View
+            style={[
+              styles.qrContainer,
+              {
+                flex: 0.85,
+              },
+            ]}
+          >
             <View style={styles.textContainer}>
               <Text style={styles.title} bold>
                 Abdisalam Farah Abdi
@@ -149,9 +163,9 @@ export default function MyQRCodeScreen({ navigation }) {
                 Share your <Text bold>personal code</Text> for what ever reason!
               </Text>
             </View>
-            <View style={styles.qr}>
+            <View style={[styles.qr, { marginVertical: 20 }]}>
               <QRCode
-                size={275}
+                size={300}
                 logo={Logo}
                 logoSize={50}
                 style={styles.qr}
@@ -182,29 +196,29 @@ export default function MyQRCodeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 15,
     backgroundColor: colors.primary,
   },
   qr: {
-    marginVertical: 10,
     alignSelf: "center",
+    marginVertical: 10,
   },
   logo: {
-    width: 50,
-    height: 45,
+    width: 52,
+    height: 47,
     marginHorizontal: 15,
     backgroundColor: colors.white,
   },
   bottomTitle: {
     fontSize: 16,
-    color: colors.black,
+    color: colors.primary,
   },
   bottomText: {
+    fontSize: 15,
     color: colors.green,
   },
   bottomContainer: {
-    height: 70,
-    marginTop: 40,
+    top: 75,
+    height: 75,
     borderWidth: 1,
     borderRadius: 10,
     alignItems: "center",
@@ -212,20 +226,22 @@ const styles = StyleSheet.create({
     borderColor: colors.light,
   },
   subBtnCont: {
+    top: 40,
     width: "auto",
-    marginTop: 25,
     flexDirection: "row",
     justifyContent: "center",
   },
   text: {
+    fontSize: 15,
     width: 260,
     textAlign: "center",
     color: colors.medium,
   },
   title: {
-    fontSize: 18,
+    fontSize: 19,
     marginBottom: 5,
     textTransform: "uppercase",
+    color: colors.black,
   },
   textContainer: {
     marginTop: 25,
@@ -234,13 +250,13 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-end",
   },
   qrContainer: {
-    borderRadius: 15,
-    paddingVertical: 25,
+    flex: 0.9,
     paddingHorizontal: 20,
-    justifyContent: "space-evenly",
+    borderTopEndRadius: 15,
+    borderTopLeftRadius: 15,
     backgroundColor: colors.white,
   },
   Navtitle: {
@@ -257,10 +273,10 @@ const styles = StyleSheet.create({
   },
   navCont: {
     paddingTop: 10,
-    marginLeft: -5,
     paddingBottom: 10,
     flexDirection: "row",
     alignItems: "center",
+    marginHorizontal: 7.5,
     backgroundColor: colors.primary,
   },
   btnContainer: {
@@ -278,7 +294,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 12,
     justifyContent: "center",
-    backgroundColor: colors.lighter,
+    backgroundColor: colors.secondary,
   },
   btn: {
     marginTop: 20,

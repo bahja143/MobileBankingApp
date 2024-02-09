@@ -46,7 +46,7 @@ const data = [
   },
 ];
 
-export default function NotificationsScreen() {
+export default function NotificationsScreen({ navigation }) {
   const [refresh] = useState(false);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -75,8 +75,11 @@ export default function NotificationsScreen() {
       <ActivityIndicator visible={loading} />
       <View style={styles.container}>
         <View style={styles.navCont}>
-          <TouchableOpacity style={styles.navIconCont}>
-            <Entypo name="chevron-left" size={30} color={colors.primary} />
+          <TouchableOpacity
+            style={styles.navIconCont}
+            onPress={() => navigation.goBack()}
+          >
+            <Entypo name="chevron-left" size={30} color={colors.white} />
           </TouchableOpacity>
           <Text style={styles.title} semibold>
             Notifications
@@ -137,7 +140,7 @@ const styles = StyleSheet.create({
     padding: 3,
     borderRadius: 5,
     marginRight: 10,
-    backgroundColor: colors.lighter,
+    backgroundColor: colors.primary,
   },
   navCont: {
     marginTop: 10,

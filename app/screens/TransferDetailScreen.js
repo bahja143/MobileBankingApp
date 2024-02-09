@@ -1,5 +1,6 @@
 import { Feather, FontAwesome5, FontAwesome, Entypo } from "@expo/vector-icons";
 import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
+import FlashMessage, { showMessage } from "react-native-flash-message";
 import * as MediaLibrary from "expo-media-library";
 import ViewShot from "react-native-view-shot";
 import { useRef, useState } from "react";
@@ -9,16 +10,27 @@ import colors from "../config/colors";
 import Text from "../components/CustomText";
 import Logo from "../assets/images/Logo.png";
 
-export default function TransferDetailScreen() {
+export default function TransferDetailScreen({ navigation }) {
   const ref = useRef();
   const [isSave, setIsSave] = useState(false);
 
   const handleCapture = async () => {
-    if (isSave) return;
+    if (isSave)
+      return showMessage({
+        type: "success",
+        message: "Transaction",
+        description: "Successfully saved to your gallery",
+      });
 
     ref.current?.capture().then(async (uri) => {
       await MediaLibrary.saveToLibraryAsync(uri);
       setIsSave(true);
+    });
+
+    return showMessage({
+      type: "success",
+      message: "Transaction",
+      description: "Successfully saved to your gallery",
     });
   };
   const handleShare = async () => {
@@ -29,9 +41,23 @@ export default function TransferDetailScreen() {
 
   return (
     <>
+      <FlashMessage
+        position="top"
+        backgroundColor={colors.primary}
+        textStyle={{ textAlign: "center", color: colors.primary }}
+        titleStyle={{
+          fontSize: 18,
+          textAlign: "center",
+          color: colors.primary,
+        }}
+        style={{ backgroundColor: colors.secondary }}
+      />
       <View style={[styles.container]}>
         <View style={styles.navCont}>
-          <TouchableOpacity style={styles.navIconCont}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.navIconCont}
+          >
             <Entypo name="chevron-left" size={30} color={colors.primary} />
           </TouchableOpacity>
           <Text style={styles.titleNav} semibold>
@@ -66,10 +92,10 @@ export default function TransferDetailScreen() {
 
           <View style={styles.itemContainer}>
             <View style={styles.item}>
-              <Text style={styles.itemLabel} semibold>
+              <Text style={styles.itemLabel} bold>
                 From:
               </Text>
-              <Text style={styles.itemLabel} semibold>
+              <Text style={styles.itemLabel} bold>
                 Abdisalam Farah Abdi
               </Text>
             </View>
@@ -86,10 +112,10 @@ export default function TransferDetailScreen() {
 
           <View style={styles.itemContainer}>
             <View style={styles.item}>
-              <Text style={styles.itemLabel} semibold>
+              <Text style={styles.itemLabel} bold>
                 To:
               </Text>
-              <Text style={styles.itemLabel} semibold>
+              <Text style={styles.itemLabel} bold>
                 Bahja Abdiaziz Hassan
               </Text>
             </View>
@@ -106,10 +132,10 @@ export default function TransferDetailScreen() {
 
           <View style={styles.itemContainer}>
             <View style={styles.item}>
-              <Text style={styles.itemLabel} semibold>
+              <Text style={styles.itemLabel} bold>
                 Date:
               </Text>
-              <Text style={styles.itemLabel} semibold>
+              <Text style={styles.itemLabel} bold>
                 {new Date().toDateString()}
               </Text>
             </View>
@@ -193,7 +219,7 @@ export default function TransferDetailScreen() {
         ]}
         options={{ fileName: "TransferNote" }}
       >
-        <View style={styles.receipt}>
+        <View style={[styles.receipt, { flex: 1 }]}>
           <View style={styles.receiptHeader}>
             <View style={styles.iconContainer}>
               <View style={styles.iconSubContainer}>
@@ -221,10 +247,10 @@ export default function TransferDetailScreen() {
 
           <View style={styles.itemContainer}>
             <View style={styles.item}>
-              <Text style={styles.itemLabel} semibold>
+              <Text style={styles.itemLabel} bold>
                 From:
               </Text>
-              <Text style={styles.itemLabel} semibold>
+              <Text style={styles.itemLabel} bold>
                 Abdisalam Farah Abdi
               </Text>
             </View>
@@ -241,10 +267,10 @@ export default function TransferDetailScreen() {
 
           <View style={styles.itemContainer}>
             <View style={styles.item}>
-              <Text style={styles.itemLabel} semibold>
+              <Text style={styles.itemLabel} bold>
                 To:
               </Text>
-              <Text style={styles.itemLabel} semibold>
+              <Text style={styles.itemLabel} bold>
                 Bahja Abdiaziz Hassan
               </Text>
             </View>
@@ -261,10 +287,10 @@ export default function TransferDetailScreen() {
 
           <View style={styles.itemContainer}>
             <View style={styles.item}>
-              <Text style={styles.itemLabel} semibold>
+              <Text style={styles.itemLabel} bold>
                 Date:
               </Text>
-              <Text style={styles.itemLabel} semibold>
+              <Text style={styles.itemLabel} bold>
                 {new Date().toDateString()}
               </Text>
             </View>
@@ -344,16 +370,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   logo: {
-    width: 50,
-    height: 45,
+    width: 52,
+    height: 47,
     marginHorizontal: 15,
     backgroundColor: colors.white,
   },
   bottomTitle: {
     fontSize: 16,
-    color: colors.black,
+    color: colors.primary,
   },
   bottomText: {
+    fontSize: 15,
     color: colors.green,
   },
   bottomContainer: {
@@ -441,10 +468,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   receipt: {
-    flex: 1,
+    flex: 0.98,
     paddingHorizontal: 15,
-    borderTopEndRadius: 25,
-    borderTopLeftRadius: 25,
+    borderTopEndRadius: 20,
+    borderTopLeftRadius: 20,
     justifyContent: "flex-start",
     backgroundColor: colors.white,
   },

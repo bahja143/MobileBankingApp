@@ -155,7 +155,7 @@ const data = [
   },
 ];
 
-export default function BeneficiariesScreen() {
+export default function BeneficiariesScreen({ navigation }) {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false);
@@ -303,7 +303,7 @@ export default function BeneficiariesScreen() {
             <View style={styles.menuIconContainer}>
               <MaterialCommunityIcons
                 size={25}
-                color={colors.primary}
+                color={colors.white}
                 name="format-list-bulleted"
               />
             </View>
@@ -317,7 +317,7 @@ export default function BeneficiariesScreen() {
               <MaterialCommunityIcons
                 size={25}
                 name="qrcode-scan"
-                color={colors.primary}
+                color={colors.white}
               />
             </View>
           </TouchableOpacity>
@@ -332,8 +332,11 @@ export default function BeneficiariesScreen() {
       </Modal>
       <View style={styles.container}>
         <View style={styles.navCont}>
-          <TouchableOpacity style={styles.navIconCont}>
-            <Entypo name="chevron-left" size={30} color={colors.primary} />
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.navIconCont}
+          >
+            <Entypo name="chevron-left" size={30} color={colors.white} />
           </TouchableOpacity>
           <Text style={styles.title} semibold>
             Beneficiaries
@@ -564,7 +567,7 @@ const styles = StyleSheet.create({
     marginLeft: 7.5,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.lighter,
+    backgroundColor: colors.primary,
   },
   menuText: {
     fontSize: 15,
@@ -606,7 +609,7 @@ const styles = StyleSheet.create({
     padding: 3,
     borderRadius: 5,
     marginRight: 10,
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
   },
   navCont: {
     marginTop: 10,

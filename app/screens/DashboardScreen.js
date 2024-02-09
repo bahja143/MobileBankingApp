@@ -60,8 +60,6 @@ export default function DashboardScreen({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
   const [transactions, setTransactions] = useState([]);
 
-  console.log(navigation);
-
   const handleRefreshing = () => {
     setRefreshing(true);
 
@@ -127,6 +125,7 @@ export default function DashboardScreen({ navigation }) {
                 </View>
                 <View style={style.rightNav}>
                   <TouchableOpacity
+                    onPress={() => navigation.navigate("notifications")}
                     style={[style.imageContainer, style.iconBell]}
                   >
                     <MaterialCommunityIcons
@@ -135,7 +134,10 @@ export default function DashboardScreen({ navigation }) {
                       name="bell-badge-outline"
                     />
                   </TouchableOpacity>
-                  <TouchableOpacity style={style.imageContainer}>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("userprofile")}
+                    style={style.imageContainer}
+                  >
                     <Image style={style.image} source={Avatar} />
                   </TouchableOpacity>
                 </View>
@@ -188,7 +190,10 @@ export default function DashboardScreen({ navigation }) {
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity style={style.navCont}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("beneficiaries")}
+                style={style.navCont}
+              >
                 <View style={style.navItem}>
                   <MaterialCommunityIcons
                     size={30}
@@ -201,7 +206,10 @@ export default function DashboardScreen({ navigation }) {
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity style={style.navCont}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("history")}
+                style={style.navCont}
+              >
                 <View style={style.navItem}>
                   <MaterialCommunityIcons
                     size={30}
@@ -214,7 +222,10 @@ export default function DashboardScreen({ navigation }) {
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity style={style.navCont}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("myqr")}
+                style={style.navCont}
+              >
                 <View style={style.navItem}>
                   <MaterialCommunityIcons
                     size={28}
@@ -239,10 +250,13 @@ export default function DashboardScreen({ navigation }) {
             {transactions.length !== 0 ? (
               <FlatList
                 data={transactions}
-                ItemSeparatorComponent={() => <View style={style.itemSep} />}
                 keyExtractor={(item) => item.id.toString()}
+                ItemSeparatorComponent={() => <View style={style.itemSep} />}
                 renderItem={({ item }) => (
-                  <TouchableOpacity style={style.TranCont}>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("detail")}
+                    style={style.TranCont}
+                  >
                     <View style={style.Tran} key={item}>
                       <View style={style.TranTextCont}>
                         <View style={style.TranIconCont}>

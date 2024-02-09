@@ -68,7 +68,7 @@ const MainNavigation = ({ navigation }) => {
         <Animated.View style={styles.btnCircleUp}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigate("qrcodeScanner")}
+            onPress={() => navigate("qrcode")}
           >
             <Lottie
               loop
@@ -122,6 +122,7 @@ const HomeStackNavigator = () => (
     <HomeStack.Screen name="userprofile" component={UserProfileScreen} />
     <HomeStack.Screen name="beneficiaries" component={BeneficiariesScreen} />
     <HomeStack.Screen name="notifications" component={NotificationsScreen} />
+    <HomeStack.Screen name="detail" component={TransferDetailScreen} />
   </HomeStack.Navigator>
 );
 

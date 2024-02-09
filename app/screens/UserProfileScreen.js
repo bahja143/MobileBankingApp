@@ -24,7 +24,7 @@ import ActivityIndicator from "../components/ActivityIndicator";
 
 import Avatar from "../assets/images/avatar.png";
 
-export default function UserProfileScreen() {
+export default function UserProfileScreen({ navigation }) {
   const [imageUri, setImageUri] = useState("");
   const [visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -129,7 +129,10 @@ export default function UserProfileScreen() {
           style={{ backgroundColor: colors.primary, color: colors.black }}
         />
         <View style={styles.navCont}>
-          <TouchableOpacity style={styles.navIconCont}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.navIconCont}
+          >
             <Entypo name="chevron-left" size={30} color={colors.white} />
           </TouchableOpacity>
           <Text style={styles.Navtitle} semibold>

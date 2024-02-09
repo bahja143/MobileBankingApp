@@ -1,6 +1,6 @@
 import { Formik } from "formik";
-import { useState, useEffect } from "react";
 import Modal from "react-native-modal";
+import { useState, useEffect } from "react";
 
 import {
   View,
@@ -109,7 +109,7 @@ const data = [
   },
 ];
 
-export default function TransactionsScreen() {
+export default function TransactionsScreen({ navigation }) {
   const [transactions, setTransactions] = useState([]);
   const [filter, setFilter] = useState({
     id: 0,
@@ -287,8 +287,11 @@ export default function TransactionsScreen() {
       </Modal>
       <View style={styles.container}>
         <View style={styles.navCont}>
-          <TouchableOpacity style={styles.navIconCont}>
-            <Entypo size={30} color={colors.primary} name="chevron-left" />
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.navIconCont}
+          >
+            <Entypo size={30} color={colors.white} name="chevron-left" />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setShow(true)} style={styles.search}>
             <FontAwesome size={20} name="search" color={colors.medium} />
@@ -471,7 +474,7 @@ const styles = StyleSheet.create({
     padding: 3,
     borderRadius: 5,
     paddingVertical: 8,
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
   },
   navCont: {
     marginTop: 10,
