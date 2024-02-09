@@ -23,7 +23,7 @@ import colors from "../config/colors";
 import Text from "../components/CustomText";
 import BarcodeScannerPeep from "../assets/sound/store-scanner-beep.mp3";
 
-export default function QRCodeScannerScreen() {
+export default function QRCodeScannerScreen({ navigation }) {
   const [flash, setFlash] = useState(false);
   const [scanned, setScanned] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -213,7 +213,10 @@ export default function QRCodeScannerScreen() {
         <Text style={styles.title} semibold>
           Scan QR Code
         </Text>
-        <TouchableOpacity style={styles.navIconCont}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.navIconCont}
+        >
           <Text style={styles.navText} bold>
             Cancel
           </Text>
@@ -260,7 +263,7 @@ export default function QRCodeScannerScreen() {
             </View>
             <View style={styles.topFocus} />
           </View>
-          <View style={[styles.topFocus, { top: -0.5 }]} />
+          <View style={[styles.topFocus, { top: -0.0 }]} />
           <Text semibold style={styles.cameraText}>
             Align QR code to fill inside the frame
           </Text>

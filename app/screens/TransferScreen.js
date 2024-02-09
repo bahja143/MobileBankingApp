@@ -133,7 +133,7 @@ const banks = [
   { id: 4, name: "Dashen Bank" },
 ];
 
-export default function TransferScreen() {
+export default function TransferScreen({ navigation }) {
   const [transfer, setTransfer] = useState({
     id: 0,
     amount: "",
@@ -340,8 +340,11 @@ export default function TransferScreen() {
         </View>
       </Modal>
       <View style={styles.navCont}>
-        <TouchableOpacity style={styles.navIconCont}>
-          <Entypo name="chevron-left" size={30} color={colors.primary} />
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.navIconCont}
+        >
+          <Entypo name="chevron-left" size={30} color={colors.white} />
         </TouchableOpacity>
         <Text style={styles.title} semibold>
           Transfer Money
@@ -411,7 +414,7 @@ const styles = StyleSheet.create({
     padding: 3,
     borderRadius: 5,
     marginRight: 10,
-    backgroundColor: colors.lighter,
+    backgroundColor: colors.primary,
   },
   navCont: {
     marginTop: 10,

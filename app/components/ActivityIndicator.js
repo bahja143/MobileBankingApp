@@ -1,7 +1,6 @@
-import { StyleSheet, View } from "react-native";
-import Lotty from "lottie-react-native";
-
 import Modal from "react-native-modal";
+import Lotty from "lottie-react-native";
+import { StyleSheet } from "react-native";
 
 import Loading from "../assets/animation/Loading.json";
 

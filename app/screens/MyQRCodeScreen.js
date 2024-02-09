@@ -11,7 +11,7 @@ import Text from "../components/CustomText";
 
 import Logo from "../assets/images/Logo.png";
 
-export default function MyQRCodeScreen() {
+export default function MyQRCodeScreen({ navigation }) {
   const [isSave, setIsSave] = useState(false);
   const [myAccount] = useState({
     bank: "Shabelle Bank",
@@ -38,7 +38,10 @@ export default function MyQRCodeScreen() {
     <>
       <View style={styles.container}>
         <View style={styles.navCont}>
-          <TouchableOpacity style={styles.navIconCont}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.navIconCont}
+          >
             <Entypo name="chevron-left" size={30} color={colors.primary} />
           </TouchableOpacity>
           <Text style={styles.Navtitle} semibold>

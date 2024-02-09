@@ -48,7 +48,7 @@ const data = [
   },
 ];
 
-export default function DashboardScreen() {
+export default function DashboardScreen({ navigation }) {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
   const [myAccount] = useState({
@@ -59,6 +59,8 @@ export default function DashboardScreen() {
   });
   const [refreshing, setRefreshing] = useState(false);
   const [transactions, setTransactions] = useState([]);
+
+  console.log(navigation);
 
   const handleRefreshing = () => {
     setRefreshing(true);
@@ -174,9 +176,12 @@ export default function DashboardScreen() {
               Suggested Actions
             </Text>
             <View style={style.nav}>
-              <TouchableOpacity style={style.navCont}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("transfer")}
+                style={style.navCont}
+              >
                 <View style={style.navItem}>
-                  <Feather size={29} name="send" color={colors.primary} />
+                  <Feather size={28.5} name="send" color={colors.primary} />
                   <Text style={style.navTitle} bold>
                     Transfer
                   </Text>
@@ -212,7 +217,7 @@ export default function DashboardScreen() {
               <TouchableOpacity style={style.navCont}>
                 <View style={style.navItem}>
                   <MaterialCommunityIcons
-                    size={29}
+                    size={28}
                     name="qrcode-scan"
                     color={colors.primary}
                   />
@@ -372,7 +377,7 @@ const style = StyleSheet.create({
   },
   tranTitleCont: {
     marginTop: 11,
-    marginBottom: 8,
+    marginBottom: 7,
     flexDirection: "row",
     alignItems: "center",
     marginHorizontal: 7.5,
@@ -393,13 +398,14 @@ const style = StyleSheet.create({
   navItem: {
     width: 81,
     height: 75,
+    paddingTop: 2.5,
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "space-evenly",
     backgroundColor: colors.lighter,
   },
   nav: {
-    marginTop: 8,
+    marginTop: 7.5,
     borderRadius: 10,
     paddingVertical: 10,
     flexDirection: "row",
@@ -411,8 +417,8 @@ const style = StyleSheet.create({
   title: {
     fontSize: 15,
     marginTop: 15,
-    marginHorizontal: 7.5,
     color: colors.black,
+    marginHorizontal: 7.5,
   },
   topHeader: {
     height: 210,

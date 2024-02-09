@@ -8,15 +8,15 @@ import ItemSeparator from "../components/ItemSeparator";
 const menuItems = [
   {
     id: 1,
-    title: "My Profile",
     icon: "format-list-bulleted",
+    title: "My Profile",
     color: "primary",
   },
   {
     id: 2,
     title: "Bank Branches",
-    icon: "bank",
     color: "primary",
+    icon: "bank",
   },
   {
     id: 3,
@@ -26,15 +26,15 @@ const menuItems = [
   },
   {
     id: 4,
-    title: "Settings",
     icon: "account-cog-outline",
-    color: "yellow",
+    title: "Settings",
+    color: "primary",
   },
   {
     id: 5,
     title: "Log Out",
-    icon: "logout",
     color: "danger",
+    icon: "logout",
   },
 ];
 
@@ -47,14 +47,7 @@ const MyAccountScreen = ({ navigation }) => {
         data={menuItems}
         keyExtractor={(i) => i.id.toString()}
         renderItem={({ item }) => (
-          <MenuItem
-            title={item.title}
-            icon={item.icon}
-            color={item.color}
-            onPress={() =>
-              item.id === 2 ? navigation.navigate("messages") : null
-            }
-          />
+          <MenuItem title={item.title} icon={item.icon} color={item.color} />
         )}
         ItemSeparatorComponent={() => <ItemSeparator />}
         style={styles.flatList}
@@ -66,7 +59,7 @@ const MyAccountScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
+    paddingTop: 25,
     backgroundColor: colors["lighter"],
   },
   flatList: {

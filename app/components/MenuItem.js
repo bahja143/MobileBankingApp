@@ -1,7 +1,7 @@
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+import Text from "./CustomText";
 import colors from "../config/colors";
 
 const MenuItem = ({ icon, title, color, onPress }) => {
@@ -9,15 +9,16 @@ const MenuItem = ({ icon, title, color, onPress }) => {
     <TouchableOpacity onPress={onPress}>
       <View style={styles.container}>
         <View
-          style={[styles.iconContainer, { backgroundColor: colors[color] }]}
+          style={[
+            styles.iconContainer,
+            { backgroundColor: colors["secondary"] },
+          ]}
         >
-          <MaterialCommunityIcons
-            name={icon}
-            size={25}
-            color={colors["white"]}
-          />
+          <MaterialCommunityIcons name={icon} size={25} color={colors[color]} />
         </View>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.title} semibold>
+          {title}
+        </Text>
         <MaterialCommunityIcons
           size={25}
           name="chevron-right"
@@ -30,7 +31,7 @@ const MenuItem = ({ icon, title, color, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 70,
+    height: 65,
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 10,
@@ -46,8 +47,9 @@ const styles = StyleSheet.create({
   },
   title: {
     flexGrow: 1,
-    fontSize: 16,
+    fontSize: 15,
     marginLeft: 10,
+    color: colors.black,
   },
 });
 
