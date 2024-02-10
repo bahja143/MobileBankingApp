@@ -135,7 +135,7 @@ export default function CreatePasswordScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 25,
+    paddingTop: 25,
     paddingHorizontal: 7.5,
     justifyContent: "flex-start",
     backgroundColor: colors.white,

@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
@@ -24,7 +24,7 @@ const schema = Yup.object({
     .label("Code"),
 });
 
-export default function VerificationScreen() {
+export default function VerificationScreen({ navigation }) {
   const [data] = useState({ code: "" });
   const [timer, setTimer] = useState(120);
   const timeOutCallback = useCallback(
@@ -39,7 +39,8 @@ export default function VerificationScreen() {
 
     setTimeout(() => {
       setIsLoading(false);
-      console.log(values);
+      console.log("Hello, world");
+      navigation.navigate("createPassword", values);
     }, 3000);
   };
   const resetTimer = function () {
@@ -56,6 +57,17 @@ export default function VerificationScreen() {
   return (
     <>
       <ActivityIndicator visible={loading} />
+      <View style={styles.navCont}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.navIconCont}
+        >
+          <Entypo name="chevron-left" size={30} color={colors.white} />
+        </TouchableOpacity>
+        <Text style={styles.Navtitle} semibold>
+          OTP
+        </Text>
+      </View>
       <View style={styles.container}>
         <KeyboardAvoidingView
           behavior="padding"
@@ -100,7 +112,7 @@ export default function VerificationScreen() {
                     />
                   }
                 />
-                <BtnForm title="Verify" />
+                <BtnForm disabled={timer === 0} title="Verify" />
               </>
             </Formik>
           </View>
@@ -130,13 +142,32 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: colors.white,
   },
+  Navtitle: {
+    fontSize: 18,
+    textAlign: "center",
+    color: colors.black,
+  },
+  navIconCont: {
+    padding: 3,
+    borderRadius: 5,
+    marginRight: 10,
+    backgroundColor: colors.primary,
+  },
+  navCont: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingHorizontal: 7.5,
+    alignItems: "center",
+    flexDirection: "row",
+    backgroundColor: colors.white,
+  },
   timer: {
     fontSize: 40,
     color: colors.primary,
   },
   iconContainer: {
-    width: 140,
-    height: 140,
+    width: 120,
+    height: 120,
     borderWidth: 1.5,
     borderRadius: 75,
     alignSelf: "center",

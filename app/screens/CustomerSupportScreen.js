@@ -4,7 +4,7 @@ import { Linking, View, StyleSheet, TouchableOpacity } from "react-native";
 import colors from "../config/colors";
 import Text from "../components/CustomText";
 
-export default function CustomerSupportScreen() {
+export default function CustomerSupportScreen({ navigation }) {
   const handleEmail = () => {
     Linking.openURL("mailto:support@shabellebank.com");
   };
@@ -18,8 +18,11 @@ export default function CustomerSupportScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.navCont}>
-        <TouchableOpacity style={styles.navIconCont}>
-          <Entypo name="chevron-left" size={30} color={colors.primary} />
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.navIconCont}
+        >
+          <Entypo name="chevron-left" size={30} color={colors.white} />
         </TouchableOpacity>
         <Text style={styles.title} semibold>
           Contact Support
@@ -83,7 +86,7 @@ const styles = StyleSheet.create({
     padding: 3,
     borderRadius: 5,
     marginRight: 10,
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
   },
   navCont: {
     marginTop: 10,

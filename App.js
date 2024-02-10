@@ -16,41 +16,9 @@ import * as Notifications from "expo-notifications";
 import colors from "./app/config/colors";
 import Screen from "./app/components/Screen";
 
-import ExchangeNav from "./app/navigation/ExchangeNav";
+import AuthNavigation from "./app/navigation/AuthNavigation";
 import HomeNavigation from "./app/navigation/HomeNavigation";
 import SessionAndPushNotification from "./app/components/SessionAndPushNotification";
-
-import SignUpScreen from "./app/screens/SignUpScreen";
-import WelcomeScreen from "./app/screens/WelcomeScreen";
-import ReceiptScreen from "./app/screens/ReceiptScreen";
-import SettingsScreen from "./app/screens/SettingsScreen";
-import MyQRCodeScreen from "./app/screens/MyQRCodeScreen";
-import TransferScreen from "./app/screens/TransferScreen";
-import BranchesScreen from "./app/screens/BranchesScreen";
-import ChangePinScreen from "./app/screens/ChangePinScreen";
-import PinSignInScreen from "./app/screens/PinSignInScreen";
-import DashboardScreen from "./app/screens/DashboardScreen";
-import CreatePinScreen from "./app/screens/CreatePinScreen";
-import UserProfileScreen from "./app/screens/UserProfileScreen";
-import BeneficiaryScreen from "./app/screens/BeneficiaryScreen";
-import VerificationScreen from "./app/screens/VerificationScreen";
-import TransactionsScreen from "./app/screens/TransactionsScreen";
-import BeneficiariesScreen from "./app/screens/BeneficiariesScreen";
-import QRCodeScannerScreen from "./app/screens/QRCodeScannerScreen";
-import NotificationsScreen from "./app/screens/NotificationsScreen";
-import UpdateNextKinScreen from "./app/screens/UpdateNextKinScreen";
-import UpdateAddressScreen from "./app/screens/UpdateAddressScreen";
-import ChangePasswordScreen from "./app/screens/ChangePasswordScreen";
-import PasswordSignInScreen from "./app/screens/PasswordSignInScreen";
-import CreatePasswordScreen from "./app/screens/CreatePasswordScreen";
-import BranchLocationScreen from "./app/screens/BranchLocationScreen";
-import TransferDetailScreen from "./app/screens/TransferDetailScreen";
-import CustomerSupportScreen from "./app/screens/CustomerSupportScreen";
-import UpdateBasicInfoScreen from "./app/screens/UpdateBasicInfoScreen";
-import ForgotCredentialScreen from "./app/screens/ForgotCredentialScreen";
-import UpdateContactInfoScreen from "./app/screens/UpdateContactInfoScreen";
-import AlertCustomizationScreen from "./app/screens/AlertCustomizationScreen";
-import MyAccountScreen from "./app/screens/MyAccountScreen";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -61,10 +29,10 @@ Notifications.setNotificationHandler({
 });
 
 export default function App() {
-  const [appIsReady, setAppIsReady] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const [lastInteraction, setLastInteraction] = useState(new Date()); // Track last interaction time
   const [idleTime, setIdleTime] = useState(0); // Track inactivity duration
+  const [isVisible, setIsVisible] = useState(false);
+  const [appIsReady, setAppIsReady] = useState(false);
+  const [lastInteraction, setLastInteraction] = useState(new Date()); // Track last interaction time
   const IDLE_THRESHOLD = 50 * 60 * 1000; // Logout after 5 minutes of inactivity (in milliseconds)
 
   const panResponder = useRef(
@@ -76,7 +44,6 @@ export default function App() {
       },
     })
   ).current;
-
   // Use a ref to store the interval ID for efficient clearing
   const inactivityTimerRef = useRef(null);
 
@@ -155,7 +122,7 @@ export default function App() {
       /> */}
       <Screen onLayout={onLayoutRootView}>
         <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
-        <HomeNavigation />
+        <AuthNavigation />
       </Screen>
     </>
   );

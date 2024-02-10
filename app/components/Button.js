@@ -5,13 +5,21 @@ import Text from "../components/CustomText";
 
 export default function Button({
   title,
+  disabled,
   margin = 10,
   textTransform,
   ...props
 }) {
   return (
     <TouchableOpacity
-      style={[styles.container, { marginTop: margin }]}
+      disabled={disabled}
+      style={[
+        styles.container,
+        {
+          marginTop: margin,
+          backgroundColor: disabled ? colors.medium : colors.primary,
+        },
+      ]}
       {...props}
     >
       <Text style={[styles.text, { textTransform: textTransform }]} bold>

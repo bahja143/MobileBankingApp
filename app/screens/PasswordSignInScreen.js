@@ -37,7 +37,7 @@ const schema = Yup.object({
     .required()
     .label("Password"),
 });
-export default function PasswordSignInScreen() {
+export default function PasswordSignInScreen({ navigation }) {
   const [myInfo] = useState({
     mobile: "0907005112",
     password: "Mysoul24@",
@@ -85,6 +85,17 @@ export default function PasswordSignInScreen() {
     <>
       <ActivityIndicator visible={isLoading} />
       <SuspendModal type="Password" isVisible={visible} />
+      <View style={styles.navCont}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.navIconCont}
+        >
+          <Entypo name="chevron-left" size={30} color={colors.white} />
+        </TouchableOpacity>
+        <Text style={styles.Navtitle} semibold>
+          Sign In
+        </Text>
+      </View>
       <ScrollView
         keyboardShouldPersistTaps="always"
         contentContainerStyle={styles.container}
@@ -139,7 +150,9 @@ export default function PasswordSignInScreen() {
                     </TouchableOpacity>
                   ) : null}
 
-                  <TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("forgot")}
+                  >
                     <Text bold style={styles.forgetText}>
                       Forgot password?
                     </Text>
@@ -160,7 +173,10 @@ export default function PasswordSignInScreen() {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.actionItem}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("exchange")}
+            style={styles.actionItem}
+          >
             <View style={styles.actionIcon}>
               <MaterialCommunityIcons
                 size={25}
@@ -173,7 +189,10 @@ export default function PasswordSignInScreen() {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.actionItem}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("support")}
+            style={styles.actionItem}
+          >
             <View style={styles.actionIcon}>
               <MaterialCommunityIcons
                 size={25}
@@ -197,6 +216,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 7.5,
     backgroundColor: colors.white,
     justifyContent: "space-between",
+  },
+  Navtitle: {
+    fontSize: 18,
+    textAlign: "center",
+    color: colors.black,
+  },
+  navIconCont: {
+    padding: 3,
+    borderRadius: 5,
+    marginRight: 10,
+    backgroundColor: colors.primary,
+  },
+  navCont: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingHorizontal: 7.5,
+    alignItems: "center",
+    flexDirection: "row",
+    backgroundColor: colors.white,
   },
   actionItem: {
     alignItems: "center",
@@ -251,8 +289,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   logo: {
-    width: 130,
-    height: 100,
+    width: 120,
+    height: 93,
     alignSelf: "center",
   },
 });

@@ -22,6 +22,7 @@ import QRCodeScannerScreen from "../screens/QRCodeScannerScreen";
 import BeneficiariesScreen from "../screens/BeneficiariesScreen";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen";
 import TransferDetailScreen from "../screens/TransferDetailScreen";
+import CustomerSupportScreen from "../screens/CustomerSupportScreen";
 import UpdateBasicInfoScreen from "../screens/UpdateBasicInfoScreen";
 import ForgotCredentialScreen from "../screens/ForgotCredentialScreen";
 import UpdateContactInfoScreen from "../screens/UpdateContactInfoScreen";
@@ -151,6 +152,7 @@ const HomeStackNavigator = () => (
       name="forgotCredential"
       component={ForgotCredentialScreen}
     />
+    <HomeStack.Screen name="support" component={CustomerSupportScreen} />
   </HomeStack.Navigator>
 );
 

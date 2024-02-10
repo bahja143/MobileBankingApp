@@ -1,6 +1,7 @@
 import { View, FlatList, StyleSheet } from "react-native";
 
 import colors from "../config/colors";
+
 import Profile from "../components/Profile";
 import MenuItem from "../components/MenuItem";
 import ItemSeparator from "../components/ItemSeparator";
@@ -10,15 +11,15 @@ const menuItems = [
     id: 1,
     icon: "format-list-bulleted",
     title: "My Profile",
-    color: "primary",
     url: "userprofile",
+    color: "primary",
   },
   {
     id: 2,
     title: "Bank Branches",
     color: "primary",
-    icon: "bank",
     url: "branches",
+    icon: "bank",
   },
   {
     id: 3,
@@ -29,13 +30,20 @@ const menuItems = [
   },
   {
     id: 4,
+    icon: "help-circle-outline",
+    color: "primary",
+    url: "support",
+    title: "Help",
+  },
+  {
+    id: 5,
     icon: "account-cog-outline",
     title: "Settings",
     color: "primary",
     url: "settings",
   },
   {
-    id: 5,
+    id: 6,
     title: "Log Out",
     color: "danger",
     icon: "logout",
@@ -46,20 +54,19 @@ const MyAccountScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Profile title="Abdisalam Farah Abdi" subtile="0907005112" />
-
       <FlatList
         data={menuItems}
+        style={styles.flatList}
         keyExtractor={(i) => i.id.toString()}
         renderItem={({ item }) => (
           <MenuItem
             icon={item.icon}
             title={item.title}
             color={item.color}
-            onPress={() => item.id !== 5 && navigation.navigate(item.url)}
+            onPress={() => item.id !== 6 && navigation.navigate(item.url)}
           />
         )}
         ItemSeparatorComponent={() => <ItemSeparator />}
-        style={styles.flatList}
       />
     </View>
   );

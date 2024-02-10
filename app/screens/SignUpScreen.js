@@ -122,9 +122,19 @@ const data = [
     },
     Account: "1481311198646",
   },
+  {
+    Id: 11,
+    Name: {
+      firstName: "Abdisalam",
+      lastName: "Abdi",
+      middleName: "Farah",
+    },
+    Account: "0272010000033",
+    mobile: "0907005112",
+  },
 ];
 
-export default function SignUpScreen() {
+export default function SignUpScreen({ navigation }) {
   const [transfer, setTransfer] = useState({
     id: 0,
     mobile: "",
@@ -134,16 +144,27 @@ export default function SignUpScreen() {
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = (transfer) => {
+    setErrorMessage("");
     if (loading) return setIsLoading(true);
     if (!transfer["isAccountValid"]) return setVisible(true);
 
     Keyboard.dismiss();
     setIsLoading(true);
+
     setTimeout(() => {
+      setIsLoading(false);
+
+      if (
+        data.find((d) => d.Account == transfer["accountNo"]).mobile !==
+        transfer["mobile"]
+      )
+        return setErrorMessage("Invalid Account!");
+
       setTransfer(transfer);
-      console.log("submitted: ", transfer);
+      navigation.navigate("verify", transfer);
       setIsLoading(false);
     }, 3000);
   };
@@ -191,10 +212,10 @@ export default function SignUpScreen() {
           <AntDesign name="closecircleo" size={40} color={colors.danger} />
           <View style={styles.modalTextContainer}>
             <Text style={styles.modalTitle} bold>
-              Invalid account!
+              Invalid Account!
             </Text>
-            <Text style={styles.modalText}>
-              PLease check your Account Number or Mobile Number
+            <Text style={styles.modalText} semibold>
+              Please check your Account Number or Mobile Number
             </Text>
           </View>
           <TouchableOpacity
@@ -207,19 +228,24 @@ export default function SignUpScreen() {
           </TouchableOpacity>
         </View>
       </Modal>
-      <View style={styles.navCont}>
-        <TouchableOpacity style={styles.navIconCont}>
-          <Entypo name="chevron-left" size={30} color={colors.primary} />
-        </TouchableOpacity>
-        <Text style={styles.title} semibold>
-          Onboarding
-        </Text>
-      </View>
+
       <ScrollView
         keyboardShouldPersistTaps="always"
         contentContainerStyle={styles.main}
       >
         <View style={styles.container}>
+          <View style={styles.navCont}>
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={styles.navIconCont}
+            >
+              <Entypo name="chevron-left" size={30} color={colors.white} />
+            </TouchableOpacity>
+            <Text style={styles.title} semibold>
+              Onboarding
+            </Text>
+          </View>
+
           <Formik
             enableReinitialize
             onSubmit={handleSubmit}
@@ -228,6 +254,11 @@ export default function SignUpScreen() {
           >
             {({ values, setFieldValue }) => (
               <>
+                {errorMessage && (
+                  <Text semibold style={styles.errorMessage}>
+                    {errorMessage}
+                  </Text>
+                )}
                 <InputField1
                   required
                   icon="wallet"
@@ -270,14 +301,19 @@ const styles = StyleSheet.create({
     padding: 3,
     borderRadius: 5,
     marginRight: 10,
-    backgroundColor: colors.lighter,
+    backgroundColor: colors.primary,
   },
   navCont: {
     marginTop: 10,
-    marginBottom: 40,
+    marginBottom: 50,
     flexDirection: "row",
     alignItems: "center",
-    marginHorizontal: 10,
+  },
+  errorMessage: {
+    top: -20,
+    fontSize: 16,
+    textAlign: "center",
+    color: colors.danger,
   },
   modalBtn: {
     width: "100%",
@@ -290,10 +326,9 @@ const styles = StyleSheet.create({
   },
   modalBtnText: {
     color: colors.white,
-    textTransform: "uppercase",
   },
   modal: {
-    height: 200,
+    height: 210,
     width: "100%",
     borderRadius: 10,
     alignItems: "center",
@@ -309,10 +344,9 @@ const styles = StyleSheet.create({
   modalText: {
     textAlign: "center",
     color: colors.medium,
-    textTransform: "capitalize",
   },
   modalTextContainer: {
-    marginTop: 20,
+    marginTop: 25,
     alignItems: "center",
   },
   main: {
@@ -327,8 +361,5 @@ const styles = StyleSheet.create({
     fontSize: 17,
     textAlign: "center",
     color: colors.black,
-  },
-  errorMessage: {
-    alignSelf: "center",
   },
 });

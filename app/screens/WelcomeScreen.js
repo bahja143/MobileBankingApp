@@ -1,13 +1,13 @@
 import { Image, View, StyleSheet, ImageBackground } from "react-native";
 
-import colors from "../config/colors";
-
-import Button from "../components/Button1";
-import Text from "../components/CustomText";
 import Bg from "../assets/images/rose-petals.png";
 import Logo from "../assets/images/splash-removebg-preview.png";
 
-export default function WelcomeScreen() {
+import colors from "../config/colors";
+import Button from "../components/Button1";
+import Text from "../components/CustomText";
+
+export default function WelcomeScreen({ navigation }) {
   return (
     <ImageBackground source={Bg} style={styles.container}>
       <View style={styles.titleCont}>
@@ -28,6 +28,7 @@ export default function WelcomeScreen() {
           title="Sign in"
           backgroundColor="white"
           textTransform="capitalize"
+          onPress={() => navigation.navigate("signInPassword")}
         />
 
         <Button
@@ -39,6 +40,7 @@ export default function WelcomeScreen() {
           title="I'm new to the app"
           borderColor={colors.white}
           backgroundColor="transparent"
+          onPress={() => navigation.navigate("signUp")}
         />
       </View>
     </ImageBackground>
