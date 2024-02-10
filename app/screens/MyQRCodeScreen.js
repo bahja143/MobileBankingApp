@@ -33,6 +33,12 @@ export default function MyQRCodeScreen({ navigation }) {
       await MediaLibrary.saveToLibraryAsync(uri);
       setIsSave(true);
     });
+
+    return showMessage({
+      type: "success",
+      message: "QR Code",
+      description: "Successfully saved to your gallery",
+    });
   };
   const handleShare = async () => {
     ref.current?.capture().then(async (uri) => {
@@ -151,7 +157,7 @@ export default function MyQRCodeScreen({ navigation }) {
             style={[
               styles.qrContainer,
               {
-                flex: 0.85,
+                flex: 0.87,
               },
             ]}
           >
@@ -200,7 +206,7 @@ const styles = StyleSheet.create({
   },
   qr: {
     alignSelf: "center",
-    marginVertical: 10,
+    marginVertical: 25,
   },
   logo: {
     width: 52,
@@ -217,7 +223,7 @@ const styles = StyleSheet.create({
     color: colors.green,
   },
   bottomContainer: {
-    top: 75,
+    top: 85,
     height: 75,
     borderWidth: 1,
     borderRadius: 10,
@@ -226,7 +232,6 @@ const styles = StyleSheet.create({
     borderColor: colors.light,
   },
   subBtnCont: {
-    top: 40,
     width: "auto",
     flexDirection: "row",
     justifyContent: "center",
@@ -250,13 +255,14 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
+    marginBottom: 20,
+    marginHorizontal: 10,
     justifyContent: "flex-end",
   },
   qrContainer: {
-    flex: 0.9,
+    flex: 0.93,
+    borderRadius: 15,
     paddingHorizontal: 20,
-    borderTopEndRadius: 15,
-    borderTopLeftRadius: 15,
     backgroundColor: colors.white,
   },
   Navtitle: {
@@ -280,7 +286,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   btnContainer: {
-    marginVertical: 20,
+    marginTop: 30,
   },
   btnCloseText: {
     fontSize: 13,
