@@ -164,7 +164,10 @@ export default function UserProfileScreen({ navigation }) {
           </View>
 
           <View style={styles.menus}>
-            <TouchableOpacity style={styles.item}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("updateBasic")}
+              style={styles.item}
+            >
               <View style={styles.itemLeft}>
                 <MaterialCommunityIcons
                   size={30}
@@ -189,7 +192,10 @@ export default function UserProfileScreen({ navigation }) {
               />
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.item}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("updateContact")}
+              style={styles.item}
+            >
               <View style={styles.itemLeft}>
                 <MaterialCommunityIcons
                   name="contacts-outline"
@@ -214,7 +220,10 @@ export default function UserProfileScreen({ navigation }) {
               />
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.item}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("updateNextKin")}
+              style={styles.item}
+            >
               <View style={styles.itemLeft}>
                 <AntDesign
                   name="addusergroup"
@@ -239,7 +248,10 @@ export default function UserProfileScreen({ navigation }) {
               />
             </TouchableOpacity>
 
-            <TouchableOpacity style={[styles.item, styles.lastItem]}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("updateAddress")}
+              style={[styles.item, styles.lastItem]}
+            >
               <View style={styles.itemLeft}>
                 <Entypo name="address" size={30} color={colors.primary} />
                 <View style={styles.itemTextCont}>

@@ -16,7 +16,7 @@ import Button from "../components/Button1";
 import Text from "../components/CustomText";
 import ActivityIndicator from "../components/ActivityIndicator";
 
-function ChangePinScreen() {
+function ChangePinScreen({ navigation }) {
   const inputRef1 = useRef(null);
   const inputRef2 = useRef(null);
   const inputRef3 = useRef(null);
@@ -79,143 +79,155 @@ function ChangePinScreen() {
         textStyle={styles.flashMessText}
         titleStyle={styles.flashMessTitle}
       />
-      <View style={styles.navCont}>
-        <TouchableOpacity style={styles.navIconCont}>
-          <Entypo name="chevron-left" size={30} color={colors.primary} />
-        </TouchableOpacity>
-        <Text style={styles.title} semibold>
-          Change PIN Code
-        </Text>
-      </View>
-
-      <ScrollView
-        style={styles.container}
-        keyboardShouldPersistTaps="always"
-        contentContainerStyle={styles.scroll}
-      >
-        <TouchableWithoutFeedback onPress={handleOpenKeyboard3}>
-          <View>
-            <TextInput
-              maxLength={4}
-              ref={inputRef3}
-              value={pin["oldPin"]}
-              keyboardType="numeric"
-              style={styles.textInput}
-              cursorColor={colors.white}
-              onChangeText={(value) => handleOnchange("oldPin", value)}
-            />
-            <Text semibold style={styles.label}>
-              Current PIN
-            </Text>
-
-            <View style={styles.pinContainer}>
-              <View style={styles.pin}>
-                {pin["oldPin"].length >= 1 ? (
-                  <View style={styles.pinDot} />
-                ) : null}
-              </View>
-
-              <View style={styles.pin}>
-                {pin["oldPin"].length >= 2 ? (
-                  <View style={styles.pinDot} />
-                ) : null}
-              </View>
-              <View style={styles.pin}>
-                {pin["oldPin"].length >= 3 ? (
-                  <View style={styles.pinDot} />
-                ) : null}
-              </View>
-
-              <View style={styles.pin}>
-                {pin["oldPin"].length >= 4 ? (
-                  <View style={styles.pinDot} />
-                ) : null}
-              </View>
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-
-        <TouchableWithoutFeedback onPress={handleOpenKeyboard1}>
-          <View style={styles.inputCont}>
-            <TextInput
-              maxLength={4}
-              ref={inputRef1}
-              value={pin["pin"]}
-              keyboardType="numeric"
-              style={styles.textInput}
-              cursorColor={colors.white}
-              onChangeText={(value) => handleOnchange("pin", value)}
-            />
-            <Text semibold style={styles.label}>
-              Enter New PIN
-            </Text>
-
-            <View style={styles.pinContainer}>
-              <View style={styles.pin}>
-                {pin["pin"].length >= 1 ? <View style={styles.pinDot} /> : null}
-              </View>
-
-              <View style={styles.pin}>
-                {pin["pin"].length >= 2 ? <View style={styles.pinDot} /> : null}
-              </View>
-              <View style={styles.pin}>
-                {pin["pin"].length >= 3 ? <View style={styles.pinDot} /> : null}
-              </View>
-
-              <View style={styles.pin}>
-                {pin["pin"].length >= 4 ? <View style={styles.pinDot} /> : null}
-              </View>
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-
-        <TouchableWithoutFeedback onPress={handleOpenKeyboard2}>
-          <View style={styles.inputCont}>
-            <TextInput
-              maxLength={4}
-              ref={inputRef2}
-              value={pin["confirm"]}
-              keyboardType="numeric"
-              style={styles.textInput}
-              cursorColor={colors.white}
-              onSubmitEditing={handleSubmit}
-              onChangeText={(value) => handleOnchange("confirm", value)}
-            />
-            <Text semibold style={styles.label}>
-              Re-Enter New PIN
-            </Text>
-
-            <View style={styles.pinContainer}>
-              <View style={styles.pin}>
-                {pin["confirm"].length >= 1 ? (
-                  <View style={styles.pinDot} />
-                ) : null}
-              </View>
-
-              <View style={styles.pin}>
-                {pin["confirm"].length >= 2 ? (
-                  <View style={styles.pinDot} />
-                ) : null}
-              </View>
-              <View style={styles.pin}>
-                {pin["confirm"].length >= 3 ? (
-                  <View style={styles.pinDot} />
-                ) : null}
-              </View>
-
-              <View style={styles.pin}>
-                {pin["confirm"].length >= 4 ? (
-                  <View style={styles.pinDot} />
-                ) : null}
-              </View>
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-
-        <View style={styles.btnCont}>
-          <Button onPress={handleSubmit} title="Change PIN" margin={50} />
+      <View style={styles.container}>
+        <View style={styles.navCont}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.navIconCont}
+          >
+            <Entypo name="chevron-left" size={30} color={colors.white} />
+          </TouchableOpacity>
+          <Text style={styles.title} semibold>
+            Change PIN Code
+          </Text>
         </View>
-      </ScrollView>
+
+        <ScrollView
+          keyboardShouldPersistTaps="always"
+          contentContainerStyle={styles.scroll}
+        >
+          <TouchableWithoutFeedback onPress={handleOpenKeyboard3}>
+            <View>
+              <TextInput
+                maxLength={4}
+                ref={inputRef3}
+                value={pin["oldPin"]}
+                keyboardType="numeric"
+                style={styles.textInput}
+                cursorColor={colors.white}
+                onChangeText={(value) => handleOnchange("oldPin", value)}
+              />
+              <Text semibold style={styles.label}>
+                Current PIN
+              </Text>
+
+              <View style={styles.pinContainer}>
+                <View style={styles.pin}>
+                  {pin["oldPin"].length >= 1 ? (
+                    <View style={styles.pinDot} />
+                  ) : null}
+                </View>
+
+                <View style={styles.pin}>
+                  {pin["oldPin"].length >= 2 ? (
+                    <View style={styles.pinDot} />
+                  ) : null}
+                </View>
+                <View style={styles.pin}>
+                  {pin["oldPin"].length >= 3 ? (
+                    <View style={styles.pinDot} />
+                  ) : null}
+                </View>
+
+                <View style={styles.pin}>
+                  {pin["oldPin"].length >= 4 ? (
+                    <View style={styles.pinDot} />
+                  ) : null}
+                </View>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback onPress={handleOpenKeyboard1}>
+            <View style={styles.inputCont}>
+              <TextInput
+                maxLength={4}
+                ref={inputRef1}
+                value={pin["pin"]}
+                keyboardType="numeric"
+                style={styles.textInput}
+                cursorColor={colors.white}
+                onChangeText={(value) => handleOnchange("pin", value)}
+              />
+              <Text semibold style={styles.label}>
+                Enter New PIN
+              </Text>
+
+              <View style={styles.pinContainer}>
+                <View style={styles.pin}>
+                  {pin["pin"].length >= 1 ? (
+                    <View style={styles.pinDot} />
+                  ) : null}
+                </View>
+
+                <View style={styles.pin}>
+                  {pin["pin"].length >= 2 ? (
+                    <View style={styles.pinDot} />
+                  ) : null}
+                </View>
+                <View style={styles.pin}>
+                  {pin["pin"].length >= 3 ? (
+                    <View style={styles.pinDot} />
+                  ) : null}
+                </View>
+
+                <View style={styles.pin}>
+                  {pin["pin"].length >= 4 ? (
+                    <View style={styles.pinDot} />
+                  ) : null}
+                </View>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback onPress={handleOpenKeyboard2}>
+            <View style={styles.inputCont}>
+              <TextInput
+                maxLength={4}
+                ref={inputRef2}
+                value={pin["confirm"]}
+                keyboardType="numeric"
+                style={styles.textInput}
+                cursorColor={colors.white}
+                onSubmitEditing={handleSubmit}
+                onChangeText={(value) => handleOnchange("confirm", value)}
+              />
+              <Text semibold style={styles.label}>
+                Re-Enter New PIN
+              </Text>
+
+              <View style={styles.pinContainer}>
+                <View style={styles.pin}>
+                  {pin["confirm"].length >= 1 ? (
+                    <View style={styles.pinDot} />
+                  ) : null}
+                </View>
+
+                <View style={styles.pin}>
+                  {pin["confirm"].length >= 2 ? (
+                    <View style={styles.pinDot} />
+                  ) : null}
+                </View>
+                <View style={styles.pin}>
+                  {pin["confirm"].length >= 3 ? (
+                    <View style={styles.pinDot} />
+                  ) : null}
+                </View>
+
+                <View style={styles.pin}>
+                  {pin["confirm"].length >= 4 ? (
+                    <View style={styles.pinDot} />
+                  ) : null}
+                </View>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+
+          <View style={styles.btnCont}>
+            <Button onPress={handleSubmit} title="Change PIN" margin={50} />
+          </View>
+        </ScrollView>
+      </View>
     </>
   );
 }
@@ -255,14 +267,13 @@ const styles = StyleSheet.create({
     padding: 3,
     borderRadius: 5,
     marginRight: 10,
-    backgroundColor: colors.lighter,
+    backgroundColor: colors.primary,
   },
   navCont: {
     marginTop: 10,
     marginBottom: 40,
     flexDirection: "row",
     alignItems: "center",
-    marginHorizontal: 10,
   },
   inputCont: {
     marginTop: 40,

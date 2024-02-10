@@ -314,7 +314,10 @@ export default function TransactionsScreen({ navigation }) {
             contentContainerStyle={styles.flatlistContainer}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
-              <TouchableOpacity style={styles.item}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("detail")}
+                style={styles.item}
+              >
                 <View style={styles.itemLeft}>
                   <View style={styles.iconContainer}>
                     <MaterialCommunityIcons
@@ -473,7 +476,7 @@ const styles = StyleSheet.create({
   navIconCont: {
     padding: 3,
     borderRadius: 5,
-    paddingVertical: 8,
+    paddingVertical: 6,
     backgroundColor: colors.primary,
   },
   navCont: {

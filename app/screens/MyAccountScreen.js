@@ -11,24 +11,28 @@ const menuItems = [
     icon: "format-list-bulleted",
     title: "My Profile",
     color: "primary",
+    url: "userprofile",
   },
   {
     id: 2,
     title: "Bank Branches",
     color: "primary",
     icon: "bank",
+    url: "branches",
   },
   {
     id: 3,
     title: "Currency Exchange",
     icon: "currency-usd",
     color: "primary",
+    url: "exchange",
   },
   {
     id: 4,
     icon: "account-cog-outline",
     title: "Settings",
     color: "primary",
+    url: "settings",
   },
   {
     id: 5,
@@ -47,7 +51,12 @@ const MyAccountScreen = ({ navigation }) => {
         data={menuItems}
         keyExtractor={(i) => i.id.toString()}
         renderItem={({ item }) => (
-          <MenuItem title={item.title} icon={item.icon} color={item.color} />
+          <MenuItem
+            icon={item.icon}
+            title={item.title}
+            color={item.color}
+            onPress={() => item.id !== 5 && navigation.navigate(item.url)}
+          />
         )}
         ItemSeparatorComponent={() => <ItemSeparator />}
         style={styles.flatList}

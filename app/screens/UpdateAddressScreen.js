@@ -30,7 +30,7 @@ const schema = Yup.object({
   city: Yup.string().label("City"),
 });
 
-export default function UpdateAddressScreen() {
+export default function UpdateAddressScreen({ navigation }) {
   const [info] = useState({
     homeNo: "",
     street: "",
@@ -52,86 +52,91 @@ export default function UpdateAddressScreen() {
   return (
     <>
       <ActivityIndicator visible={isLoading} />
-      <View style={styles.navCont}>
-        <TouchableOpacity style={styles.navIconCont}>
-          <Entypo name="chevron-left" size={30} color={colors.white} />
-        </TouchableOpacity>
-        <Text style={styles.Navtitle} semibold>
-          Update address
-        </Text>
-      </View>
-
-      <ScrollView keyboardShouldPersistTaps="always" style={styles.container}>
-        <KeyboardAvoidingView
-          behavior="padding"
-          keyboardVerticalOffset={Platform.select({
-            ios: () => 0,
-            android: () => 25,
-          })()}
-        >
-          <Formik
-            initialValues={info}
-            onSubmit={handleSubmit}
-            validationSchema={schema}
+      <View style={styles.container}>
+        <View style={styles.navCont}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.navIconCont}
           >
-            {() => (
-              <>
-                <TextInputForm
-                  name="homeNo"
-                  label="Home No"
-                  autoCapitalize="none"
-                  icon={
-                    <MaterialCommunityIcons
-                      name="home-outline"
-                      size={24}
-                      color={colors.primary}
-                    />
-                  }
-                />
-                <TextInputForm
-                  name="street"
-                  label="Street"
-                  icon={
-                    <MaterialCommunityIcons
-                      name="highway"
-                      size={23}
-                      color={colors.primary}
-                    />
-                  }
-                />
+            <Entypo name="chevron-left" size={30} color={colors.white} />
+          </TouchableOpacity>
+          <Text style={styles.Navtitle} semibold>
+            Update address
+          </Text>
+        </View>
 
-                <TextInputForm
-                  name="city"
-                  label="City"
-                  icon={
-                    <MaterialCommunityIcons
-                      size={22}
-                      color={colors.primary}
-                      name="city-variant-outline"
-                    />
-                  }
-                />
+        <ScrollView keyboardShouldPersistTaps="always">
+          <KeyboardAvoidingView
+            behavior="padding"
+            keyboardVerticalOffset={Platform.select({
+              ios: () => 0,
+              android: () => 25,
+            })()}
+          >
+            <Formik
+              initialValues={info}
+              onSubmit={handleSubmit}
+              validationSchema={schema}
+            >
+              {() => (
+                <>
+                  <TextInputForm
+                    name="homeNo"
+                    label="Home No"
+                    autoCapitalize="none"
+                    icon={
+                      <MaterialCommunityIcons
+                        name="home-outline"
+                        size={24}
+                        color={colors.primary}
+                      />
+                    }
+                  />
+                  <TextInputForm
+                    name="street"
+                    label="Street"
+                    icon={
+                      <MaterialCommunityIcons
+                        name="highway"
+                        size={23}
+                        color={colors.primary}
+                      />
+                    }
+                  />
 
-                <TextInputForm
-                  name="address"
-                  label="Address"
-                  icon={
-                    <FontAwesome5
-                      size={20}
-                      name="address-card"
-                      color={colors.primary}
-                    />
-                  }
-                />
+                  <TextInputForm
+                    name="city"
+                    label="City"
+                    icon={
+                      <MaterialCommunityIcons
+                        size={22}
+                        color={colors.primary}
+                        name="city-variant-outline"
+                      />
+                    }
+                  />
 
-                <View style={styles.btnCont}>
-                  <BtnForm title="Save Update" />
-                </View>
-              </>
-            )}
-          </Formik>
-        </KeyboardAvoidingView>
-      </ScrollView>
+                  <TextInputForm
+                    name="address"
+                    label="Address"
+                    icon={
+                      <FontAwesome5
+                        size={20}
+                        name="address-card"
+                        color={colors.primary}
+                      />
+                    }
+                  />
+
+                  <View style={styles.btnCont}>
+                    <BtnForm title="Save Update" />
+                  </View>
+                </>
+              )}
+            </Formik>
+          </KeyboardAvoidingView>
+        </ScrollView>
+      </View>
     </>
   );
 }
@@ -139,7 +144,6 @@ export default function UpdateAddressScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 5,
     paddingHorizontal: 7.5,
     backgroundColor: colors.white,
   },
@@ -159,9 +163,8 @@ const styles = StyleSheet.create({
   },
   navCont: {
     marginTop: 10,
-    marginBottom: 10,
+    marginBottom: 25,
     alignItems: "center",
     flexDirection: "row",
-    marginHorizontal: 10,
   },
 });

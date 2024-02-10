@@ -10,7 +10,7 @@ import ActivityIndicator from "../components/ActivityIndicator";
 
 import cache from "../utility/cache";
 
-export default function AlertCustomizationScreen() {
+export default function AlertCustomizationScreen({ navigation }) {
   const [settings, setSettings] = useState({
     login: { sms: false, email: false },
     profile: { sms: false, email: false },
@@ -81,8 +81,11 @@ export default function AlertCustomizationScreen() {
       <ActivityIndicator visible={isLoading} />
       <View style={styles.container}>
         <View style={styles.navCont}>
-          <TouchableOpacity style={styles.navIconCont}>
-            <Entypo name="chevron-left" size={30} color={colors.primary} />
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.navIconCont}
+          >
+            <Entypo name="chevron-left" size={30} color={colors.white} />
           </TouchableOpacity>
           <Text style={styles.NavTitle} semibold>
             Alert Customization
@@ -213,12 +216,11 @@ const styles = StyleSheet.create({
   navIconCont: {
     padding: 3,
     borderRadius: 5,
-    paddingVertical: 8,
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
   },
   navCont: {
     marginTop: 8,
-    marginBottom: 2,
+    marginBottom: 10,
     alignItems: "center",
     marginHorizontal: 5,
     flexDirection: "row",

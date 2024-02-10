@@ -35,7 +35,7 @@ const schema = Yup.object({
     .oneOf([Yup.ref("password"), null], "Passwords must match")
     .label("Confirm Password"),
 });
-export default function ChangePasswordScreen() {
+export default function ChangePasswordScreen({ navigation }) {
   const [info] = useState({
     current: "",
     confirm: "",
@@ -113,8 +113,11 @@ export default function ChangePasswordScreen() {
         contentContainerStyle={styles.scrollStyle}
       >
         <View style={styles.navCont}>
-          <TouchableOpacity style={styles.navIconCont}>
-            <Entypo name="chevron-left" size={30} color={colors.primary} />
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.navIconCont}
+          >
+            <Entypo name="chevron-left" size={30} color={colors.white} />
           </TouchableOpacity>
           <Text style={styles.Navtitle} semibold>
             Change Password
@@ -184,7 +187,7 @@ const styles = StyleSheet.create({
     padding: 3,
     borderRadius: 5,
     marginRight: 10,
-    backgroundColor: colors.lighter,
+    backgroundColor: colors.primary,
   },
   Navtitle: {
     fontSize: 17,

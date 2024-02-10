@@ -4,6 +4,7 @@ import {
   Platform,
   Keyboard,
   StyleSheet,
+  TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
 import * as Yup from "yup";
@@ -23,7 +24,7 @@ const schema = Yup.object({
     .required()
     .label("Mobile No."),
 });
-export default function ForgotCredentialScreen() {
+export default function ForgotCredentialScreen({ navigation }) {
   const [info] = useState({
     mobile: "",
   });
@@ -42,6 +43,17 @@ export default function ForgotCredentialScreen() {
   return (
     <>
       <ActivityIndicator visible={isLoading} />
+      <View style={styles.navCont}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.navIconCont}
+        >
+          <Entypo name="chevron-left" size={30} color={colors.white} />
+        </TouchableOpacity>
+        <Text style={styles.Navtitle} semibold>
+          Forgot Credential
+        </Text>
+      </View>
       <View style={styles.container}>
         <KeyboardAvoidingView
           behavior="padding"
@@ -65,7 +77,7 @@ export default function ForgotCredentialScreen() {
                   />
                 </View>
                 <Text style={styles.title} semibold>
-                  Reset Credential
+                  Forgot Credential
                 </Text>
                 <TextInputForm
                   name="mobile"
@@ -78,7 +90,7 @@ export default function ForgotCredentialScreen() {
                   }
                 />
 
-                <BtnForm textTransform="capitalize" title="Forgot Password" />
+                <BtnForm title="NEXT" />
               </>
             )}
           </Formik>
@@ -91,9 +103,27 @@ export default function ForgotCredentialScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 5,
     paddingHorizontal: 7.5,
     justifyContent: "center",
+    backgroundColor: colors.white,
+  },
+  Navtitle: {
+    fontSize: 18,
+    textAlign: "center",
+    color: colors.black,
+  },
+  navIconCont: {
+    padding: 3,
+    borderRadius: 5,
+    marginRight: 10,
+    backgroundColor: colors.primary,
+  },
+  navCont: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingHorizontal: 7.5,
+    alignItems: "center",
+    flexDirection: "row",
     backgroundColor: colors.white,
   },
   title: {

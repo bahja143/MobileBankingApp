@@ -39,23 +39,24 @@ const TabNav = () => (
   </Tab.Navigator>
 );
 
-export default function ExchangeNav() {
+export default function ExchangeNav({ navigation }) {
   return (
-    <NavigationContainer>
-      <View style={styles.container}>
-        <View style={styles.navCont}>
-          <TouchableOpacity style={styles.navIconCont}>
-            <Entypo name="chevron-left" size={30} color={colors.primary} />
-          </TouchableOpacity>
-          <Text style={styles.titleNav} semibold>
-            Exchange Rate
-          </Text>
-        </View>
-        <View style={styles.body}>
-          <TabNav />
-        </View>
+    <View style={styles.container}>
+      <View style={styles.navCont}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.navIconCont}
+        >
+          <Entypo name="chevron-left" size={30} color={colors.primary} />
+        </TouchableOpacity>
+        <Text style={styles.titleNav} semibold>
+          Exchange Rate
+        </Text>
       </View>
-    </NavigationContainer>
+      <View style={styles.body}>
+        <TabNav />
+      </View>
+    </View>
   );
 }
 

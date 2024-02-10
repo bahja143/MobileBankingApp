@@ -4,9 +4,9 @@ import { Octicons } from "@expo/vector-icons";
 import Text from "./CustomText";
 import colors from "../config/colors";
 
-export default function Setting({ label, icon }) {
+export default function Setting({ label, icon, onPress }) {
   return (
-    <TouchableOpacity style={styles.item}>
+    <TouchableOpacity onPress={onPress} style={styles.item}>
       <View style={styles.leftItem}>
         {icon}
         <Text semibold style={styles.itemTitle}>

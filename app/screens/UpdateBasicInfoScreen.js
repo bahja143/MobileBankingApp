@@ -21,7 +21,7 @@ import ActivityIndicator from "../components/ActivityIndicator";
 
 import { TextInputForm, BtnForm } from "../components/form";
 
-export default function UpdateBasicInfoScreen() {
+export default function UpdateBasicInfoScreen({ navigation }) {
   const [info] = useState({
     gender: "Male",
     nationality: "Somali",
@@ -43,85 +43,90 @@ export default function UpdateBasicInfoScreen() {
   return (
     <>
       <ActivityIndicator visible={isLoading} />
-      <View style={styles.navCont}>
-        <TouchableOpacity style={styles.navIconCont}>
-          <Entypo name="chevron-left" size={30} color={colors.white} />
-        </TouchableOpacity>
-        <Text style={styles.Navtitle} semibold>
-          Update Basic Information
-        </Text>
+      <View style={styles.container}>
+        <View style={styles.navCont}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.navIconCont}
+          >
+            <Entypo name="chevron-left" size={30} color={colors.white} />
+          </TouchableOpacity>
+          <Text style={styles.Navtitle} semibold>
+            Update Basic Information
+          </Text>
+        </View>
+
+        <ScrollView keyboardShouldPersistTaps="always">
+          <KeyboardAvoidingView
+            behavior="padding"
+            keyboardVerticalOffset={Platform.select({
+              ios: () => 0,
+              android: () => 25,
+            })()}
+          >
+            <Formik initialValues={info} onSubmit={handleSubmit}>
+              {() => (
+                <>
+                  <TextInputForm
+                    disabled
+                    name="gender"
+                    label="Gender"
+                    icon={
+                      <MaterialCommunityIcons
+                        size={25}
+                        name="gender-male"
+                        color={colors.primary}
+                      />
+                    }
+                  />
+
+                  <TextInputForm
+                    disabled
+                    name="dateOfBirth"
+                    label="Date Of Birth"
+                    icon={
+                      <FontAwesome5
+                        size={19}
+                        name="calendar-alt"
+                        color={colors.primary}
+                      />
+                    }
+                  />
+
+                  <TextInputForm
+                    disabled
+                    name="nationality"
+                    label="Nationality"
+                    icon={
+                      <FontAwesome5
+                        name="flag"
+                        size={18}
+                        color={colors.primary}
+                      />
+                    }
+                  />
+
+                  <TextInputForm
+                    name="accupation"
+                    label="Accupation"
+                    icon={
+                      <FontAwesome5
+                        size={19}
+                        name="user-tie"
+                        color={colors.primary}
+                      />
+                    }
+                  />
+
+                  <View style={styles.btnCont}>
+                    <BtnForm title="Save Update" />
+                  </View>
+                </>
+              )}
+            </Formik>
+          </KeyboardAvoidingView>
+        </ScrollView>
       </View>
-
-      <ScrollView keyboardShouldPersistTaps="always" style={styles.container}>
-        <KeyboardAvoidingView
-          behavior="padding"
-          keyboardVerticalOffset={Platform.select({
-            ios: () => 0,
-            android: () => 25,
-          })()}
-        >
-          <Formik initialValues={info} onSubmit={handleSubmit}>
-            {() => (
-              <>
-                <TextInputForm
-                  disabled
-                  name="gender"
-                  label="Gender"
-                  icon={
-                    <MaterialCommunityIcons
-                      size={25}
-                      name="gender-male"
-                      color={colors.primary}
-                    />
-                  }
-                />
-
-                <TextInputForm
-                  disabled
-                  name="dateOfBirth"
-                  label="Date Of Birth"
-                  icon={
-                    <FontAwesome5
-                      size={19}
-                      name="calendar-alt"
-                      color={colors.primary}
-                    />
-                  }
-                />
-
-                <TextInputForm
-                  disabled
-                  name="nationality"
-                  label="Nationality"
-                  icon={
-                    <FontAwesome5
-                      name="flag"
-                      size={18}
-                      color={colors.primary}
-                    />
-                  }
-                />
-
-                <TextInputForm
-                  name="accupation"
-                  label="Accupation"
-                  icon={
-                    <FontAwesome5
-                      size={19}
-                      name="user-tie"
-                      color={colors.primary}
-                    />
-                  }
-                />
-
-                <View style={styles.btnCont}>
-                  <BtnForm title="Save Update" />
-                </View>
-              </>
-            )}
-          </Formik>
-        </KeyboardAvoidingView>
-      </ScrollView>
     </>
   );
 }
@@ -129,7 +134,6 @@ export default function UpdateBasicInfoScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 5,
     paddingHorizontal: 7.5,
     backgroundColor: colors.white,
   },
@@ -149,9 +153,8 @@ const styles = StyleSheet.create({
   },
   navCont: {
     marginTop: 10,
-    marginBottom: 10,
+    marginBottom: 25,
     alignItems: "center",
     flexDirection: "row",
-    marginHorizontal: 10,
   },
 });

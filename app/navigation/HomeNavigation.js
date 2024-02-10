@@ -5,19 +5,27 @@ import { NavigationContainer } from "@react-navigation/native";
 import { CurvedBottomBarExpo } from "react-native-curved-bottom-bar";
 import { Animated, StyleSheet, TouchableOpacity } from "react-native";
 
+import ExchangeNav from "../navigation/ExchangeNav";
 import MyQRCodeScreen from "../screens/MyQRCodeScreen";
 import TransferScreen from "../screens/TransferScreen";
 import BranchesScreen from "../screens/BranchesScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import DashboardScreen from "../screens/DashboardScreen";
 import MyAccountScreen from "../screens/MyAccountScreen";
-import ExchangeNavigation from "../navigation/ExchangeNav";
+import ChangePinScreen from "../screens/ChangePinScreen";
 import UserProfileScreen from "../screens/UserProfileScreen";
 import TransactionsScreen from "../screens/TransactionsScreen";
+import UpdateNextKinScreen from "../screens/UpdateNextKinScreen";
+import UpdateAddressScreen from "../screens/UpdateAddressScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import QRCodeScannerScreen from "../screens/QRCodeScannerScreen";
 import BeneficiariesScreen from "../screens/BeneficiariesScreen";
+import ChangePasswordScreen from "../screens/ChangePasswordScreen";
 import TransferDetailScreen from "../screens/TransferDetailScreen";
+import UpdateBasicInfoScreen from "../screens/UpdateBasicInfoScreen";
+import ForgotCredentialScreen from "../screens/ForgotCredentialScreen";
+import UpdateContactInfoScreen from "../screens/UpdateContactInfoScreen";
+import AlertCustomizationScreen from "../screens/AlertCustomizationScreen";
 
 import colors from "../config/colors";
 import qrCodeAnimation from "../assets/animation/QRCode.json";
@@ -88,7 +96,7 @@ const MainNavigation = ({ navigation }) => {
       />
       <CurvedBottomBarExpo.Screen
         name="Account"
-        component={() => <MyAccountScreen />}
+        component={() => <MyAccountScreen navigation={navigation} />}
         position="RIGHT"
         options={{
           tabBarIcon: ({ focused, color, size }) =>
@@ -116,13 +124,33 @@ const HomeStackNavigator = () => (
   <HomeStack.Navigator screenOptions={{ headerShown: false }}>
     <HomeStack.Screen name="MainNavigation" component={MainNavigation} />
     <HomeStack.Screen name="myqr" component={MyQRCodeScreen} />
+    <HomeStack.Screen name="exchange" component={ExchangeNav} />
+    <HomeStack.Screen name="settings" component={SettingsScreen} />
+    <HomeStack.Screen name="branches" component={BranchesScreen} />
     <HomeStack.Screen name="transfer" component={TransferScreen} />
+    <HomeStack.Screen name="changePin" component={ChangePinScreen} />
     <HomeStack.Screen name="qrcode" component={QRCodeScannerScreen} />
     <HomeStack.Screen name="history" component={TransactionsScreen} />
+    <HomeStack.Screen name="detail" component={TransferDetailScreen} />
     <HomeStack.Screen name="userprofile" component={UserProfileScreen} />
     <HomeStack.Screen name="beneficiaries" component={BeneficiariesScreen} />
     <HomeStack.Screen name="notifications" component={NotificationsScreen} />
-    <HomeStack.Screen name="detail" component={TransferDetailScreen} />
+    <HomeStack.Screen name="updateBasic" component={UpdateBasicInfoScreen} />
+    <HomeStack.Screen
+      name="updateContact"
+      component={UpdateContactInfoScreen}
+    />
+    <HomeStack.Screen name="updateNextKin" component={UpdateNextKinScreen} />
+    <HomeStack.Screen name="updateAddress" component={UpdateAddressScreen} />
+    <HomeStack.Screen
+      name="alertCustomize"
+      component={AlertCustomizationScreen}
+    />
+    <HomeStack.Screen name="changePassword" component={ChangePasswordScreen} />
+    <HomeStack.Screen
+      name="forgotCredential"
+      component={ForgotCredentialScreen}
+    />
   </HomeStack.Navigator>
 );
 

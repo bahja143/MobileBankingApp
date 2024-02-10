@@ -29,7 +29,7 @@ const schema = Yup.object({
   email: Yup.string().email().label("Email"),
 });
 
-export default function UpdateNextKinScreen() {
+export default function UpdateNextKinScreen({ navigation }) {
   const [info] = useState({
     name: "",
     email: "",
@@ -51,89 +51,94 @@ export default function UpdateNextKinScreen() {
   return (
     <>
       <ActivityIndicator visible={isLoading} />
-      <View style={styles.navCont}>
-        <TouchableOpacity style={styles.navIconCont}>
-          <Entypo name="chevron-left" size={30} color={colors.white} />
-        </TouchableOpacity>
-        <Text style={styles.Navtitle} semibold>
-          Update Next Kin
-        </Text>
-      </View>
-
-      <ScrollView keyboardShouldPersistTaps="always" style={styles.container}>
-        <KeyboardAvoidingView
-          behavior="padding"
-          keyboardVerticalOffset={Platform.select({
-            ios: () => 0,
-            android: () => 25,
-          })()}
-        >
-          <Formik
-            initialValues={info}
-            onSubmit={handleSubmit}
-            validationSchema={schema}
+      <View style={styles.container}>
+        <View style={styles.navCont}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.navIconCont}
           >
-            {() => (
-              <>
-                <TextInputForm
-                  name="name"
-                  label="Name"
-                  autoCapitalize="words"
-                  icon={
-                    <FontAwesome5
-                      size={20}
-                      name="user"
-                      color={colors.primary}
-                    />
-                  }
-                />
-                <TextInputForm
-                  name="mobile"
-                  label="Mobile"
-                  keyboardType="numeric"
-                  icon={
-                    <FontAwesome5
-                      size={21}
-                      name="mobile-alt"
-                      color={colors.primary}
-                    />
-                  }
-                />
+            <Entypo name="chevron-left" size={30} color={colors.white} />
+          </TouchableOpacity>
+          <Text style={styles.Navtitle} semibold>
+            Update Next Kin
+          </Text>
+        </View>
 
-                <TextInputForm
-                  name="email"
-                  label="Email"
-                  autoCapitalize="none"
-                  keyboardType="email-address"
-                  icon={
-                    <MaterialCommunityIcons
-                      size={22}
-                      name="email-outline"
-                      color={colors.primary}
-                    />
-                  }
-                />
+        <ScrollView keyboardShouldPersistTaps="always">
+          <KeyboardAvoidingView
+            behavior="padding"
+            keyboardVerticalOffset={Platform.select({
+              ios: () => 0,
+              android: () => 25,
+            })()}
+          >
+            <Formik
+              initialValues={info}
+              onSubmit={handleSubmit}
+              validationSchema={schema}
+            >
+              {() => (
+                <>
+                  <TextInputForm
+                    name="name"
+                    label="Name"
+                    autoCapitalize="words"
+                    icon={
+                      <FontAwesome5
+                        size={20}
+                        name="user"
+                        color={colors.primary}
+                      />
+                    }
+                  />
+                  <TextInputForm
+                    name="mobile"
+                    label="Mobile"
+                    keyboardType="numeric"
+                    icon={
+                      <FontAwesome5
+                        size={21}
+                        name="mobile-alt"
+                        color={colors.primary}
+                      />
+                    }
+                  />
 
-                <TextInputForm
-                  name="relation"
-                  label="Relation"
-                  icon={
-                    <FontAwesome5
-                      size={20}
-                      name="user-friends"
-                      color={colors.primary}
-                    />
-                  }
-                />
+                  <TextInputForm
+                    name="email"
+                    label="Email"
+                    autoCapitalize="none"
+                    keyboardType="email-address"
+                    icon={
+                      <MaterialCommunityIcons
+                        size={22}
+                        name="email-outline"
+                        color={colors.primary}
+                      />
+                    }
+                  />
 
-                <View style={styles.btnCont}>
-                  <BtnForm title="Save Update" />
-                </View>
-              </>
-            )}
-          </Formik>
-        </KeyboardAvoidingView>
-      </ScrollView>
+                  <TextInputForm
+                    name="relation"
+                    label="Relation"
+                    icon={
+                      <FontAwesome5
+                        size={20}
+                        name="user-friends"
+                        color={colors.primary}
+                      />
+                    }
+                  />
+
+                  <View style={styles.btnCont}>
+                    <BtnForm title="Save Update" />
+                  </View>
+                </>
+              )}
+            </Formik>
+          </KeyboardAvoidingView>
+        </ScrollView>
+      </View>
     </>
   );
 }
@@ -141,7 +146,6 @@ export default function UpdateNextKinScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 5,
     paddingHorizontal: 7.5,
     backgroundColor: colors.white,
   },
@@ -161,9 +165,8 @@ const styles = StyleSheet.create({
   },
   navCont: {
     marginTop: 10,
-    marginBottom: 10,
+    marginBottom: 25,
     alignItems: "center",
     flexDirection: "row",
-    marginHorizontal: 10,
   },
 });

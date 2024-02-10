@@ -121,8 +121,11 @@ export default BranchesScreen = ({ navigation }) => {
       </Modal>
       <View style={styles.container}>
         <View style={styles.navCont}>
-          <TouchableOpacity style={styles.navIconCont}>
-            <Entypo name="chevron-left" size={30} color={colors.primary} />
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.navIconCont}
+          >
+            <Entypo name="chevron-left" size={30} color={colors.white} />
           </TouchableOpacity>
           <Text style={styles.Navtitle} semibold>
             Bank Branches
@@ -145,7 +148,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 5,
-    backgroundColor: colors["light"],
+    backgroundColor: colors["lighter"],
   },
   modalBtn: {
     width: "100%",
@@ -185,26 +188,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   itemSep: {
-    height: 3,
+    height: 4,
     backgroundColor: colors.Linking,
+  },
+  Navtitle: {
+    fontSize: 18,
+    textAlign: "center",
+    color: colors.black,
   },
   navIconCont: {
     padding: 3,
-    marginRight: 10,
     borderRadius: 5,
-    paddingVertical: 8,
-    backgroundColor: colors.white,
+    marginRight: 10,
+    backgroundColor: colors.primary,
   },
   navCont: {
     marginTop: 10,
-    marginBottom: 5,
-    flexDirection: "row",
+    marginBottom: 25,
     alignItems: "center",
-    marginBottom: 15,
-  },
-  Navtitle: {
-    fontSize: 17,
-    textAlign: "center",
-    color: colors.black,
+    flexDirection: "row",
   },
 });

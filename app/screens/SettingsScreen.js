@@ -18,7 +18,7 @@ import ActivityIndicator from "../components/ActivityIndicator";
 
 import cache from "../utility/cache";
 
-export default function SettingsScreen() {
+export default function SettingsScreen({ navigation }) {
   const [settings, setSettings] = useState({
     pin: true,
     notify: true,
@@ -55,10 +55,13 @@ export default function SettingsScreen() {
       <ActivityIndicator visible={isLoading} />
       <View style={styles.container}>
         <View style={styles.navCont}>
-          <TouchableOpacity style={styles.navIconCont}>
-            <Entypo name="chevron-left" size={30} color={colors.primary} />
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.navIconCont}
+          >
+            <Entypo name="chevron-left" size={30} color={colors.white} />
           </TouchableOpacity>
-          <Text style={styles.NavTitle} semibold>
+          <Text style={styles.Navtitle} semibold>
             Settings
           </Text>
         </View>
@@ -67,6 +70,7 @@ export default function SettingsScreen() {
             Notifications
           </Text>
           <Setting
+            onPress={() => navigation.navigate("alertCustomize")}
             label="Customize your notifications"
             icon={
               <Entypo size={25} color={colors.primary} name="notification" />
@@ -87,12 +91,14 @@ export default function SettingsScreen() {
             Security
           </Text>
           <Setting
+            onPress={() => navigation.navigate("changePassword")}
             label="Change Password"
             icon={<Octicons name="key" size={25} color={colors.primary} />}
           />
 
           <Setting
             label="Change PIN"
+            onPress={() => navigation.navigate("changePin")}
             icon={
               <MaterialCommunityIcons
                 size={25}
@@ -104,6 +110,7 @@ export default function SettingsScreen() {
 
           <Setting
             label="Forgot PIN"
+            onPress={() => navigation.navigate("forgotCredential")}
             icon={
               <MaterialCommunityIcons
                 size={25}
@@ -161,23 +168,22 @@ const styles = StyleSheet.create({
     marginBottom: 7.5,
     color: "rgba(0, 0, 0, 0.6)",
   },
-  NavTitle: {
-    fontSize: 17,
-    marginLeft: 7.5,
+  Navtitle: {
+    fontSize: 18,
     textAlign: "center",
     color: colors.black,
   },
   navIconCont: {
     padding: 3,
     borderRadius: 5,
-    paddingVertical: 8,
-    backgroundColor: colors.white,
+    marginRight: 10,
+    backgroundColor: colors.primary,
   },
   navCont: {
-    marginTop: 8,
-    marginBottom: 5,
-    marginHorizontal: 5,
-    flexDirection: "row",
+    marginTop: 10,
+    marginBottom: 10,
+    marginHorizontal: 7.5,
     alignItems: "center",
+    flexDirection: "row",
   },
 });
