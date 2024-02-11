@@ -76,8 +76,7 @@ export default function QRCodeScannerScreen({ navigation }) {
     }
   };
   const handleCameraPermission = async () => {
-    const { granted, canAskAgain } =
-      await Camera.requestCameraPermissionsAsync();
+    const { granted } = await Camera.requestCameraPermissionsAsync();
 
     if (!granted) return setCameraPer(true);
   };

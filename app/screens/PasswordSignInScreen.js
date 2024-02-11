@@ -15,17 +15,19 @@ import {
 } from "react-native";
 import * as Yup from "yup";
 import { Formik } from "formik";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import * as LocalAuthentication from "expo-local-authentication";
 
-import colors from "../config/colors";
 import Text from "../components/CustomText";
-
 import SuspendModal from "../components/SuspendModal";
 import { TextInputForm, BtnForm } from "../components/form";
 import ActivityIndicator from "../components/ActivityIndicator";
 
-import Logo from "../assets/images/Logo.png";
+import cache from "../utility/cache";
+import authContext from "../context/AuthContext";
+
+import logo from "../assets/images/Logo.png";
+import colors from "../config/colors";
 
 const schema = Yup.object({
   mobile: Yup.string()
@@ -37,11 +39,7 @@ const schema = Yup.object({
     .required()
     .label("Password"),
 });
-export default function PasswordSignInScreen({ navigation }) {
-  const [myInfo] = useState({
-    mobile: "0907005112",
-    password: "Mysoul24@",
-  });
+export default function PasswordSignInScreen({ navigation, route }) {
   const [info] = useState({
     mobile: "",
     password: "",
@@ -51,19 +49,21 @@ export default function PasswordSignInScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [visible, setVisible] = useState(false);
   const [maxTry, setMaxTry] = useState(0);
+  const { setIsAuth, user: myInfo } = useContext(authContext);
 
   const handleSubmit = (values) => {
     Keyboard.dismiss();
     setErrorMessage("");
+    const user = myInfo["password"];
 
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
       if (
-        values["mobile"] === myInfo["mobile"] &&
-        values["password"] === myInfo["password"]
+        values["mobile"] === user["username"] &&
+        values["password"] === user["password"]
       ) {
-        return;
+        return setIsAuth(true);
       }
 
       if (1 + maxTry === 5) return setVisible(true);
@@ -85,17 +85,19 @@ export default function PasswordSignInScreen({ navigation }) {
     <>
       <ActivityIndicator visible={isLoading} />
       <SuspendModal type="Password" isVisible={visible} />
-      <View style={styles.navCont}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.navIconCont}
-        >
-          <Entypo name="chevron-left" size={30} color={colors.white} />
-        </TouchableOpacity>
-        <Text style={styles.Navtitle} semibold>
-          Sign In
-        </Text>
-      </View>
+      {route.name !== "normalPassword" ? (
+        <View style={styles.navCont}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.navIconCont}
+          >
+            <Entypo name="chevron-left" size={30} color={colors.white} />
+          </TouchableOpacity>
+          <Text style={styles.Navtitle} semibold>
+            Sign In
+          </Text>
+        </View>
+      ) : null}
       <ScrollView
         keyboardShouldPersistTaps="always"
         contentContainerStyle={styles.container}
@@ -109,7 +111,7 @@ export default function PasswordSignInScreen({ navigation }) {
           {({ handleSubmit }) => (
             <View>
               <View style={styles.logoContainer}>
-                <Image style={styles.logo} source={Logo} />
+                <Image style={styles.logo} source={logo} />
                 <Text semibold style={styles.errorMessage}>
                   {errorMessage}
                 </Text>
@@ -278,6 +280,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   errorMessage: {
+    top: 10,
     fontSize: 16,
     color: colors.danger,
   },

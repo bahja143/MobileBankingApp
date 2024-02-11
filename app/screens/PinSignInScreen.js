@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import {
+  Feather,
   Octicons,
   Ionicons,
-  Feather,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import {
@@ -20,7 +20,8 @@ import Text from "../components/CustomText";
 import SuspendModal from "../components/SuspendModal";
 import ActivityIndicator from "../components/ActivityIndicator";
 
-import Logo from "../assets/images/Logo.png";
+import logo from "../assets/images/Logo.png";
+import authContext from "../context/AuthContext";
 
 export default function PinSignInScreen() {
   const [myPin] = useState("6438");
@@ -30,13 +31,18 @@ export default function PinSignInScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const shake = useRef(new Animated.Value(0.5)).current;
   const [isFingerAvailable, setFingerAvailable] = useState(false);
+  const { user, setIsAuth } = useContext(authContext);
 
   const handleTouch = (num) => {
     setPing((e) => e + num);
+    const myPin = user.pin;
 
     if (pin.length === 3) {
       if (pin + num === myPin) {
-        return console.log("Success");
+        setIsLoading(true);
+        return setTimeout(() => {
+          setIsAuth(true);
+        }, 1000);
       }
 
       if (1 + maxTry === 5) return setVisible(true);
@@ -106,7 +112,7 @@ export default function PinSignInScreen() {
       <ActivityIndicator visible={isLoading} />
       <SuspendModal isVisible={visible} type="PIN" />
       <View style={styles.container}>
-        <Image style={styles.logo} source={Logo} />
+        <Image style={styles.logo} source={logo} />
         <Text style={styles.title} semibold>
           Welcome back, <Text bold>Abdisalam Farah!</Text>
         </Text>
@@ -402,8 +408,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     top: -5,
-    width: 100,
-    height: 85,
+    width: 90,
+    height: 80,
     marginBottom: 10,
     alignSelf: "center",
   },

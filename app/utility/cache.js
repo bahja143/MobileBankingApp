@@ -23,4 +23,8 @@ const getItemAsync = async (key) => {
   }
 };
 
-export default { setItemAsync, getItemAsync };
+const deleteItemAsync = async (key) => {
+  await SecureStore.deleteItemAsync(prefix + key);
+};
+
+export default { setItemAsync, getItemAsync, deleteItemAsync };

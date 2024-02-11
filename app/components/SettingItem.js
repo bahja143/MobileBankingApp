@@ -3,7 +3,14 @@ import { Switch, View, StyleSheet } from "react-native";
 import Text from "./CustomText";
 import colors from "../config/colors";
 
-export default function SettingItem({ icon, name, label, value, onChange }) {
+export default function SettingItem({
+  icon,
+  name,
+  label,
+  value,
+  disabled,
+  onChange,
+}) {
   const handleOnChange = (value) => {
     onChange(name, value);
   };
@@ -19,6 +26,7 @@ export default function SettingItem({ icon, name, label, value, onChange }) {
       <Switch
         value={value}
         checked={value}
+        disabled={disabled}
         style={styles.switch}
         thumbColor={colors.white}
         onValueChange={handleOnChange}

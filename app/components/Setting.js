@@ -14,10 +14,10 @@ export default function Setting({ label, icon, onPress }) {
         </Text>
       </View>
       <Octicons
-        style={styles.chevronIcon}
         size={22}
         name="chevron-right"
         color={colors.medium}
+        style={styles.chevronIcon}
       />
     </TouchableOpacity>
   );

@@ -6,11 +6,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import { Entypo, AntDesign } from "@expo/vector-icons";
-import Modal from "react-native-modal";
-import { useState } from "react";
-import { Formik } from "formik";
 import * as Yup from "yup";
+import { Formik } from "formik";
+import { useState } from "react";
+import Modal from "react-native-modal";
+import { Entypo, AntDesign } from "@expo/vector-icons";
 
 import colors from "../config/colors";
 import Text from "../components/CustomText";
@@ -31,108 +31,7 @@ const schema = Yup.object({
   isAccountValid: Yup.boolean().required(),
 });
 
-const data = [
-  {
-    Id: 1,
-    Name: {
-      firstName: "Diana",
-      lastName: "Jack",
-      middleName: "Irene",
-    },
-    Account: "5189175660838",
-  },
-  {
-    Id: 2,
-    Name: {
-      firstName: "Charlie",
-      lastName: "Grace",
-      middleName: "Bob",
-    },
-    Account: "3703284264799",
-  },
-  {
-    Id: 3,
-    Name: {
-      firstName: "Harry",
-      lastName: "Harry",
-      middleName: "Diana",
-    },
-    Account: "8752994657829",
-  },
-  {
-    Id: 4,
-    Name: {
-      firstName: "Bob",
-      lastName: "Jack",
-      middleName: "Frank",
-    },
-    Account: "1400698080874",
-  },
-  {
-    Id: 5,
-    Name: {
-      firstName: "Alice",
-      lastName: "Irene",
-      middleName: "Frank",
-    },
-    Account: "7579333944348",
-  },
-  {
-    Id: 6,
-    Name: {
-      firstName: "Harry",
-      lastName: "Eve",
-      middleName: "Frank",
-    },
-    Account: "1194989860702",
-  },
-  {
-    Id: 7,
-    Name: {
-      firstName: "Bob",
-      lastName: "Harry",
-      middleName: "Jack",
-    },
-    Account: "9962878623715",
-  },
-  {
-    Id: 8,
-    Name: {
-      firstName: "Frank",
-      lastName: "Grace",
-      middleName: "Irene",
-    },
-    Account: "6382348098347",
-  },
-  {
-    Id: 9,
-    Name: {
-      firstName: "Alice",
-      lastName: "Diana",
-      middleName: "Jack",
-    },
-    Account: "1828359688819",
-  },
-  {
-    Id: 10,
-    Name: {
-      firstName: "Charlie",
-      lastName: "Jack",
-      middleName: "Grace",
-    },
-    Account: "1481311198646",
-  },
-  {
-    Id: 11,
-    Name: {
-      firstName: "Abdisalam",
-      lastName: "Abdi",
-      middleName: "Farah",
-    },
-    Account: "0272010000033",
-    mobile: "0907005112",
-  },
-];
+import data from "../data/accounts.json";
 
 export default function SignUpScreen({ navigation }) {
   const [transfer, setTransfer] = useState({
@@ -164,7 +63,10 @@ export default function SignUpScreen({ navigation }) {
         return setErrorMessage("Invalid Account!");
 
       setTransfer(transfer);
-      navigation.navigate("verify", transfer);
+      navigation.navigate(
+        "verify",
+        data.find((d) => d.Account == transfer["accountNo"])
+      );
       setIsLoading(false);
     }, 3000);
   };
@@ -228,7 +130,6 @@ export default function SignUpScreen({ navigation }) {
           </TouchableOpacity>
         </View>
       </Modal>
-
       <ScrollView
         keyboardShouldPersistTaps="always"
         contentContainerStyle={styles.main}
@@ -350,12 +251,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   main: {
+    flex: 1,
     backgroundColor: colors.white,
   },
   container: {
     flex: 1,
     marginHorizontal: 7.5,
-    justifyContent: "center",
+    justifyContent: "flex-start",
   },
   title: {
     fontSize: 17,

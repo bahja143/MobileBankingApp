@@ -1,3 +1,4 @@
+import { useContext, useState } from "react";
 import { View, FlatList, StyleSheet } from "react-native";
 
 import colors from "../config/colors";
@@ -5,6 +6,10 @@ import colors from "../config/colors";
 import Profile from "../components/Profile";
 import MenuItem from "../components/MenuItem";
 import ItemSeparator from "../components/ItemSeparator";
+import ActivityIndicator from "../components/ActivityIndicator";
+
+import cache from "../utility/cache";
+import authContext from "../context/AuthContext";
 
 const menuItems = [
   {
@@ -51,24 +56,40 @@ const menuItems = [
 ];
 
 const MyAccountScreen = ({ navigation }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { setIsAuth } = useContext(authContext);
+
+  const handleSignOut = async () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      setIsAuth(false);
+    }, 1000);
+  };
+
   return (
-    <View style={styles.container}>
-      <Profile title="Abdisalam Farah Abdi" subtile="0907005112" />
-      <FlatList
-        data={menuItems}
-        style={styles.flatList}
-        keyExtractor={(i) => i.id.toString()}
-        renderItem={({ item }) => (
-          <MenuItem
-            icon={item.icon}
-            title={item.title}
-            color={item.color}
-            onPress={() => item.id !== 6 && navigation.navigate(item.url)}
-          />
-        )}
-        ItemSeparatorComponent={() => <ItemSeparator />}
-      />
-    </View>
+    <>
+      <ActivityIndicator visible={isLoading} />
+      <View style={styles.container}>
+        <Profile title="Abdisalam Farah Abdi" subtile="0907005112" />
+        <FlatList
+          data={menuItems}
+          style={styles.flatList}
+          keyExtractor={(i) => i.id.toString()}
+          renderItem={({ item }) => (
+            <MenuItem
+              icon={item.icon}
+              title={item.title}
+              color={item.color}
+              onPress={() =>
+                item.id !== 6 ? navigation.navigate(item.url) : handleSignOut()
+              }
+            />
+          )}
+          ItemSeparatorComponent={() => <ItemSeparator />}
+        />
+      </View>
+    </>
   );
 };
 

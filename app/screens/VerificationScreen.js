@@ -24,7 +24,7 @@ const schema = Yup.object({
     .label("Code"),
 });
 
-export default function VerificationScreen({ navigation }) {
+export default function VerificationScreen({ route, navigation }) {
   const [data] = useState({ code: "" });
   const [timer, setTimer] = useState(120);
   const timeOutCallback = useCallback(
@@ -39,8 +39,7 @@ export default function VerificationScreen({ navigation }) {
 
     setTimeout(() => {
       setIsLoading(false);
-      console.log("Hello, world");
-      navigation.navigate("createPassword", values);
+      navigation.navigate("createPassword", route.params);
     }, 3000);
   };
   const resetTimer = function () {

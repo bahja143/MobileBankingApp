@@ -7,13 +7,15 @@ import {
 } from "react-native";
 import * as Yup from "yup";
 import { Formik } from "formik";
-import { useState } from "react";
+import { useState, useContext } from "react";
 
-import colors from "../config/colors";
 import Text from "../components/CustomText";
+import { TextInputForm, BtnForm } from "../components/form";
 import ActivityIndicator from "../components/ActivityIndicator";
 
-import { TextInputForm, BtnForm } from "../components/form";
+import cache from "../utility/cache";
+import colors from "../config/colors";
+import authContext from "../context/AuthContext";
 
 const schema = Yup.object({
   password: Yup.string()
@@ -32,20 +34,32 @@ const schema = Yup.object({
     .oneOf([Yup.ref("password"), null], "Passwords must match")
     .label("Confirm Password"),
 });
-export default function CreatePasswordScreen() {
+export default function CreatePasswordScreen({ route }) {
   const [info] = useState({
     confirm: "",
     password: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const { setUser, setAccount } = useContext(authContext);
 
   const handleSubmit = (values) => {
     setIsLoading(true);
     Keyboard.dismiss();
+    const account = route.params;
+    const auth = {
+      type: "password",
+      password: {
+        username: account.mobile,
+        password: values.password,
+      },
+    };
 
     setTimeout(() => {
+      setUser(auth);
+      setAccount(account);
+      cache.setItemAsync("auth", auth);
+      cache.setItemAsync("account", account);
       setIsLoading(false);
-      console.log(values);
     }, 3000);
   };
   const checkPasswordStrength = (password) => {

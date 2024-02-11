@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import {
   View,
   Keyboard,
@@ -8,18 +8,22 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
-import FlashMessage, { showMessage } from "react-native-flash-message";
 
 import colors from "../config/colors";
 import Button from "../components/Button1";
 import Text from "../components/CustomText";
 import ActivityIndicator from "../components/ActivityIndicator";
 
-function CreatePinScreen() {
+import cache from "../utility/cache";
+import authContext from "../context/AuthContext";
+
+function CreatePinScreen({ navigation, route }) {
   const inputRef1 = useRef(null);
   const inputRef2 = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [pin, setPing] = useState({ pin: "", confirm: "" });
+  const { user, setIsAuth, setUser } = useContext(authContext);
 
   const handleOnchange = (name, value) => {
     setPing({ ...pin, [name]: value });
@@ -32,44 +36,55 @@ function CreatePinScreen() {
   const handleOpenKeyboard2 = () => {
     inputRef2.current.focus();
   };
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const enablePin = route.params?.pin ? true : false;
+    const settings = await cache.getItemAsync("settings");
+
     Keyboard.dismiss();
-    if (pin["pin"].length !== 4 || pin["confirm"].length !== 4)
-      return showMessage({
-        message: "PIN Code",
-        description: "Please Complete",
-      });
-    else if (pin["pin"] !== pin["confirm"])
-      return showMessage({
-        message: "PIN Code",
-        description: "New PIN and Confirm PIN Must Mach",
-      });
+    if (pin["pin"].length !== 4 || pin["confirm"].length !== 4) {
+      return setErrorMessage("Please Complete");
+    }
+
+    if (pin["pin"] !== pin["confirm"]) {
+      return setErrorMessage("New PIN and Confirm PIN Must Mach");
+    }
 
     setIsLoading(true);
-    setTimeout(() => {
+    setTimeout(async () => {
+      await cache.setItemAsync("auth", {
+        ...user,
+        pin: pin["pin"],
+        type: enablePin ? "pin" : user.type,
+      });
+      await cache.setItemAsync("settings", { ...settings, pin: true });
       setIsLoading(false);
+      setIsAuth(false);
+      setUser({
+        ...user,
+        pin: pin["pin"],
+        type: enablePin ? "pin" : user.type,
+      });
     }, 3000);
   };
 
   return (
     <>
       <ActivityIndicator visible={isLoading} />
-      <FlashMessage
-        position="top"
-        style={styles.flashMess}
-        textStyle={styles.flashMessText}
-        titleStyle={styles.flashMessTitle}
-      />
-      <View style={styles.navCont}>
-        <TouchableOpacity style={styles.navIconCont}>
-          <Entypo name="chevron-left" size={30} color={colors.primary} />
-        </TouchableOpacity>
-        <Text style={styles.title} semibold>
-          New PIN Code
-        </Text>
-      </View>
-
       <View style={styles.container}>
+        <View style={styles.navCont}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.navIconCont}
+          >
+            <Entypo name="chevron-left" size={30} color={colors.white} />
+          </TouchableOpacity>
+          <Text style={styles.title} semibold>
+            New PIN Code
+          </Text>
+        </View>
+
+        <Text style={styles.errorMessage}>{errorMessage}</Text>
+
         <TouchableWithoutFeedback
           style={styles.container}
           onPress={handleOpenKeyboard1}
@@ -167,6 +182,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 7.5,
     backgroundColor: colors.white,
   },
+  errorMessage: {
+    fontSize: 15,
+    marginBottom: 25,
+    textAlign: "center",
+    color: colors.danger,
+  },
   flashMessText: {
     textAlign: "center",
     color: colors.primary,
@@ -190,14 +211,13 @@ const styles = StyleSheet.create({
     padding: 3,
     borderRadius: 5,
     marginRight: 10,
-    backgroundColor: colors.lighter,
+    backgroundColor: colors.primary,
   },
   navCont: {
     marginTop: 10,
-    marginBottom: 40,
+    marginBottom: 20,
     flexDirection: "row",
     alignItems: "center",
-    marginHorizontal: 10,
   },
   inputCont: {
     marginTop: 40,

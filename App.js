@@ -20,6 +20,9 @@ import AuthNavigation from "./app/navigation/AuthNavigation";
 import HomeNavigation from "./app/navigation/HomeNavigation";
 import SessionAndPushNotification from "./app/components/SessionAndPushNotification";
 
+import cache from "./app/utility/cache";
+import AuthContext from "./app/context/AuthContext";
+
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -29,12 +32,14 @@ Notifications.setNotificationHandler({
 });
 
 export default function App() {
+  const [user, setUser] = useState();
+  const [account, setAccount] = useState();
+  const [isAuth, setIsAuth] = useState(false);
   const [idleTime, setIdleTime] = useState(0); // Track inactivity duration
   const [isVisible, setIsVisible] = useState(false);
   const [appIsReady, setAppIsReady] = useState(false);
   const [lastInteraction, setLastInteraction] = useState(new Date()); // Track last interaction time
   const IDLE_THRESHOLD = 50 * 60 * 1000; // Logout after 5 minutes of inactivity (in milliseconds)
-
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true, // Handle any touch event
@@ -57,6 +62,13 @@ export default function App() {
       trigger: null,
     });
   };
+  const handleLoadAuth = async () => {
+    const auth = await cache.getItemAsync("auth");
+    const account = await cache.getItemAsync("account");
+
+    setUser(auth);
+    setAccount(account);
+  };
 
   // useEffect(() => {
   //   const updateIdleTime = () => {
@@ -74,6 +86,7 @@ export default function App() {
   useEffect(() => {
     async function prepare() {
       try {
+        await handleLoadAuth();
         await Font.loadAsync({
           Inter_700Bold,
           Inter_300Light,
@@ -120,10 +133,17 @@ export default function App() {
         isVisible={isVisible}
         setIsVisible={setIsVisible}
       /> */}
-      <Screen onLayout={onLayoutRootView}>
-        <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
-        <AuthNavigation />
-      </Screen>
+      <AuthContext.Provider
+        value={{ user, setUser, account, setAccount, isAuth, setIsAuth }}
+      >
+        <Screen onLayout={onLayoutRootView}>
+          <StatusBar
+            barStyle="light-content"
+            backgroundColor={colors.primary}
+          />
+          {user ? <HomeNavigation /> : <AuthNavigation />}
+        </Screen>
+      </AuthContext.Provider>
     </>
   );
 }
