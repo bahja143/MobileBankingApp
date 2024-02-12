@@ -7,15 +7,17 @@ import {
 } from "react-native";
 import * as Yup from "yup";
 import { Formik } from "formik";
-import { useState } from "react";
 import { Entypo } from "@expo/vector-icons";
-import FlashMessage, { showMessage } from "react-native-flash-message";
+import { useState, useContext } from "react";
 
-import colors from "../config/colors";
 import Text from "../components/CustomText";
 import ActivityIndicator from "../components/ActivityIndicator";
 
 import { TextInputForm, BtnForm } from "../components/form";
+
+import cache from "../utility/cache";
+import colors from "../config/colors";
+import authContext from "../context/AuthContext";
 
 const schema = Yup.object({
   current: Yup.string().min(6, "Invalid Password").required().label("Password"),
@@ -41,21 +43,28 @@ export default function ChangePasswordScreen({ navigation }) {
     confirm: "",
     password: "",
   });
-  const [myInfo] = useState({ password: "Mysoul25@" });
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const { user, setUser, setIsAuth } = useContext(authContext);
 
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
+    const settings = await cache.getItemAsync("settings");
+
     Keyboard.dismiss();
-    if (values["current"] !== myInfo.password)
-      return showMessage({
-        message: "Password",
-        description: "Invalid Current Password",
-      });
+    if (values["current"] !== user["password"].password)
+      return setErrorMessage("Invalid Current Password");
 
     setIsLoading(true);
-    setTimeout(() => {
+    setTimeout(async () => {
       setIsLoading(false);
-      console.log(values);
+      await cache.setItemAsync("auth", {
+        ...user,
+        type: "password",
+        password: { ...user.password, password: values["password"] },
+      });
+      await cache.setItemAsync("settings", { ...settings, pin: false });
+      setUser({ ...user, type: "password" });
+      setIsAuth(false);
     }, 3000);
   };
   const checkPasswordStrength = (password) => {
@@ -100,13 +109,6 @@ export default function ChangePasswordScreen({ navigation }) {
   return (
     <>
       <ActivityIndicator visible={isLoading} />
-      <FlashMessage
-        position="top"
-        duration={2000}
-        style={styles.flashMess}
-        textStyle={styles.flashMessText}
-        titleStyle={styles.flashMessTitle}
-      />
       <ScrollView
         style={styles.container}
         keyboardShouldPersistTaps="always"
@@ -123,6 +125,7 @@ export default function ChangePasswordScreen({ navigation }) {
             Change Password
           </Text>
         </View>
+        <Text style={styles.errorMessage}>{errorMessage}</Text>
         <Formik
           initialValues={info}
           onSubmit={handleSubmit}
@@ -166,6 +169,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 7.5,
     backgroundColor: colors.white,
   },
+  errorMessage: {
+    fontSize: 15,
+    marginBottom: 10,
+    textAlign: "center",
+    color: colors.danger,
+  },
   scrollStyle: {
     paddingBottom: 10,
   },
@@ -196,7 +205,7 @@ const styles = StyleSheet.create({
   },
   navCont: {
     marginTop: 10,
-    marginBottom: 40,
+    marginBottom: 15,
     flexDirection: "row",
     alignItems: "center",
   },

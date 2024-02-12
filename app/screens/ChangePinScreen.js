@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import {
   View,
   Keyboard,
@@ -9,19 +9,23 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
-import FlashMessage, { showMessage } from "react-native-flash-message";
 
 import colors from "../config/colors";
+
 import Button from "../components/Button1";
 import Text from "../components/CustomText";
 import ActivityIndicator from "../components/ActivityIndicator";
+
+import cache from "../utility/cache";
+import authContext from "../context/AuthContext";
 
 function ChangePinScreen({ navigation }) {
   const inputRef1 = useRef(null);
   const inputRef2 = useRef(null);
   const inputRef3 = useRef(null);
-  const [myPin] = useState("6538");
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const { user, setUser, setIsAuth } = useContext(authContext);
   const [pin, setPing] = useState({ oldPin: "", pin: "", confirm: "" });
 
   const handleOnchange = (name, value) => {
@@ -39,46 +43,37 @@ function ChangePinScreen({ navigation }) {
   const handleOpenKeyboard3 = () => {
     inputRef3.current.focus();
   };
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const settings = await cache.getItemAsync("settings");
+
     Keyboard.dismiss();
     if (pin["oldPin"].length !== 4)
-      return showMessage({
-        message: "PIN Code",
-        description: "Please enter valid current PIN Code",
-      });
-    if (pin["oldPin"] !== myPin)
-      return showMessage({
-        message: "PIN Code",
-        description: "Invalid Current PIN Code",
-      });
-
+      return setErrorMessage("Please enter valid current PIN Code");
+    if (pin["oldPin"] !== user["pin"])
+      return setErrorMessage("Invalid Current PIN Code");
     if (pin["pin"].length !== 4 || pin["confirm"].length !== 4)
-      return showMessage({
-        message: "PIN Code",
-        description: "Please Complete",
-      });
+      return setErrorMessage("Please Complete");
     else if (pin["pin"] !== pin["confirm"])
-      return showMessage({
-        message: "PIN Code",
-        description: "New PIN and Confirm PIN Must Mach",
-      });
+      return setErrorMessage("New PIN and Confirm PIN Must Mach");
 
     setIsLoading(true);
-    setTimeout(() => {
+    setTimeout(async () => {
       setIsLoading(false);
+      setIsLoading(false);
+      await cache.setItemAsync("auth", {
+        ...user,
+        type: "pin",
+        pin: pin["pin"],
+      });
+      await cache.setItemAsync("settings", { ...settings, pin: true });
+      setUser({ ...user, type: "pin", pin: pin["pin"] });
+      setIsAuth(false);
     }, 3000);
   };
 
   return (
     <>
       <ActivityIndicator visible={isLoading} />
-      <FlashMessage
-        position="top"
-        duration={2000}
-        style={styles.flashMess}
-        textStyle={styles.flashMessText}
-        titleStyle={styles.flashMessTitle}
-      />
       <View style={styles.container}>
         <View style={styles.navCont}>
           <TouchableOpacity
@@ -91,7 +86,7 @@ function ChangePinScreen({ navigation }) {
             Change PIN Code
           </Text>
         </View>
-
+        <Text style={styles.errorMessage}>{errorMessage}</Text>
         <ScrollView
           keyboardShouldPersistTaps="always"
           contentContainerStyle={styles.scroll}
@@ -238,6 +233,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 7.5,
     backgroundColor: colors.white,
   },
+  errorMessage: {
+    fontSize: 15,
+    marginBottom: 10,
+    textAlign: "center",
+    color: colors.danger,
+  },
   scroll: {
     justifyContent: "flex-start",
   },
@@ -271,7 +272,7 @@ const styles = StyleSheet.create({
   },
   navCont: {
     marginTop: 10,
-    marginBottom: 40,
+    marginBottom: 15,
     flexDirection: "row",
     alignItems: "center",
   },

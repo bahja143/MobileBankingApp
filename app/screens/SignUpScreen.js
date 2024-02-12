@@ -65,7 +65,7 @@ export default function SignUpScreen({ navigation }) {
       setTransfer(transfer);
       navigation.navigate(
         "verify",
-        data.find((d) => d.Account == transfer["accountNo"])
+        data.find((d) => d.Account == transfer["accountNo"]).mobile
       );
       setIsLoading(false);
     }, 3000);

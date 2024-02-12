@@ -9,14 +9,16 @@ import {
 } from "react-native";
 import * as Yup from "yup";
 import { Formik } from "formik";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import colors from "../config/colors";
 import Text from "../components/CustomText";
 import ActivityIndicator from "../components/ActivityIndicator";
 
 import { TextInputForm, BtnForm } from "../components/form";
+
+import colors from "../config/colors";
+import authContext from "../context/AuthContext";
 
 const schema = Yup.object({
   mobile: Yup.string()
@@ -28,15 +30,21 @@ export default function ForgotCredentialScreen({ navigation }) {
   const [info] = useState({
     mobile: "",
   });
+  const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { user } = useContext(authContext);
 
   const handleSubmit = (values) => {
-    setIsLoading(true);
+    setErrorMessage(null);
     Keyboard.dismiss();
 
+    if (user["password"].username !== values["mobile"])
+      return setErrorMessage("Invalid Mobile No.");
+
+    setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      console.log(values);
+      navigation.navigate("verifyPin", values["mobile"]);
     }, 3000);
   };
 
@@ -76,9 +84,8 @@ export default function ForgotCredentialScreen({ navigation }) {
                     color={colors["primary"]}
                   />
                 </View>
-                <Text style={styles.title} semibold>
-                  Forgot Credential
-                </Text>
+                <Text style={styles.errorMessage}>{errorMessage}</Text>
+
                 <TextInputForm
                   name="mobile"
                   maxLength={10}
@@ -89,7 +96,6 @@ export default function ForgotCredentialScreen({ navigation }) {
                     <Entypo name="mobile" size={22} color={colors.primary} />
                   }
                 />
-
                 <BtnForm title="NEXT" />
               </>
             )}
@@ -107,6 +113,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: colors.white,
   },
+  errorMessage: {
+    top: -10,
+    fontSize: 15,
+    marginBottom: 10,
+    textAlign: "center",
+    color: colors.danger,
+  },
   Navtitle: {
     fontSize: 18,
     textAlign: "center",
@@ -121,9 +134,9 @@ const styles = StyleSheet.create({
   navCont: {
     paddingTop: 10,
     paddingBottom: 10,
-    paddingHorizontal: 7.5,
     alignItems: "center",
     flexDirection: "row",
+    paddingHorizontal: 7.5,
     backgroundColor: colors.white,
   },
   title: {
@@ -134,8 +147,9 @@ const styles = StyleSheet.create({
     color: colors["medium"],
   },
   iconContainer: {
-    width: 125,
-    height: 125,
+    top: -25,
+    width: 120,
+    height: 120,
     borderRadius: 75,
     alignSelf: "center",
     alignItems: "center",

@@ -21,8 +21,8 @@ import * as LocalAuthentication from "expo-local-authentication";
 import FlashMessage, { showMessage } from "react-native-flash-message";
 
 import colors from "../config/colors";
-import Text from "../components/CustomText";
 
+import Text from "../components/CustomText";
 import Setting from "../components/Setting";
 import SettingItem from "../components/SettingItem";
 import ActivityIndicator from "../components/ActivityIndicator";
@@ -50,13 +50,11 @@ export default function SettingsScreen({ navigation }) {
           description: "Biometric hardware not available on you phone",
         });
     }
-
     if (name === "notify") {
       const { granted } = await Notifications.requestPermissionsAsync();
 
       if (!granted) return setVisible(true);
     }
-
     if (name === "pin") {
       if (!user.pin) return navigation.navigate("createPin", { pin: true });
 

@@ -18,6 +18,7 @@ import MyAccountScreen from "../screens/MyAccountScreen";
 import ChangePinScreen from "../screens/ChangePinScreen";
 import CreatePinScreen from "../screens/CreatePinScreen";
 import UserProfileScreen from "../screens/UserProfileScreen";
+import VerificationScreen from "../screens/VerificationScreen";
 import TransactionsScreen from "../screens/TransactionsScreen";
 import UpdateNextKinScreen from "../screens/UpdateNextKinScreen";
 import UpdateAddressScreen from "../screens/UpdateAddressScreen";
@@ -178,7 +179,15 @@ const HomeStackNavigator = () => {
         name="forgotCredential"
         component={ForgotCredentialScreen}
       />
-      <HomeStack.Screen name="createPin" component={CreatePinScreen} />
+      <HomeStack.Screen
+        name="createPin"
+        component={CreatePinScreen}
+        options={{
+          gestureEnabled: false,
+          headerLeft: () => <></>,
+        }}
+      />
+      <HomeStack.Screen name="verifyPin" component={VerificationScreen} />
       <HomeStack.Screen name="support" component={CustomerSupportScreen} />
     </HomeStack.Navigator>
   );

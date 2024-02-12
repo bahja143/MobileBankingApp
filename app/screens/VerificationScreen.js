@@ -4,6 +4,7 @@ import {
   Platform,
   Keyboard,
   StyleSheet,
+  BackHandler,
   TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
@@ -11,11 +12,11 @@ import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
-import colors from "../config/colors";
 import Text from "../components/CustomText";
+import { TextInputForm, BtnForm } from "../components/form";
 import ActivityIndicator from "../components/ActivityIndicator";
 
-import { TextInputForm, BtnForm } from "../components/form";
+import colors from "../config/colors";
 
 const schema = Yup.object({
   code: Yup.string()
@@ -39,11 +40,14 @@ export default function VerificationScreen({ route, navigation }) {
 
     setTimeout(() => {
       setIsLoading(false);
+
+      if (route.name === "verifyPin")
+        return navigation.navigate("createPin", route.params);
+
       navigation.navigate("createPassword", route.params);
     }, 3000);
   };
   const resetTimer = function () {
-    console.log("Hello");
     if (!timer) {
       setTimer(120);
     }
@@ -52,6 +56,14 @@ export default function VerificationScreen({ route, navigation }) {
   useEffect(() => {
     timer > 0 && setTimeout(timeOutCallback, 1000);
   }, [timer, timeOutCallback]);
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => true
+    );
+    return () => backHandler.remove();
+  }, []);
 
   return (
     <>
@@ -85,7 +97,7 @@ export default function VerificationScreen({ route, navigation }) {
               Verification
             </Text>
             <Text style={styles.subtitle} semibold>
-              You will get a OTP via <Text bold>0907005112</Text>
+              You will get a OTP via <Text bold>{route.params}</Text>
             </Text>
           </View>
 
@@ -123,8 +135,8 @@ export default function VerificationScreen({ route, navigation }) {
           </Text>
           <TouchableOpacity disabled={timer !== 0} onPress={resetTimer}>
             <Text
-              style={[styles.resend, timer !== 0 && { color: colors.medium }]}
               bold
+              style={[styles.resend, timer !== 0 && { color: colors.medium }]}
             >
               Resend again
             </Text>

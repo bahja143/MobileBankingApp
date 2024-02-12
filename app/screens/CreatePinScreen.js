@@ -1,13 +1,12 @@
-import { useRef, useState, useContext } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
 import {
   View,
   Keyboard,
   TextInput,
   StyleSheet,
-  TouchableOpacity,
+  BackHandler,
   TouchableWithoutFeedback,
 } from "react-native";
-import { Entypo } from "@expo/vector-icons";
 
 import colors from "../config/colors";
 import Button from "../components/Button1";
@@ -17,7 +16,7 @@ import ActivityIndicator from "../components/ActivityIndicator";
 import cache from "../utility/cache";
 import authContext from "../context/AuthContext";
 
-function CreatePinScreen({ navigation, route }) {
+function CreatePinScreen({ route }) {
   const inputRef1 = useRef(null);
   const inputRef2 = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,6 +36,7 @@ function CreatePinScreen({ navigation, route }) {
     inputRef2.current.focus();
   };
   const handleSubmit = async () => {
+    setErrorMessage(null);
     const enablePin = route.params?.pin ? true : false;
     const settings = await cache.getItemAsync("settings");
 
@@ -67,24 +67,19 @@ function CreatePinScreen({ navigation, route }) {
     }, 3000);
   };
 
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => true
+    );
+    return () => backHandler.remove();
+  }, []);
+
   return (
     <>
       <ActivityIndicator visible={isLoading} />
       <View style={styles.container}>
-        <View style={styles.navCont}>
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            style={styles.navIconCont}
-          >
-            <Entypo name="chevron-left" size={30} color={colors.white} />
-          </TouchableOpacity>
-          <Text style={styles.title} semibold>
-            New PIN Code
-          </Text>
-        </View>
-
         <Text style={styles.errorMessage}>{errorMessage}</Text>
-
         <TouchableWithoutFeedback
           style={styles.container}
           onPress={handleOpenKeyboard1}
@@ -184,7 +179,8 @@ const styles = StyleSheet.create({
   },
   errorMessage: {
     fontSize: 15,
-    marginBottom: 25,
+    marginTop: 25,
+    marginBottom: 20,
     textAlign: "center",
     color: colors.danger,
   },
@@ -206,18 +202,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     textAlign: "center",
     color: colors.black,
-  },
-  navIconCont: {
-    padding: 3,
-    borderRadius: 5,
-    marginRight: 10,
-    backgroundColor: colors.primary,
-  },
-  navCont: {
-    marginTop: 10,
-    marginBottom: 20,
-    flexDirection: "row",
-    alignItems: "center",
   },
   inputCont: {
     marginTop: 40,
