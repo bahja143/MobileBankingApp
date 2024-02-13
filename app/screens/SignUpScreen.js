@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
   },
   navCont: {
     marginTop: 10,
-    marginBottom: 50,
+    marginBottom: 30,
     flexDirection: "row",
     alignItems: "center",
   },

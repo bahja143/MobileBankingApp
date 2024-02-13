@@ -1,9 +1,8 @@
+import { useContext } from "react";
 import Lottie from "lottie-react-native";
-import * as SplashScreen from "expo-splash-screen";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
-import { useState, useEffect, useCallback, useContext } from "react";
 import { CurvedBottomBarExpo } from "react-native-curved-bottom-bar";
 import { Animated, StyleSheet, TouchableOpacity } from "react-native";
 
@@ -28,6 +27,7 @@ import BeneficiariesScreen from "../screens/BeneficiariesScreen";
 import PasswordSignInScreen from "../screens/PasswordSignInScreen";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen";
 import TransferDetailScreen from "../screens/TransferDetailScreen";
+import CreatePasswordScreen from "../screens/CreatePasswordScreen";
 import CustomerSupportScreen from "../screens/CustomerSupportScreen";
 import UpdateBasicInfoScreen from "../screens/UpdateBasicInfoScreen";
 import ForgotCredentialScreen from "../screens/ForgotCredentialScreen";
@@ -139,10 +139,23 @@ const HomeStackNavigator = () => {
           name="normalPassword"
           component={PasswordSignInScreen}
         />
+        <HomeStack.Screen name="exchange" component={ExchangeNav} />
+        <HomeStack.Screen name="verify" component={VerificationScreen} />
+        <HomeStack.Screen name="forgot" component={ForgotCredentialScreen} />
+        <HomeStack.Screen
+          name="createPassword"
+          component={CreatePasswordScreen}
+        />
+        <HomeStack.Screen name="support" component={CustomerSupportScreen} />
       </HomeStack.Navigator>
     ) : (
       <HomeStack.Navigator screenOptions={{ headerShown: false }}>
         <HomeStack.Screen name="pin" component={PinSignInScreen} />
+        <HomeStack.Screen name="exchange" component={ExchangeNav} />
+        <HomeStack.Screen name="createPin" component={CreatePinScreen} />
+        <HomeStack.Screen name="verifyPin" component={VerificationScreen} />
+        <HomeStack.Screen name="forgot" component={ForgotCredentialScreen} />
+        <HomeStack.Screen name="support" component={CustomerSupportScreen} />
       </HomeStack.Navigator>
     )
   ) : (
@@ -179,14 +192,8 @@ const HomeStackNavigator = () => {
         name="forgotCredential"
         component={ForgotCredentialScreen}
       />
-      <HomeStack.Screen
-        name="createPin"
-        component={CreatePinScreen}
-        options={{
-          gestureEnabled: false,
-          headerLeft: () => <></>,
-        }}
-      />
+      <HomeStack.Screen name="pin" component={PinSignInScreen} />
+      <HomeStack.Screen name="createPin" component={CreatePinScreen} />
       <HomeStack.Screen name="verifyPin" component={VerificationScreen} />
       <HomeStack.Screen name="support" component={CustomerSupportScreen} />
     </HomeStack.Navigator>

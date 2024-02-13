@@ -40,22 +40,23 @@ export default function CreatePasswordScreen({ route }) {
     password: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const { setUser, setAccount } = useContext(authContext);
+  const { setUser, setIsAuth, account, setAccount } = useContext(authContext);
 
   const handleSubmit = (values) => {
     setIsLoading(true);
     Keyboard.dismiss();
-    const account = route.params;
+    const mobile = route.params;
     const auth = {
       type: "password",
       password: {
-        username: account.mobile,
+        username: mobile,
         password: values.password,
       },
     };
 
     setTimeout(() => {
       setUser(auth);
+      setIsAuth(true);
       setAccount(account);
       cache.setItemAsync("auth", auth);
       cache.setItemAsync("account", account);

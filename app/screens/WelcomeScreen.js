@@ -13,9 +13,8 @@ export default function WelcomeScreen({ navigation }) {
       <View style={styles.titleCont}>
         <Image style={styles.logo} source={Logo} />
         <Text style={styles.title} bold>
-          Welcome To Shabelle Bank
+          Welcome to Shabelle Bank
         </Text>
-
         <Text style={styles.subTitle} semibold>
           Bank Of Ethics
         </Text>
@@ -68,10 +67,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 18,
+    fontSize: 20,
     marginTop: 20,
     color: colors.white,
-    textTransform: "uppercase",
   },
   logo: {
     width: 125,

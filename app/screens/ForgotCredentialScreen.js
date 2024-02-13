@@ -26,7 +26,7 @@ const schema = Yup.object({
     .required()
     .label("Mobile No."),
 });
-export default function ForgotCredentialScreen({ navigation }) {
+export default function ForgotCredentialScreen({ route, navigation }) {
   const [info] = useState({
     mobile: "",
   });
@@ -44,9 +44,14 @@ export default function ForgotCredentialScreen({ navigation }) {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      navigation.navigate("verifyPin", values["mobile"]);
+
+      if (route.params?.type === "pin")
+        return navigation.navigate("verifyPin", values["mobile"]);
+
+      navigation.navigate("verify", values["mobile"]);
     }, 3000);
   };
+  console.log(route.params);
 
   return (
     <>

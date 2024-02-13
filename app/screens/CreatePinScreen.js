@@ -16,7 +16,7 @@ import ActivityIndicator from "../components/ActivityIndicator";
 import cache from "../utility/cache";
 import authContext from "../context/AuthContext";
 
-function CreatePinScreen({ route }) {
+function CreatePinScreen({ route, navigation }) {
   const inputRef1 = useRef(null);
   const inputRef2 = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -56,14 +56,19 @@ function CreatePinScreen({ route }) {
         pin: pin["pin"],
         type: enablePin ? "pin" : user.type,
       });
-      await cache.setItemAsync("settings", { ...settings, pin: true });
+      await cache.setItemAsync("settings", {
+        ...settings,
+        pin: enablePin ? "pin" : user.type,
+      });
       setIsLoading(false);
-      setIsAuth(false);
       setUser({
         ...user,
         pin: pin["pin"],
         type: enablePin ? "pin" : user.type,
       });
+      setIsAuth(true);
+
+      navigation.navigate("pin");
     }, 3000);
   };
 

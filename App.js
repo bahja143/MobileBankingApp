@@ -66,6 +66,8 @@ export default function App() {
     const auth = await cache.getItemAsync("auth");
     const account = await cache.getItemAsync("account");
 
+    console.log(user);
+
     setUser(auth);
     setAccount(account);
   };

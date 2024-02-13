@@ -23,7 +23,6 @@ import SuspendModal from "../components/SuspendModal";
 import { TextInputForm, BtnForm } from "../components/form";
 import ActivityIndicator from "../components/ActivityIndicator";
 
-import cache from "../utility/cache";
 import authContext from "../context/AuthContext";
 
 import logo from "../assets/images/Logo.png";
@@ -153,7 +152,9 @@ export default function PasswordSignInScreen({ navigation, route }) {
                   ) : null}
 
                   <TouchableOpacity
-                    onPress={() => navigation.navigate("forgot")}
+                    onPress={() =>
+                      navigation.navigate("forgot", { type: "password" })
+                    }
                   >
                     <Text bold style={styles.forgetText}>
                       Forgot password?

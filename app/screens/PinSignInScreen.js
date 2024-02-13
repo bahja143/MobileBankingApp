@@ -23,9 +23,8 @@ import ActivityIndicator from "../components/ActivityIndicator";
 import logo from "../assets/images/Logo.png";
 import authContext from "../context/AuthContext";
 
-export default function PinSignInScreen() {
-  const [myPin] = useState("6438");
-  const [pin, setPing] = useState("");
+export default function PinSignInScreen({ navigation }) {
+  const [pin, setPin] = useState("");
   const [maxTry, setMaxTry] = useState(0);
   const [visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,14 +33,17 @@ export default function PinSignInScreen() {
   const { user, setIsAuth } = useContext(authContext);
 
   const handleTouch = (num) => {
-    setPing((e) => e + num);
+    setPin((e) => e + num);
     const myPin = user.pin;
 
     if (pin.length === 3) {
       if (pin + num === myPin) {
         setIsLoading(true);
         return setTimeout(() => {
+          setPin("");
+          setIsLoading(false);
           setIsAuth(true);
+          navigation.navigate("MainNavigation");
         }, 1000);
       }
 
@@ -51,13 +53,13 @@ export default function PinSignInScreen() {
       Vibration.vibrate(100);
       handleIncorrectPin();
       setTimeout(() => {
-        setPing("");
+        setPin("");
       }, 500);
       return;
     }
   };
   const handleDelete = () => {
-    setPing(pin.substring(0, pin.length - 1));
+    setPin(pin.substring(0, pin.length - 1));
   };
   const handleIncorrectPin = () => {
     Animated.sequence([
@@ -89,7 +91,7 @@ export default function PinSignInScreen() {
     });
 
     if (success) {
-      setPing(myPin);
+      setPin(user.pin);
       setIsLoading(true);
       return setTimeout(() => {
         setIsLoading(false);
@@ -280,12 +282,14 @@ export default function PinSignInScreen() {
             </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity style={styles.bottomCont}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("forgot", { type: "pin" })}
+          style={styles.bottomCont}
+        >
           <Text style={styles.bottomText} bold>
             Forgot PIN Code?
           </Text>
         </TouchableOpacity>
-
         <View style={styles.actionsCont}>
           <TouchableOpacity style={styles.actionItem}>
             <View style={styles.actionIcon}>
@@ -296,7 +300,10 @@ export default function PinSignInScreen() {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.actionItem}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("exchange")}
+            style={styles.actionItem}
+          >
             <View style={styles.actionIcon}>
               <MaterialCommunityIcons
                 size={25}
@@ -309,7 +316,10 @@ export default function PinSignInScreen() {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.actionItem}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("support")}
+            style={styles.actionItem}
+          >
             <View style={styles.actionIcon}>
               <MaterialCommunityIcons
                 size={25}
