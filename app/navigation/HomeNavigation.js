@@ -1,5 +1,5 @@
-import { useContext } from "react";
 import Lottie from "lottie-react-native";
+import { useContext, useEffect } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";

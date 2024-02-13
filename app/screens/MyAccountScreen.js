@@ -1,14 +1,12 @@
 import { useContext, useState } from "react";
 import { View, FlatList, StyleSheet } from "react-native";
 
-import colors from "../config/colors";
-
 import Profile from "../components/Profile";
 import MenuItem from "../components/MenuItem";
 import ItemSeparator from "../components/ItemSeparator";
 import ActivityIndicator from "../components/ActivityIndicator";
 
-import cache from "../utility/cache";
+import colors from "../config/colors";
 import authContext from "../context/AuthContext";
 
 const menuItems = [

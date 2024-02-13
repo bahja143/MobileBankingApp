@@ -51,7 +51,6 @@ export default function ForgotCredentialScreen({ route, navigation }) {
       navigation.navigate("verify", values["mobile"]);
     }, 3000);
   };
-  console.log(route.params);
 
   return (
     <>

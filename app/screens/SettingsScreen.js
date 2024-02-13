@@ -76,6 +76,7 @@ export default function SettingsScreen({ navigation }) {
         setUser({ ...user, type: "password" });
         handleStoreCache({ ...settings, [name]: value });
         await cache.setItemAsync("auth", { ...user, type: "password" });
+        setIsAuth(false);
       }, 2000);
     }
 
@@ -228,7 +229,9 @@ export default function SettingsScreen({ navigation }) {
 
           <Setting
             label="Forgot PIN"
-            onPress={() => navigation.navigate("forgotCredential")}
+            onPress={() =>
+              navigation.navigate("forgotCredential", { type: "pin" })
+            }
             icon={
               <MaterialCommunityIcons
                 size={25}

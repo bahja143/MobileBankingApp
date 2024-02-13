@@ -34,7 +34,7 @@ const schema = Yup.object({
     .oneOf([Yup.ref("password"), null], "Passwords must match")
     .label("Confirm Password"),
 });
-export default function CreatePasswordScreen({ route }) {
+export default function CreatePasswordScreen({ route, navigation }) {
   const [info] = useState({
     confirm: "",
     password: "",
@@ -56,11 +56,12 @@ export default function CreatePasswordScreen({ route }) {
 
     setTimeout(() => {
       setUser(auth);
-      setIsAuth(true);
+      setIsAuth(false);
+      setIsLoading(false);
       setAccount(account);
       cache.setItemAsync("auth", auth);
       cache.setItemAsync("account", account);
-      setIsLoading(false);
+      navigation.navigate("normalPassword");
     }, 3000);
   };
   const checkPasswordStrength = (password) => {
@@ -177,7 +178,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: colors["primary"],
   },
-
   logo: {
     top: -140,
     width: 110,

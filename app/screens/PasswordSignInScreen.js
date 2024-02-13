@@ -25,8 +25,9 @@ import ActivityIndicator from "../components/ActivityIndicator";
 
 import authContext from "../context/AuthContext";
 
-import logo from "../assets/images/Logo.png";
+import cache from "../utility/cache";
 import colors from "../config/colors";
+import logo from "../assets/images/Logo.png";
 
 const schema = Yup.object({
   mobile: Yup.string()
@@ -43,12 +44,13 @@ export default function PasswordSignInScreen({ navigation, route }) {
     mobile: "",
     password: "",
   });
+  const { setIsAuth, user: myInfo } = useContext(authContext);
   const [isFingerAvailable, setFingerAvailable] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [settings, setSettings] = useState({});
   const [maxTry, setMaxTry] = useState(0);
-  const { setIsAuth, user: myInfo } = useContext(authContext);
 
   const handleSubmit = (values) => {
     Keyboard.dismiss();
@@ -75,9 +77,15 @@ export default function PasswordSignInScreen({ navigation, route }) {
     const response = await LocalAuthentication.hasHardwareAsync();
     setFingerAvailable(response);
   };
+  const HandleLoadSettings = async () => {
+    const settings = await cache.getItemAsync("settings");
+
+    setSettings(settings);
+  };
 
   useEffect(() => {
     HandleCheckFingerPrint();
+    HandleLoadSettings();
   }, []);
 
   return (

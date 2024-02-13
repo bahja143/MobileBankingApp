@@ -84,6 +84,9 @@ function CreatePinScreen({ route, navigation }) {
     <>
       <ActivityIndicator visible={isLoading} />
       <View style={styles.container}>
+        {/* <Text semibold style={styles.title}>
+          New Password
+        </Text> */}
         <Text style={styles.errorMessage}>{errorMessage}</Text>
         <TouchableWithoutFeedback
           style={styles.container}
@@ -182,9 +185,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 7.5,
     backgroundColor: colors.white,
   },
+  title: {
+    fontSize: 17,
+    marginBottom: 40,
+    textAlign: "center",
+    color: colors["primary"],
+  },
   errorMessage: {
     fontSize: 15,
-    marginTop: 25,
+    marginTop: 20,
     marginBottom: 20,
     textAlign: "center",
     color: colors.danger,
@@ -202,11 +211,6 @@ const styles = StyleSheet.create({
   },
   btnCont: {
     marginHorizontal: 5,
-  },
-  title: {
-    fontSize: 17,
-    textAlign: "center",
-    color: colors.black,
   },
   inputCont: {
     marginTop: 40,

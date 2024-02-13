@@ -11,9 +11,8 @@ import { Entypo } from "@expo/vector-icons";
 import { useState, useContext } from "react";
 
 import Text from "../components/CustomText";
-import ActivityIndicator from "../components/ActivityIndicator";
-
 import { TextInputForm, BtnForm } from "../components/form";
+import ActivityIndicator from "../components/ActivityIndicator";
 
 import cache from "../utility/cache";
 import colors from "../config/colors";
@@ -63,7 +62,11 @@ export default function ChangePasswordScreen({ navigation }) {
         password: { ...user.password, password: values["password"] },
       });
       await cache.setItemAsync("settings", { ...settings, pin: false });
-      setUser({ ...user, type: "password" });
+      setUser({
+        ...user,
+        password: { ...user.password, password: values["password"] },
+        type: "password",
+      });
       setIsAuth(false);
     }, 3000);
   };

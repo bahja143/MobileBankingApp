@@ -7,7 +7,7 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
-import { useState, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
@@ -16,6 +16,8 @@ import Text from "../components/CustomText";
 import Bg from "../assets/images/Bg.png";
 import Avatar from "../assets/images/avatar.png";
 import ActivityIndicator from "../components/ActivityIndicator";
+
+import authContext from "../context/AuthContext";
 
 const data = [
   {
@@ -59,6 +61,7 @@ export default function DashboardScreen({ navigation }) {
   });
   const [refreshing, setRefreshing] = useState(false);
   const [transactions, setTransactions] = useState([]);
+  const { user } = useContext(authContext);
 
   const handleRefreshing = () => {
     setRefreshing(true);
@@ -89,8 +92,14 @@ export default function DashboardScreen({ navigation }) {
   const formatNumberWithSpaces = (number) => {
     return number.toString().replace(/\B(?=(\d{5})+(?!\d))/g, " ");
   };
+  const handleCheckPin = () => {
+    if (!user["pin"]) {
+      navigation.navigate("createPin");
+    }
+  };
 
   useEffect(() => {
+    handleCheckPin();
     setTimeout(() => {
       setLoading(false);
       handleLoad();
