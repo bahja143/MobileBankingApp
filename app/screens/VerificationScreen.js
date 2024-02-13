@@ -4,7 +4,6 @@ import {
   Platform,
   Keyboard,
   StyleSheet,
-  BackHandler,
   TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
@@ -26,7 +25,7 @@ const schema = Yup.object({
 });
 
 export default function VerificationScreen({ route, navigation }) {
-  const [data] = useState({ code: "" });
+  const [data, setData] = useState({ code: "" });
   const [timer, setTimer] = useState(120);
   const timeOutCallback = useCallback(
     () => setTimer((currTimer) => currTimer - 1),
@@ -40,6 +39,8 @@ export default function VerificationScreen({ route, navigation }) {
 
     setTimeout(() => {
       setIsLoading(false);
+      resetTimer();
+      setData("");
 
       if (route.name === "verifyPin")
         return navigation.navigate("createPin", route.params);
@@ -56,14 +57,6 @@ export default function VerificationScreen({ route, navigation }) {
   useEffect(() => {
     timer > 0 && setTimeout(timeOutCallback, 1000);
   }, [timer, timeOutCallback]);
-
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      () => true
-    );
-    return () => backHandler.remove();
-  }, []);
 
   return (
     <>

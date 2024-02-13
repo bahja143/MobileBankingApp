@@ -196,6 +196,7 @@ const HomeStackNavigator = () => {
       <HomeStack.Screen name="createPin" component={CreatePinScreen} />
       <HomeStack.Screen name="verifyPin" component={VerificationScreen} />
       <HomeStack.Screen name="support" component={CustomerSupportScreen} />
+      <HomeStack.Screen name="forgot" component={ForgotCredentialScreen} />
     </HomeStack.Navigator>
   );
 };
