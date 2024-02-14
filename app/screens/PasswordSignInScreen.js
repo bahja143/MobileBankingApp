@@ -23,11 +23,10 @@ import SuspendModal from "../components/SuspendModal";
 import { TextInputForm, BtnForm } from "../components/form";
 import ActivityIndicator from "../components/ActivityIndicator";
 
-import authContext from "../context/AuthContext";
-
 import cache from "../utility/cache";
 import colors from "../config/colors";
 import logo from "../assets/images/Logo.png";
+import authContext from "../context/AuthContext";
 
 const schema = Yup.object({
   mobile: Yup.string()
@@ -44,12 +43,16 @@ export default function PasswordSignInScreen({ navigation, route }) {
     mobile: "",
     password: "",
   });
-  const { setIsAuth, user: myInfo } = useContext(authContext);
+  const {
+    setUser,
+    setIsAuth,
+    setAccount,
+    user: myInfo,
+  } = useContext(authContext);
   const [isFingerAvailable, setFingerAvailable] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [settings, setSettings] = useState({});
   const [maxTry, setMaxTry] = useState(0);
 
   const handleSubmit = (values) => {
@@ -77,22 +80,59 @@ export default function PasswordSignInScreen({ navigation, route }) {
     const response = await LocalAuthentication.hasHardwareAsync();
     setFingerAvailable(response);
   };
-  const HandleLoadSettings = async () => {
-    const settings = await cache.getItemAsync("settings");
+  const handleFingerprintAuthentication = async () => {
+    const { error, success } = await LocalAuthentication.authenticateAsync({
+      cancelLabel: "Cancel",
+      disableDeviceFallback: true,
+    });
 
-    setSettings(settings);
+    if (success) {
+      setIsLoading(true);
+      return setTimeout(() => {
+        setIsLoading(false);
+        setIsAuth(true);
+      }, 3000);
+    }
+
+    if (error === "lockout") {
+      await LocalAuthentication.authenticateAsync({
+        cancelLabel: "Cancel",
+      });
+    }
+  };
+  const handleSignInInitial = async () => {
+    const initialData = {
+      user: {
+        password: { password: "Mysoul24@", username: "0907005112" },
+        type: "password",
+        initial: true,
+      },
+      account: {
+        Account: "0272010000033",
+        Id: 1,
+        Name: "Abdisalam Farah Abdi",
+        mobile: "0907005112",
+      },
+    };
+
+    setUser(initialData.user);
+    setAccount(initialData.account);
+    await cache.setItemAsync("auth", initialData.user);
+    await cache.setItemAsync("account", initialData.account);
   };
 
   useEffect(() => {
+    if (!myInfo) {
+      handleSignInInitial();
+    }
     HandleCheckFingerPrint();
-    HandleLoadSettings();
   }, []);
 
   return (
     <>
       <ActivityIndicator visible={isLoading} />
       <SuspendModal type="Password" isVisible={visible} />
-      {route.name !== "normalPassword" ? (
+      {myInfo?.initial ? (
         <View style={styles.navCont}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
@@ -146,11 +186,16 @@ export default function PasswordSignInScreen({ navigation, route }) {
                 <View
                   style={[
                     styles.bottomCont,
-                    !isFingerAvailable && { justifyContent: "flex-end" },
+                    isFingerAvailable && myInfo.biometric?.fingerprint
+                      ? { justifyContent: "space-between" }
+                      : { justifyContent: "flex-end" },
                   ]}
                 >
-                  {isFingerAvailable ? (
-                    <TouchableOpacity style={styles.fingerPrinter}>
+                  {isFingerAvailable && myInfo.biometric?.fingerprint ? (
+                    <TouchableOpacity
+                      onPress={handleFingerprintAuthentication}
+                      style={styles.fingerPrinter}
+                    >
                       <FontAwesome5
                         size={40}
                         name="fingerprint"
@@ -283,7 +328,7 @@ const styles = StyleSheet.create({
   fingerPrinter: {
     padding: 10,
     borderRadius: 5,
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.lighter,
   },
   forgotCont: {
     alignItems: "flex-end",

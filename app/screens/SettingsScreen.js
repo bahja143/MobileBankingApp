@@ -49,6 +49,21 @@ export default function SettingsScreen({ navigation }) {
           message: "Biometric",
           description: "Biometric hardware not available on you phone",
         });
+
+      setIsLoading(true);
+      setSettings((s) => ({ ...s, [name]: value }));
+
+      return setTimeout(async () => {
+        setIsLoading(false);
+        setUser({ ...user, biometric: { fingerprint: value } });
+        handleStoreCache({ ...settings, [name]: value });
+        await cache.setItemAsync("auth", {
+          ...user,
+          biometric: { fingerprint: value },
+        });
+
+        if (value) return setIsAuth(false);
+      }, 2000);
     }
     if (name === "notify") {
       const { granted } = await Notifications.requestPermissionsAsync();

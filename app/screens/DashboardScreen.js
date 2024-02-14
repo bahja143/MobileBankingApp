@@ -18,6 +18,7 @@ import Avatar from "../assets/images/avatar.png";
 import ActivityIndicator from "../components/ActivityIndicator";
 
 import authContext from "../context/AuthContext";
+import cache from "../utility/cache";
 
 const data = [
   {
@@ -61,7 +62,7 @@ export default function DashboardScreen({ navigation }) {
   });
   const [refreshing, setRefreshing] = useState(false);
   const [transactions, setTransactions] = useState([]);
-  const { user } = useContext(authContext);
+  const { user, setUser } = useContext(authContext);
 
   const handleRefreshing = () => {
     setRefreshing(true);
@@ -92,14 +93,19 @@ export default function DashboardScreen({ navigation }) {
   const formatNumberWithSpaces = (number) => {
     return number.toString().replace(/\B(?=(\d{5})+(?!\d))/g, " ");
   };
-  const handleCheckPin = () => {
+  const handleCheckPin = async () => {
     if (!user["pin"]) {
+      setUser({ ...user, initial: false });
+      await cache.setItemAsync("auth", { ...user, initial: false });
       navigation.navigate("createPin");
     }
   };
 
   useEffect(() => {
-    handleCheckPin();
+    if (user.initial) {
+      handleCheckPin();
+    }
+
     setTimeout(() => {
       setLoading(false);
       handleLoad();
@@ -110,7 +116,6 @@ export default function DashboardScreen({ navigation }) {
     <>
       <ActivityIndicator visible={loading} />
       <FlatList
-        contentContainerStyle={style.container}
         data={[1]}
         refreshControl={
           <RefreshControl
@@ -178,7 +183,7 @@ export default function DashboardScreen({ navigation }) {
                   <Feather
                     name={show ? "eye-off" : "eye"}
                     size={22.5}
-                    color={colors.primary}
+                    color={colors.medium}
                   />
                 </TouchableOpacity>
               </View>
@@ -192,8 +197,8 @@ export default function DashboardScreen({ navigation }) {
                 style={style.navCont}
               >
                 <View style={style.navItem}>
-                  <Feather size={28.5} name="send" color={colors.primary} />
-                  <Text style={style.navTitle} bold>
+                  <Feather size={28} name="send" style={style.navIcon} />
+                  <Text style={style.navTitle} semibold>
                     Transfer
                   </Text>
                 </View>
@@ -205,11 +210,11 @@ export default function DashboardScreen({ navigation }) {
               >
                 <View style={style.navItem}>
                   <MaterialCommunityIcons
-                    size={30}
-                    color={colors.primary}
+                    size={29}
+                    style={style.navIcon}
                     name="account-multiple-outline"
                   />
-                  <Text style={style.navTitle} bold>
+                  <Text style={style.navTitle} semibold>
                     Beneficiary
                   </Text>
                 </View>
@@ -221,11 +226,11 @@ export default function DashboardScreen({ navigation }) {
               >
                 <View style={style.navItem}>
                   <MaterialCommunityIcons
-                    size={30}
+                    size={29}
                     name="history"
-                    color={colors.primary}
+                    style={style.navIcon}
                   />
-                  <Text style={style.navTitle} bold>
+                  <Text style={style.navTitle} semibold>
                     History
                   </Text>
                 </View>
@@ -237,11 +242,11 @@ export default function DashboardScreen({ navigation }) {
               >
                 <View style={style.navItem}>
                   <MaterialCommunityIcons
-                    size={28}
+                    size={27}
                     name="qrcode-scan"
-                    color={colors.primary}
+                    style={style.navIcon}
                   />
-                  <Text style={style.navTitle} bold>
+                  <Text style={style.navTitle} semibold>
                     My QR
                   </Text>
                 </View>
@@ -271,7 +276,7 @@ export default function DashboardScreen({ navigation }) {
                         <View style={style.TranIconCont}>
                           <MaterialCommunityIcons
                             size={32.5}
-                            color={colors.primary}
+                            style={style.tranIcon}
                             name="credit-card-fast-outline"
                           />
                         </View>
@@ -324,6 +329,7 @@ export default function DashboardScreen({ navigation }) {
             )}
           </>
         )}
+        contentContainerStyle={style.container}
       />
     </>
   );
@@ -356,7 +362,7 @@ const style = StyleSheet.create({
   },
   RecentText: {
     fontSize: 15,
-    color: colors.black,
+    color: "rgba(0, 0, 0, 0.7)",
   },
   TranNoCont: {
     alignItems: "center",
@@ -373,6 +379,9 @@ const style = StyleSheet.create({
     marginBottom: 2.5,
     color: colors.black,
     textTransform: "capitalize",
+  },
+  tranIcon: {
+    color: colors.primary,
   },
   TranIconCont: {
     padding: 5,
@@ -413,10 +422,15 @@ const style = StyleSheet.create({
   navCont: {
     alignItems: "center",
   },
+  navIcon: {
+    color: "rgba(0, 0, 0, 0.7)",
+  },
   navTitle: {
-    fontSize: 11.5,
-    color: colors.black,
+    fontSize: 12,
+    marginTop: 6,
     textAlign: "center",
+    color: "rgba(0, 0, 0, 0.7)",
+    fontFamily: "Inter_600SemiBold",
   },
   navItem: {
     width: 81,
@@ -424,7 +438,7 @@ const style = StyleSheet.create({
     paddingTop: 2.5,
     borderRadius: 10,
     alignItems: "center",
-    justifyContent: "space-evenly",
+    justifyContent: "center",
     backgroundColor: colors.lighter,
   },
   nav: {
@@ -440,8 +454,8 @@ const style = StyleSheet.create({
   title: {
     fontSize: 15,
     marginTop: 15,
-    color: colors.black,
     marginHorizontal: 7.5,
+    color: "rgba(0, 0, 0, 0.7)",
   },
   topHeader: {
     height: 210,
@@ -461,13 +475,15 @@ const style = StyleSheet.create({
   accountBalanceNo: {
     fontSize: 17,
     color: colors.black,
+    fontFamily: "Inter_600SemiBold",
   },
   accountBalanceText: {
+    fontSize: 15,
     color: colors.black,
   },
   myBalance: {
     elevation: 4,
-    paddingVertical: 15,
+    paddingVertical: 14,
     paddingHorizontal: 25,
     marginHorizontal: 7.5,
     justifyContent: "center",
@@ -476,16 +492,18 @@ const style = StyleSheet.create({
     backgroundColor: colors.white,
   },
   myAccountText: {
+    fontSize: 15,
     color: colors.white,
   },
   accountNo: {
     fontSize: 20,
     marginTop: 7.5,
     color: colors.white,
+    fontFamily: "Inter_600SemiBold",
   },
   myAccount: {
     elevation: 4,
-    paddingVertical: 15,
+    paddingVertical: 14,
     paddingHorizontal: 25,
     borderTopLeftRadius: 10,
     justifyContent: "center",

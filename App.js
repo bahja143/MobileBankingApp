@@ -32,8 +32,8 @@ Notifications.setNotificationHandler({
 });
 
 export default function App() {
-  const [user, setUser] = useState();
-  const [account, setAccount] = useState();
+  const [user, setUser] = useState({});
+  const [account, setAccount] = useState({});
   const [isAuth, setIsAuth] = useState(false);
   const [idleTime, setIdleTime] = useState(0); // Track inactivity duration
   const [isVisible, setIsVisible] = useState(false);

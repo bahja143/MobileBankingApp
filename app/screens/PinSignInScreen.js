@@ -30,7 +30,7 @@ export default function PinSignInScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const shake = useRef(new Animated.Value(0.5)).current;
   const [isFingerAvailable, setFingerAvailable] = useState(false);
-  const { user, setIsAuth } = useContext(authContext);
+  const { user, account, setIsAuth } = useContext(authContext);
 
   const handleTouch = (num) => {
     setPin((e) => e + num);
@@ -91,10 +91,12 @@ export default function PinSignInScreen({ navigation }) {
     });
 
     if (success) {
-      setPin(user.pin);
       setIsLoading(true);
       return setTimeout(() => {
+        setPin("");
         setIsLoading(false);
+        setIsAuth(true);
+        navigation.navigate("MainNavigation");
       }, 3000);
     }
 
@@ -249,7 +251,7 @@ export default function PinSignInScreen({ navigation }) {
           </View>
 
           <View style={styles.subBody}>
-            {isFingerAvailable ? (
+            {isFingerAvailable && user.biometric?.fingerprint ? (
               <TouchableOpacity
                 onPress={handleFingerprintAuthentication}
                 style={[styles.numCont, { backgroundColor: colors.white }]}

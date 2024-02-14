@@ -55,13 +55,15 @@ export default function CreatePasswordScreen({ route, navigation }) {
     };
 
     setTimeout(() => {
-      setUser(auth);
-      setIsAuth(false);
       setIsLoading(false);
       setAccount(account);
       cache.setItemAsync("auth", auth);
       cache.setItemAsync("account", account);
-      navigation.navigate("normalPassword");
+      setUser(auth);
+      setIsAuth(true);
+
+      // setTimeout(() => {
+      // }, 500);
     }, 3000);
   };
   const checkPasswordStrength = (password) => {

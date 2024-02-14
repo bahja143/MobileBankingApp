@@ -8,8 +8,8 @@ import {
 
 import * as Yup from "yup";
 import { Formik } from "formik";
-import { useState } from "react";
 import Modal from "react-native-modal";
+import { useState, useEffect, useContext } from "react";
 import { Entypo, AntDesign } from "@expo/vector-icons";
 
 import colors from "../config/colors";
@@ -31,10 +31,12 @@ const schema = Yup.object({
   isAccountValid: Yup.boolean().required(),
 });
 
+import cache from "../utility/cache";
 import data from "../data/accounts.json";
+import authContext from "../context/AuthContext";
 
 export default function SignUpScreen({ navigation }) {
-  const [transfer, setTransfer] = useState({
+  const [account] = useState({
     id: 0,
     mobile: "",
     accountNo: "",
@@ -44,28 +46,33 @@ export default function SignUpScreen({ navigation }) {
   const [visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const { setAccount } = useContext(authContext);
 
-  const handleSubmit = (transfer) => {
+  const handleSubmit = async (account) => {
     setErrorMessage("");
     if (loading) return setIsLoading(true);
-    if (!transfer["isAccountValid"]) return setVisible(true);
+    if (!account["isAccountValid"]) return setVisible(true);
 
     Keyboard.dismiss();
     setIsLoading(true);
 
-    setTimeout(() => {
+    setTimeout(async () => {
       setIsLoading(false);
 
       if (
-        data.find((d) => d.Account == transfer["accountNo"]).mobile !==
-        transfer["mobile"]
+        data.find((d) => d.Account == account["accountNo"]).mobile !==
+        account["mobile"]
       )
         return setErrorMessage("Invalid Account!");
 
-      setTransfer(transfer);
+      setAccount(data.find((d) => d.Account == account["accountNo"]));
+      await cache.setItemAsync(
+        "account",
+        data.find((d) => d.Account == account["accountNo"])
+      );
       navigation.navigate(
         "verify",
-        data.find((d) => d.Account == transfer["accountNo"]).mobile
+        data.find((d) => d.Account == account["accountNo"]).mobile
       );
       setIsLoading(false);
     }, 3000);
@@ -150,7 +157,7 @@ export default function SignUpScreen({ navigation }) {
           <Formik
             enableReinitialize
             onSubmit={handleSubmit}
-            initialValues={transfer}
+            initialValues={account}
             validationSchema={schema}
           >
             {({ values, setFieldValue }) => (

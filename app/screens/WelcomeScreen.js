@@ -27,7 +27,9 @@ export default function WelcomeScreen({ navigation }) {
           title="Sign in"
           backgroundColor="white"
           textTransform="capitalize"
-          onPress={() => navigation.navigate("signInPassword")}
+          onPress={() =>
+            navigation.navigate("signInPassword", { initial: true })
+          }
         />
 
         <Button

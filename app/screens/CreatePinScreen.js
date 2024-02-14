@@ -68,7 +68,21 @@ function CreatePinScreen({ route, navigation }) {
       });
       setIsAuth(true);
 
-      navigation.navigate("pin");
+      if (user.pin) {
+        setUser({
+          ...user,
+          pin: pin["pin"],
+          type: enablePin ? "pin" : user.type,
+        });
+        return navigation.navigate("pin");
+      }
+
+      setUser({
+        ...user,
+        pin: pin["pin"],
+        type: enablePin ? "pin" : user.type,
+      });
+      navigation.navigate("MainNavigation");
     }, 3000);
   };
 
