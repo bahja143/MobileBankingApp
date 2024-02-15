@@ -1,5 +1,5 @@
+import { useContext } from "react";
 import Lottie from "lottie-react-native";
-import { useContext, useEffect } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -7,6 +7,7 @@ import { CurvedBottomBarExpo } from "react-native-curved-bottom-bar";
 import { Animated, StyleSheet, TouchableOpacity } from "react-native";
 
 import ExchangeNav from "../navigation/ExchangeNav";
+import ReceiptScreen from "../screens/ReceiptScreen";
 import MyQRCodeScreen from "../screens/MyQRCodeScreen";
 import TransferScreen from "../screens/TransferScreen";
 import BranchesScreen from "../screens/BranchesScreen";
@@ -35,9 +36,9 @@ import UpdateContactInfoScreen from "../screens/UpdateContactInfoScreen";
 import AlertCustomizationScreen from "../screens/AlertCustomizationScreen";
 
 import colors from "../config/colors";
-import qrCodeAnimation from "../assets/animation/QRCode.json";
-
 import authContext from "../context/AuthContext";
+import themeNavigation from "../config/themeNavigation";
+import qrCodeAnimation from "../assets/animation/QRCode.json";
 
 const MainNavigation = ({ navigation }) => {
   const _renderIcon = (routeName, selectedTab) => {
@@ -193,6 +194,7 @@ const HomeStackNavigator = () => {
         component={ForgotCredentialScreen}
       />
       <HomeStack.Screen name="pin" component={PinSignInScreen} />
+      <HomeStack.Screen name="receipt" component={ReceiptScreen} />
       <HomeStack.Screen name="createPin" component={CreatePinScreen} />
       <HomeStack.Screen name="verifyPin" component={VerificationScreen} />
       <HomeStack.Screen name="support" component={CustomerSupportScreen} />
@@ -203,7 +205,7 @@ const HomeStackNavigator = () => {
 
 export default function HomeNavigation() {
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={themeNavigation}>
       <HomeStackNavigator />
     </NavigationContainer>
   );

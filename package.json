@@ -42,7 +42,7 @@
     "lottie-react-native": "5.1.6",
     "qrcode-reader": "^1.0.4",
     "react": "18.2.0",
-    "react-native": "0.72.6",
+    "react-native": "0.72.10",
     "react-native-awesome-alerts": "^2.0.0",
     "react-native-curved-bottom-bar": "^3.2.6",
     "react-native-flash-message": "^0.4.2",

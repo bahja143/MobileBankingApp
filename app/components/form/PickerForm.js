@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
   },
   modal: {
     margin: 0,
-    paddingHorizontal: 12,
+    paddingHorizontal: 6,
   },
   errorMessage: {
     top: 10,

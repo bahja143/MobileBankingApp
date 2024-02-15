@@ -22,92 +22,7 @@ import ActivityIndicator from "../components/ActivityIndicator";
 
 import { InputField1, DatePickerInput, BtnForm1 } from "../components/form";
 
-const data = [
-  {
-    id: 1,
-    type: "Received",
-    description: "Salary Shabelle Bank",
-    amount: "45,000",
-    Date: "Today",
-  },
-  {
-    id: 2,
-    type: "Transfer",
-    description: "To Bahja Abdulaziz Hassen",
-    amount: "100,000",
-    Date: "Dec 26",
-  },
-  {
-    id: 3,
-    type: "withdraw",
-    description: "Madina Branch",
-    amount: "25,000",
-    Date: "Oct 29",
-  },
-  {
-    id: 4,
-    type: "withdraw",
-    description: "Madina Branch",
-    amount: "10,000",
-    Date: "Oct 29",
-  },
-  {
-    id: 11,
-    type: "Received",
-    description: "Salary Shabelle Bank",
-    amount: "45,000",
-    Date: "Today",
-  },
-  {
-    id: 12,
-    type: "Transfer",
-    description: "To Bahja Abdulaziz Hassen",
-    amount: "100,000",
-    Date: "Dec 26",
-  },
-  {
-    id: 31,
-    type: "withdraw",
-    description: "Madina Branch",
-    amount: "25,000",
-    Date: "Oct 29",
-  },
-  {
-    id: 14,
-    type: "withdraw",
-    description: "Madina Branch",
-    amount: "10,000",
-    Date: "Oct 29",
-  },
-  {
-    id: 111,
-    type: "Received",
-    description: "Salary Shabelle Bank",
-    amount: "45,000",
-    Date: "Today",
-  },
-  {
-    id: 112,
-    type: "Transfer",
-    description: "To Bahja Abdulaziz Hassen",
-    amount: "100,000",
-    Date: "Dec 26",
-  },
-  {
-    id: 113,
-    type: "withdraw",
-    description: "Madina Branch",
-    amount: "25,000",
-    Date: "Oct 29",
-  },
-  {
-    id: 114,
-    type: "withdraw",
-    description: "Madina Branch",
-    amount: "10,000",
-    Date: "Oct 29",
-  },
-];
+import transactionsData from "../data/transactions.json";
 
 export default function TransactionsScreen({ navigation }) {
   const [transactions, setTransactions] = useState([]);
@@ -147,7 +62,7 @@ export default function TransactionsScreen({ navigation }) {
     }, 3000);
   };
   const handleLoad = () => {
-    setTransactions([...data]);
+    setTransactions([...transactionsData]);
   };
 
   useEffect(() => {

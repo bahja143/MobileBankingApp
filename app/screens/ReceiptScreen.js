@@ -1,6 +1,6 @@
 import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { useRef, useState, useContext, useEffect } from "react";
 import { Feather, FontAwesome } from "@expo/vector-icons";
-import { useRef, useState, useEffect } from "react";
 import * as MediaLibrary from "expo-media-library";
 import ViewShot from "react-native-view-shot";
 import LottiView from "lottie-react-native";
@@ -14,8 +14,11 @@ import Ding from "../assets/sound/Ding.mp3";
 import Logo from "../assets/images/Logo.png";
 import Done from "../assets/animation/Done.json";
 
-export default function ReceiptScreen() {
+import authContext from "../context/AuthContext";
+
+export default function ReceiptScreen({ route, navigation }) {
   const ref = useRef();
+  const { account } = useContext(authContext);
   const [isSave, setIsSave] = useState(false);
 
   const handleCapture = async () => {
@@ -63,7 +66,10 @@ export default function ReceiptScreen() {
 
           <View style={styles.balanceContainer}>
             <Text style={styles.balance} bold>
-              ETB 25,000
+              {Number(route.params?.transfer?.amount).toLocaleString("en-US", {
+                style: "currency",
+                currency: "ETB",
+              })}
             </Text>
           </View>
 
@@ -73,7 +79,7 @@ export default function ReceiptScreen() {
                 From:
               </Text>
               <Text style={styles.itemLabel} semibold>
-                Abdisalam Farah Abdi
+                {account.name}
               </Text>
             </View>
             <View style={styles.item}>
@@ -82,7 +88,7 @@ export default function ReceiptScreen() {
               </Text>
 
               <Text style={styles.itemValue} semibold>
-                0272010000033
+                {account.account}
               </Text>
             </View>
           </View>
@@ -93,7 +99,7 @@ export default function ReceiptScreen() {
                 To:
               </Text>
               <Text style={styles.itemLabel} semibold>
-                Bahja Abdiaziz Hassan
+                {route.params?.toAccount.name}
               </Text>
             </View>
             <View style={styles.item}>
@@ -102,7 +108,7 @@ export default function ReceiptScreen() {
               </Text>
 
               <Text style={styles.itemValue} semibold>
-                0032010002420
+                {route.params?.toAccount.account}
               </Text>
             </View>
           </View>
@@ -179,8 +185,11 @@ export default function ReceiptScreen() {
               </TouchableOpacity>
             </View>
 
-            <TouchableOpacity style={styles.btn}>
-              <Text style={styles.btnText} bold>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("MainNavigation")}
+              style={styles.btn}
+            >
+              <Text style={styles.btnText} semibold>
                 Done
               </Text>
             </TouchableOpacity>

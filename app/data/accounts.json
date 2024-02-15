@@ -1,8 +1,16 @@
 [
   {
     "Id": 1,
-    "Name": "Abdisalam Farah Abdi",
-    "Account": "0272010000033",
-    "mobile": "0907005112"
+    "name": "Abdisalam Farah Abdi",
+    "account": "0272010000033",
+    "mobile": "0907005112",
+    "balance": 50000
+  },
+  {
+    "Id": 2,
+    "name": "Bahja Abdulaziz Hassen",
+    "account": "0032010002420",
+    "mobile": "0978336671",
+    "balance": 125000
   }
 ]

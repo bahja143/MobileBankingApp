@@ -60,19 +60,19 @@ export default function SignUpScreen({ navigation }) {
       setIsLoading(false);
 
       if (
-        data.find((d) => d.Account == account["accountNo"]).mobile !==
+        data.find((d) => d.account == account["accountNo"]).mobile !==
         account["mobile"]
       )
         return setErrorMessage("Invalid Account!");
 
-      setAccount(data.find((d) => d.Account == account["accountNo"]));
+      setAccount(data.find((d) => d.account == account["accountNo"]));
       await cache.setItemAsync(
         "account",
-        data.find((d) => d.Account == account["accountNo"])
+        data.find((d) => d.account == account["accountNo"])
       );
       navigation.navigate(
         "verify",
-        data.find((d) => d.Account == account["accountNo"]).mobile
+        data.find((d) => d.account == account["accountNo"]).mobile
       );
       setIsLoading(false);
     }, 3000);
@@ -90,7 +90,7 @@ export default function SignUpScreen({ navigation }) {
 
       if (count == 13) {
         setLoading(false);
-        let account = data.find((d) => d.Account == accountNo.toString());
+        let account = data.find((d) => d.account == accountNo.toString());
         setIsLoading(false);
 
         if (account) {
@@ -104,6 +104,8 @@ export default function SignUpScreen({ navigation }) {
       }
     }, 5000);
   };
+
+  console.log(data);
 
   return (
     <>

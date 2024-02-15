@@ -1,5 +1,5 @@
 import * as Share from "expo-sharing";
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import QRCode from "react-native-qrcode-svg";
 import ViewShot from "react-native-view-shot";
 import * as MediaLibrary from "expo-media-library";
@@ -11,14 +11,11 @@ import colors from "../config/colors";
 import Text from "../components/CustomText";
 
 import Logo from "../assets/images/Logo.png";
+import authContext from "../context/AuthContext";
 
 export default function MyQRCodeScreen({ navigation }) {
+  const { account: myAccount } = useContext(authContext);
   const [isSave, setIsSave] = useState(false);
-  const [myAccount] = useState({
-    bank: "Shabelle Bank",
-    account: "0272010000033",
-    name: "Abdisalam Farah Abdi",
-  });
   const ref = useRef();
 
   const handleCapture = async () => {
@@ -45,6 +42,8 @@ export default function MyQRCodeScreen({ navigation }) {
       await Share.shareAsync(uri);
     });
   };
+
+  console.log(myAccount);
 
   return (
     <>
@@ -75,7 +74,7 @@ export default function MyQRCodeScreen({ navigation }) {
           <View style={styles.qrContainer}>
             <View style={styles.textContainer}>
               <Text style={styles.title} bold>
-                Abdisalam Farah Abdi
+                {myAccount.name}
               </Text>
               <Text semibold style={styles.text}>
                 Share your <Text bold>personal code</Text> for what ever reason!
@@ -163,7 +162,7 @@ export default function MyQRCodeScreen({ navigation }) {
           >
             <View style={styles.textContainer}>
               <Text style={styles.title} bold>
-                Abdisalam Farah Abdi
+                {myAccount.name}
               </Text>
               <Text semibold style={styles.text}>
                 Share your <Text bold>personal code</Text> for what ever reason!

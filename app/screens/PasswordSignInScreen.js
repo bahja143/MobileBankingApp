@@ -23,9 +23,11 @@ import SuspendModal from "../components/SuspendModal";
 import { TextInputForm, BtnForm } from "../components/form";
 import ActivityIndicator from "../components/ActivityIndicator";
 
-import cache from "../utility/cache";
 import colors from "../config/colors";
 import logo from "../assets/images/Logo.png";
+
+import cache from "../utility/cache";
+import data from "../data/accounts.json";
 import authContext from "../context/AuthContext";
 
 const schema = Yup.object({
@@ -107,12 +109,7 @@ export default function PasswordSignInScreen({ navigation, route }) {
         type: "password",
         initial: true,
       },
-      account: {
-        Account: "0272010000033",
-        Id: 1,
-        Name: "Abdisalam Farah Abdi",
-        mobile: "0907005112",
-      },
+      account: data[0],
     };
 
     setUser(initialData.user);
@@ -120,7 +117,6 @@ export default function PasswordSignInScreen({ navigation, route }) {
     await cache.setItemAsync("auth", initialData.user);
     await cache.setItemAsync("account", initialData.account);
   };
-
   useEffect(() => {
     if (!myInfo) {
       handleSignInInitial();

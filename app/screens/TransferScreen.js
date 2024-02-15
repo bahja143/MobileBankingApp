@@ -3,13 +3,14 @@ import {
   Keyboard,
   StyleSheet,
   ScrollView,
+  BackHandler,
   TouchableOpacity,
 } from "react-native";
 
 import * as Yup from "yup";
 import { Formik } from "formik";
-import { useState } from "react";
 import Modal from "react-native-modal";
+import { useState, useEffect, useContext } from "react";
 import { Entypo, Octicons, AntDesign, FontAwesome5 } from "@expo/vector-icons";
 
 import colors from "../config/colors";
@@ -18,6 +19,10 @@ import Text from "../components/CustomText";
 import ActivityIndicator from "../components/ActivityIndicator";
 import ConfirmPinCodeModal from "../components/ConfirmPinCodeModal";
 import { InputField1, PickerForm, BtnForm1 } from "../components/form";
+
+import banks from "../data/banks.json";
+import data from "../data/accounts.json";
+import authContext from "../context/AuthContext";
 
 const schema = Yup.object({
   id: Yup.number(),
@@ -34,126 +39,24 @@ const schema = Yup.object({
   description: Yup.string().label("Description"),
 });
 
-const data = [
-  {
-    Id: 1,
-    Name: {
-      firstName: "Diana",
-      lastName: "Jack",
-      middleName: "Irene",
-    },
-    Account: "5189175660838",
-  },
-  {
-    Id: 2,
-    Name: {
-      firstName: "Charlie",
-      lastName: "Grace",
-      middleName: "Bob",
-    },
-    Account: "3703284264799",
-  },
-  {
-    Id: 3,
-    Name: {
-      firstName: "Harry",
-      lastName: "Harry",
-      middleName: "Diana",
-    },
-    Account: "8752994657829",
-  },
-  {
-    Id: 4,
-    Name: {
-      firstName: "Bob",
-      lastName: "Jack",
-      middleName: "Frank",
-    },
-    Account: "1400698080874",
-  },
-  {
-    Id: 5,
-    Name: {
-      firstName: "Alice",
-      lastName: "Irene",
-      middleName: "Frank",
-    },
-    Account: "7579333944348",
-  },
-  {
-    Id: 6,
-    Name: {
-      firstName: "Harry",
-      lastName: "Eve",
-      middleName: "Frank",
-    },
-    Account: "1194989860702",
-  },
-  {
-    Id: 7,
-    Name: {
-      firstName: "Bob",
-      lastName: "Harry",
-      middleName: "Jack",
-    },
-    Account: "9962878623715",
-  },
-  {
-    Id: 8,
-    Name: {
-      firstName: "Frank",
-      lastName: "Grace",
-      middleName: "Irene",
-    },
-    Account: "6382348098347",
-  },
-  {
-    Id: 9,
-    Name: {
-      firstName: "Alice",
-      lastName: "Diana",
-      middleName: "Jack",
-    },
-    Account: "1828359688819",
-  },
-  {
-    Id: 10,
-    Name: {
-      firstName: "Charlie",
-      lastName: "Jack",
-      middleName: "Grace",
-    },
-    Account: "1481311198646",
-  },
-];
-const banks = [
-  { id: 1, name: "Shabelle Bank" },
-  { id: 2, name: "Awash Bank" },
-  { id: 3, name: "Commercial Bank" },
-  { id: 4, name: "Dashen Bank" },
-];
-
-export default function TransferScreen({ navigation }) {
+export default function TransferScreen({ route, navigation }) {
   const [transfer, setTransfer] = useState({
     id: 0,
     amount: "",
     bankId: 1,
     comment: "",
-    accountNo: "",
     isAccountValid: true,
+    accountNo: route.params?.account,
   });
-  const [myAccount] = useState({
-    id: 1,
-    name: "Abdisalam Farah Abdi",
-    accountNo: "0272010000033",
-    balance: 125,
+  const [account, setAccount] = useState({
+    ...data.find((d) => d.account == route.params?.account),
   });
-  const [account, setAccount] = useState({});
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showConfirmPin, setShowConfirmPin] = useState(false);
+  const { user, account: myAccount } = useContext(authContext);
 
   const handleTransfer = (transfer) => {
     if (loading) return setIsLoading(true);
@@ -181,7 +84,7 @@ export default function TransferScreen({ navigation }) {
 
       if (count == 13) {
         setLoading(false);
-        let account = data.find((d) => d.Account == accountNo.toString());
+        let account = data.find((d) => d.account == accountNo.toString());
         setIsLoading(false);
 
         if (account) {
@@ -200,8 +103,8 @@ export default function TransferScreen({ navigation }) {
     setShowConfirmPin(false);
     setIsLoading(true);
     setTimeout(() => {
-      console.log("submitted: ", transfer);
       setIsLoading(false);
+      navigation.navigate("receipt", { transfer, toAccount: account });
     }, 3000);
   };
   const handleConfirm = () => {
@@ -213,10 +116,19 @@ export default function TransferScreen({ navigation }) {
     setShowConfirmPin(false);
   };
 
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => true
+    );
+    return () => backHandler.remove();
+  }, []);
+
   return (
     <>
       <ActivityIndicator visible={isLoading} />
       <ConfirmPinCodeModal
+        user={user}
         onClose={handleClose}
         onSubmit={handleSubmit}
         isVisible={showConfirmPin}
@@ -253,22 +165,21 @@ export default function TransferScreen({ navigation }) {
           <View style={styles.detail}>
             <View style={styles.detailItem}>
               <Text style={styles.detailItemLabel} semibold>
-                To Account Name:
+                To account name:
               </Text>
 
               <Text style={styles.detailItemValue} semibold>
-                {account.Name?.firstName} {account.Name?.middleName}{" "}
-                {account.Name?.lastName}
+                {account?.name}
               </Text>
             </View>
 
             <View style={styles.detailItem}>
               <Text style={styles.detailItemLabel} semibold>
-                To Account No:
+                To account no:
               </Text>
 
               <Text style={styles.detailItemValue} semibold>
-                {account.Account}
+                {account?.account}
               </Text>
             </View>
 
@@ -327,7 +238,9 @@ export default function TransferScreen({ navigation }) {
             <Text style={styles.modalTitle} bold>
               Failed Transaction!
             </Text>
-            <Text style={styles.modalText}>You don't have enough balance</Text>
+            <Text semibold style={styles.modalText}>
+              You don't have enough balance
+            </Text>
           </View>
           <TouchableOpacity
             onPress={() => setVisible(false)}
@@ -341,7 +254,7 @@ export default function TransferScreen({ navigation }) {
       </Modal>
       <View style={styles.navCont}>
         <TouchableOpacity
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate("MainNavigation")}
           style={styles.navIconCont}
         >
           <Entypo name="chevron-left" size={30} color={colors.white} />
@@ -377,7 +290,7 @@ export default function TransferScreen({ navigation }) {
                   name="accountNo"
                   isLoading={loading}
                   keyboardType="numeric"
-                  placeholder="Account No."
+                  placeholder="Account no."
                   value={values["accountNo"]}
                   invalid={!values["isAccountValid"]}
                   onChange={(value) =>
@@ -390,16 +303,16 @@ export default function TransferScreen({ navigation }) {
                 <InputField1
                   name="amount"
                   placeholder="0.00"
-                  icon="money-bill-alt"
+                  icon="dollar-sign"
                   keyboardType="numeric"
                 />
                 <InputField1
                   name="comment"
-                  icon="align-justify"
+                  icon="comment"
                   autoCapitalize="words"
                   placeholder="Comment"
                 />
-                <BtnForm1 bold title="NEXT" margin={7.5} />
+                <BtnForm1 semibold title="NEXT" margin={7.5} />
               </>
             )}
           </Formik>
@@ -433,13 +346,13 @@ const styles = StyleSheet.create({
   },
   confirmBtnCloseText: {
     fontSize: 16,
-    color: colors.primary,
+    color: colors.black,
     textTransform: "capitalize",
   },
   confirmBtnClose: {
     height: 50,
     justifyContent: "center",
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.light,
   },
   confirmBtnCont: {
     marginHorizontal: 5,
@@ -536,8 +449,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   modalTitle: {
-    top: -5,
-    fontSize: 15,
+    marginBottom: 5,
     color: colors.black,
   },
   modalText: {
@@ -545,7 +457,7 @@ const styles = StyleSheet.create({
     textTransform: "capitalize",
   },
   modalTextContainer: {
-    marginTop: 20,
+    marginVertical: 15,
     alignItems: "center",
   },
   main: {

@@ -15,9 +15,13 @@ import Text from "./CustomText";
 import colors from "../config/colors";
 import SuspendModal from "./SuspendModal";
 
-export default function ConfirmPinCodeModal({ isVisible, onSubmit, onClose }) {
+export default function ConfirmPinCodeModal({
+  user,
+  isVisible,
+  onSubmit,
+  onClose,
+}) {
   const inputRef = useRef(null);
-  const [myPin] = useState("6438");
   const [pin, setPing] = useState("");
   const [show, setShow] = useState(true);
   const [maxTry, setMaxTry] = useState(0);
@@ -26,6 +30,7 @@ export default function ConfirmPinCodeModal({ isVisible, onSubmit, onClose }) {
 
   const handleTouch = (num) => {
     setPing(num);
+    const myPin = user["pin"];
 
     if (num.length >= 4) {
       if (num === myPin) {
@@ -44,7 +49,6 @@ export default function ConfirmPinCodeModal({ isVisible, onSubmit, onClose }) {
       setTimeout(() => {
         setPing("");
       }, 500);
-      return;
     }
   };
   const handleIncorrectPin = () => {

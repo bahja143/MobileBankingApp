@@ -17,52 +17,16 @@ import Bg from "../assets/images/Bg.png";
 import Avatar from "../assets/images/avatar.png";
 import ActivityIndicator from "../components/ActivityIndicator";
 
-import authContext from "../context/AuthContext";
 import cache from "../utility/cache";
-
-const data = [
-  {
-    id: 1,
-    type: "Received",
-    description: "Salary Shabelle Bank",
-    amount: "45,000",
-    Date: "Today",
-  },
-  {
-    id: 2,
-    type: "Transfer",
-    description: "To Bahja Abdulaziz Hassen",
-    amount: "100,000",
-    Date: "Dec 26",
-  },
-  {
-    id: 3,
-    type: "withdraw",
-    description: "Madina Branch",
-    amount: "25,000",
-    Date: "Oct 29",
-  },
-  {
-    id: 4,
-    type: "withdraw",
-    description: "Madina Branch",
-    amount: "10,000",
-    Date: "Oct 29",
-  },
-];
+import authContext from "../context/AuthContext";
+import transactionsData from "../data/transactions.json";
 
 export default function DashboardScreen({ navigation }) {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [myAccount] = useState({
-    id: 1,
-    balance: 550000,
-    account: "0272010000033",
-    name: "Abdisalam Farah Abdi",
-  });
   const [refreshing, setRefreshing] = useState(false);
   const [transactions, setTransactions] = useState([]);
-  const { user, setUser } = useContext(authContext);
+  const { user, account: myAccount, setUser } = useContext(authContext);
 
   const handleRefreshing = () => {
     setRefreshing(true);
@@ -72,7 +36,7 @@ export default function DashboardScreen({ navigation }) {
     }, 3000);
   };
   const handleLoad = () => {
-    setTransactions([...data]);
+    setTransactions([...transactionsData.slice(0, 5)]);
   };
   const hideMiddleDigits = (accountNumber) => {
     // Ensure account number is 13 digits long

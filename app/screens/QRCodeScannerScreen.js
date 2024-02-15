@@ -21,6 +21,7 @@ import {
 
 import colors from "../config/colors";
 import Text from "../components/CustomText";
+
 import BarcodeScannerPeep from "../assets/sound/store-scanner-beep.mp3";
 
 export default function QRCodeScannerScreen({ navigation }) {
@@ -32,9 +33,9 @@ export default function QRCodeScannerScreen({ navigation }) {
   const animatedValue = useRef(new Animated.Value(0)).current;
 
   const handleBarcodeScanned = async (e) => {
-    console.log(e);
     setScanned(true);
     await handlePlay();
+    return navigation.navigate("transfer", JSON.parse(e.data));
   };
   const handlePlay = async () => {
     const { sound } = await Audio.Sound.createAsync(BarcodeScannerPeep);
@@ -59,7 +60,10 @@ export default function QRCodeScannerScreen({ navigation }) {
 
         if (decodedBarcodeImage.length !== 0) {
           handlePlay();
-          return console.log(JSON.parse(decodedBarcodeImage[0].data));
+          return navigation.navigate(
+            "transfer",
+            JSON.parse(decodedBarcodeImage[0].data)
+          );
         }
 
         return setInvalidQr(true);
@@ -225,21 +229,21 @@ export default function QRCodeScannerScreen({ navigation }) {
         ratio="16:9"
         focusDepth={1}
         style={styles.container}
-        onBarCodeScanned={!scanned ? handleBarcodeScanned : null}
         flashMode={flash ? FlashMode.torch : FlashMode.off}
+        onBarCodeScanned={!scanned ? handleBarcodeScanned : null}
       >
         <View style={styles.access}>
           <TouchableOpacity onPress={handleMedia} style={styles.accessBtn}>
             <MaterialCommunityIcons
               size={27.5}
-              color={colors.primary}
+              color={colors.white}
               name="image-size-select-actual"
             />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleFlash} style={styles.accessBtn}>
             <MaterialCommunityIcons
               size={27.5}
-              color={colors.primary}
+              color={colors.white}
               name={flash ? "flash-off" : "flash"}
             />
           </TouchableOpacity>
@@ -324,17 +328,17 @@ const styles = StyleSheet.create({
   accessBtn: {
     width: 40,
     height: 40,
-    borderRadius: 2.5,
+    borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.lighter,
+    backgroundColor: "rgba(0, 0, 0, 0.25)",
   },
   access: {
     width: "100%",
-    paddingVertical: 25,
+    paddingVertical: 15,
     position: "absolute",
     flexDirection: "row",
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     backgroundColor: "transparent",
     justifyContent: "space-between",
   },
