@@ -24,7 +24,7 @@ import Text from "../components/CustomText";
 
 import BarcodeScannerPeep from "../assets/sound/store-scanner-beep.mp3";
 
-export default function QRCodeScannerScreen({ navigation }) {
+export default function QRCodeScannerScreen({ route, navigation }) {
   const [flash, setFlash] = useState(false);
   const [scanned, setScanned] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -35,6 +35,10 @@ export default function QRCodeScannerScreen({ navigation }) {
   const handleBarcodeScanned = async (e) => {
     setScanned(true);
     await handlePlay();
+
+    if (route.params?.beneficiary)
+      return navigation.navigate("beneficiary", JSON.parse(e.data));
+
     return navigation.navigate("transfer", JSON.parse(e.data));
   };
   const handlePlay = async () => {
@@ -307,7 +311,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: 10,
     alignItems: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     justifyContent: "center",
     backgroundColor: colors.white,
   },

@@ -16,6 +16,7 @@ const InputForm1 = ({
   isLoading,
   margin = 90,
   errorMessage,
+  onSubmitEditing,
   ...otherProps
 }) => {
   const { setFieldTouched, setFieldValue, errors, touched, values } =
@@ -37,6 +38,7 @@ const InputForm1 = ({
         onBlur={() => {
           setFieldTouched(name);
         }}
+        onSubmitEditing={onSubmitEditing}
         invalid={(errors[name] && touched[name]) || invalid}
         {...otherProps}
       />

@@ -157,7 +157,10 @@ export default function TransferScreen({ route, navigation }) {
             </Text>
             <View style={styles.confirmBalanceCont}>
               <Text style={styles.confirmBalance} bold>
-                {transfer.amount}.00
+                {Number(transfer.amount).toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "ETB",
+                })}
               </Text>
             </View>
           </View>
@@ -444,12 +447,11 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 10,
     alignItems: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     justifyContent: "center",
     backgroundColor: colors.white,
   },
   modalTitle: {
-    marginBottom: 5,
     color: colors.black,
   },
   modalText: {

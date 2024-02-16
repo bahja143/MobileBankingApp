@@ -38,6 +38,7 @@ export default function App() {
   const [idleTime, setIdleTime] = useState(0); // Track inactivity duration
   const [isVisible, setIsVisible] = useState(false);
   const [appIsReady, setAppIsReady] = useState(false);
+  const [beneficiaries, setBeneficiaries] = useState({});
   const [lastInteraction, setLastInteraction] = useState(new Date()); // Track last interaction time
   const IDLE_THRESHOLD = 50 * 60 * 1000; // Logout after 5 minutes of inactivity (in milliseconds)
   const panResponder = useRef(
@@ -65,9 +66,11 @@ export default function App() {
   const handleLoadAuth = async () => {
     const auth = await cache.getItemAsync("auth");
     const account = await cache.getItemAsync("account");
+    const beneficiaries = await cache.getItemAsync("beneficiaries");
 
     setUser(auth);
     setAccount(account);
+    setBeneficiaries(beneficiaries);
   };
 
   // useEffect(() => {
@@ -134,7 +137,16 @@ export default function App() {
         setIsVisible={setIsVisible}
       /> */}
       <AuthContext.Provider
-        value={{ user, setUser, account, setAccount, isAuth, setIsAuth }}
+        value={{
+          user,
+          setUser,
+          account,
+          setAccount,
+          isAuth,
+          setIsAuth,
+          beneficiaries,
+          setBeneficiaries,
+        }}
       >
         <Screen onLayout={onLayoutRootView}>
           <StatusBar

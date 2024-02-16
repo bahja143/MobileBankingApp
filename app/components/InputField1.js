@@ -25,6 +25,7 @@ const InputField1 = ({
   isLoading,
   placeholder,
   height = 62,
+  onSubmitEditing,
   password = false,
   maxWidth = "100%",
   ...otherProps
@@ -73,6 +74,7 @@ const InputField1 = ({
         style={[styles.input]}
         placeholder={placeholder}
         cursorColor={colors.primary}
+        onSubmitEditing={onSubmitEditing}
         secureTextEntry={password && show}
       />
       {required ? (

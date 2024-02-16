@@ -8,14 +8,23 @@ import {
 
 import * as Yup from "yup";
 import { Formik } from "formik";
-import { useState } from "react";
-import { Entypo } from "@expo/vector-icons";
+import Modal from "react-native-modal";
+import Lottie from "lottie-react-native";
+import { useState, useContext } from "react";
+import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 
-import colors from "../config/colors";
 import Text from "../components/CustomText";
 import ActivityIndicator from "../components/ActivityIndicator";
-
 import { InputField1, PickerForm, BtnForm1 } from "../components/form";
+
+import cache from "../utility/cache";
+import colors from "../config/colors";
+
+import banks from "../data/banks.json";
+import data from "../data/accounts.json";
+
+import authContext from "../context/AuthContext";
+import doneAnimation from "../assets/animation/Registered.json";
 
 const schema = Yup.object({
   id: Yup.number(),
@@ -27,126 +36,55 @@ const schema = Yup.object({
     .label("Account"),
 });
 
-const data = [
-  {
-    Id: 1,
-    Name: {
-      firstName: "Diana",
-      lastName: "Jack",
-      middleName: "Irene",
-    },
-    Account: "5189175660838",
-  },
-  {
-    Id: 2,
-    Name: {
-      firstName: "Charlie",
-      lastName: "Grace",
-      middleName: "Bob",
-    },
-    Account: "3703284264799",
-  },
-  {
-    Id: 3,
-    Name: {
-      firstName: "Harry",
-      lastName: "Harry",
-      middleName: "Diana",
-    },
-    Account: "8752994657829",
-  },
-  {
-    Id: 4,
-    Name: {
-      firstName: "Bob",
-      lastName: "Jack",
-      middleName: "Frank",
-    },
-    Account: "1400698080874",
-  },
-  {
-    Id: 5,
-    Name: {
-      firstName: "Alice",
-      lastName: "Irene",
-      middleName: "Frank",
-    },
-    Account: "7579333944348",
-  },
-  {
-    Id: 6,
-    Name: {
-      firstName: "Harry",
-      lastName: "Eve",
-      middleName: "Frank",
-    },
-    Account: "1194989860702",
-  },
-  {
-    Id: 7,
-    Name: {
-      firstName: "Bob",
-      lastName: "Harry",
-      middleName: "Jack",
-    },
-    Account: "9962878623715",
-  },
-  {
-    Id: 8,
-    Name: {
-      firstName: "Frank",
-      lastName: "Grace",
-      middleName: "Irene",
-    },
-    Account: "6382348098347",
-  },
-  {
-    Id: 9,
-    Name: {
-      firstName: "Alice",
-      lastName: "Diana",
-      middleName: "Jack",
-    },
-    Account: "1828359688819",
-  },
-  {
-    Id: 10,
-    Name: {
-      firstName: "Charlie",
-      lastName: "Jack",
-      middleName: "Grace",
-    },
-    Account: "1481311198646",
-  },
-];
-const banks = [
-  { id: 1, name: "Shabelle Bank" },
-  { id: 2, name: "Awash Bank" },
-  { id: 3, name: "Commercial Bank" },
-  { id: 4, name: "Dashen Bank" },
-];
-
-export default function BeneficiaryScreen() {
+export default function BeneficiaryScreen({ route, navigation }) {
   const [beneficiary, setBeneficiary] = useState({
     id: 0,
-    name: "",
-    bankId: 1,
-    accountNo: "",
     isAccountValid: true,
+    name: route.params ? route.params.name : "",
+    accountNo: route.params ? route.params.account : "",
+    bankId: route.params?.bank
+      ? banks.find((b) => b.name == route.params?.bank)?.id
+      : 1,
   });
+  const [isDone, setIsDone] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAlreadyExist, setIsAlreadyExist] = useState(false);
+  const [existBeneficiary, setExistBeneficiary] = useState({});
+  const { setBeneficiaries } = useContext(authContext);
 
-  const handleSubmit = (beneficiary) => {
+  const handleSubmit = async (beneficiary) => {
     if (loading) return setIsLoading(true);
     if (!beneficiary["isAccountValid"]) return;
+    const beneficiaries = await cache.getItemAsync("beneficiaries");
+    const data = beneficiaries ? beneficiaries : [];
+
+    if (data.find((b) => b.accountNo == beneficiary["accountNo"])) {
+      setExistBeneficiary(
+        data.find((b) => b.accountNo == beneficiary["accountNo"])
+      );
+      return setIsAlreadyExist(true);
+    }
 
     Keyboard.dismiss();
     setIsLoading(true),
-      setTimeout(() => {
+      setTimeout(async () => {
         setBeneficiary(beneficiary);
-        console.log("submitted: ", beneficiary);
+        await cache.setItemAsync(
+          "beneficiaries",
+          [
+            { ...beneficiary, id: data.length === 0 ? 1 : data.length++ },
+            ...data,
+          ].filter((b) => b !== undefined)
+        );
+        setBeneficiaries(
+          [
+            { ...beneficiary, id: data.length === 0 ? 1 : data.length++ },
+            ...data,
+          ].filter((b) => b !== undefined)
+        );
         setIsLoading(false);
+        setIsDone(true);
       }, 3000);
   };
   const handleCheckAccountNo = (accountNo, setFieldValue) => {
@@ -163,14 +101,11 @@ export default function BeneficiaryScreen() {
 
       if (count == 13) {
         setLoading(false);
-        let account = data.find((d) => d.Account == accountNo.toString());
+        let account = data.find((d) => d.account == accountNo.toString());
         setIsLoading(false);
 
         if (account) {
-          setFieldValue(
-            "name",
-            `${account.Name?.firstName} ${account.Name?.middleName} ${account.Name?.lastName}`
-          );
+          setFieldValue("name", account.name);
           setFieldValue("accountNo", accountNo);
           setFieldValue("isAccountValid", true);
 
@@ -181,13 +116,127 @@ export default function BeneficiaryScreen() {
       }
     }, 3000);
   };
+  const handleTransferMoney = () => {
+    setIsDone(false);
+    navigation.navigate("transfer", {
+      ...beneficiary,
+      account: beneficiary.accountNo,
+    });
+  };
 
   return (
     <>
       <ActivityIndicator visible={isLoading} />
+      <Modal
+        isVisible={isDone}
+        animationOut="fadeOut"
+        animationIn="slideInUp"
+        animationOutTiming={50}
+      >
+        <View style={styles.modalDelete}>
+          <View style={styles.modalTrashIcon}>
+            <Lottie loop={false} autoPlay source={doneAnimation} />
+          </View>
+          <View style={styles.modalTextContainer}>
+            <Text style={styles.modalTitle} bold>
+              Success
+            </Text>
+            <Text style={styles.modalText} semibold>
+              Beneficiary successful registered!
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={handleTransferMoney}
+            style={[
+              styles.modalBtn,
+              {
+                borderWidth: 0,
+                paddingVertical: 11,
+                backgroundColor: colors.primary,
+              },
+            ]}
+          >
+            <Text
+              style={[styles.modalBtnText, { color: colors.white }]}
+              semibold
+            >
+              Send Money
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setIsDone(false);
+              navigation.navigate("beneficiaries");
+            }}
+            style={[styles.modalBtn, { paddingVertical: 10 }]}
+          >
+            <Text style={[styles.modalBtnText]} semibold>
+              Go Back
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+      <Modal
+        animationOut="fadeOut"
+        animationIn="slideInUp"
+        animationOutTiming={50}
+        isVisible={isAlreadyExist}
+      >
+        <View style={styles.modalDelete}>
+          <View
+            style={[
+              styles.modalTrashIcon,
+              { backgroundColor: colors.white, height: 75, width: 75 },
+            ]}
+          >
+            <MaterialCommunityIcons
+              size={32.5}
+              color={colors.danger}
+              name="account-convert"
+            />
+          </View>
+          <View style={styles.modalTextContainer}>
+            <Text style={styles.modalTitle} bold>
+              {existBeneficiary.name}
+            </Text>
+            <Text style={styles.modalText} semibold>
+              Beneficiary already exist!
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={handleTransferMoney}
+            style={[
+              styles.modalBtn,
+              {
+                borderWidth: 0,
+                paddingVertical: 11,
+                backgroundColor: colors.primary,
+              },
+            ]}
+          >
+            <Text
+              style={[styles.modalBtnText, { color: colors.white }]}
+              semibold
+            >
+              Send Money
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setIsAlreadyExist(false)}
+            style={[styles.modalBtn, { paddingVertical: 10 }]}
+          >
+            <Text style={[styles.modalBtnText]} semibold>
+              Go Back
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
       <View style={styles.navCont}>
-        <TouchableOpacity style={styles.navIconCont}>
-          <Entypo name="chevron-left" size={30} color={colors.primary} />
+        <TouchableOpacity
+          onPress={() => navigation.navigate("MainNavigation")}
+          style={styles.navIconCont}
+        >
+          <Entypo name="chevron-left" size={30} color={colors.white} />
         </TouchableOpacity>
         <Text style={styles.title} semibold>
           New Beneficiary
@@ -213,7 +262,7 @@ export default function BeneficiaryScreen() {
                   name="accountNo"
                   isLoading={loading}
                   keyboardType="numeric"
-                  placeholder="Account No."
+                  placeholder="Account no."
                   value={values["accountNo"]}
                   invalid={!values["isAccountValid"]}
                   onChange={(value) =>
@@ -227,9 +276,9 @@ export default function BeneficiaryScreen() {
                 <PickerForm
                   label="Bank"
                   name="bankId"
-                  options={banks.map((b) => ({ id: b.id, label: b.name }))}
                   icon="align-justify"
                   autoCapitalize="words"
+                  options={banks.map((b) => ({ id: b.id, label: b.name }))}
                 />
                 <BtnForm1 title="CREATE" margin={7.5} />
               </>
@@ -246,10 +295,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   navIconCont: {
-    padding: 4,
+    padding: 3,
     borderRadius: 5,
     marginRight: 10,
-    backgroundColor: colors.lighter,
+    backgroundColor: colors.primary,
   },
   navCont: {
     marginTop: 10,
@@ -267,6 +316,54 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: "center",
     color: colors.black,
+  },
+  modalTrashIcon: {
+    top: -10,
+    width: 110,
+    height: 110,
+    borderRadius: 150,
+    alignItems: "center",
+    marginVertical: -20,
+    justifyContent: "center",
+    backgroundColor: colors.white,
+  },
+  modalBtn: {
+    width: "100%",
+    marginTop: 8,
+    borderWidth: 1.25,
+    borderRadius: 7.5,
+    paddingVertical: 15,
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: colors.light,
+    backgroundColor: colors.white,
+  },
+  modalBtnText: {
+    fontSize: 15,
+    color: colors.black,
+  },
+  modalDelete: {
+    width: "100%",
+    borderRadius: 10,
+    paddingVertical: 10,
+    alignItems: "center",
+    paddingHorizontal: 10,
+    justifyContent: "center",
+    backgroundColor: colors.white,
+  },
+  modalTitle: {
+    top: -2,
+    fontSize: 15,
+    color: colors.black,
+  },
+  modalText: {
+    marginBottom: 5,
+    textAlign: "center",
+    color: colors.medium,
+  },
+  modalTextContainer: {
+    marginVertical: 10,
+    alignItems: "center",
   },
   errorMessage: {
     alignSelf: "center",

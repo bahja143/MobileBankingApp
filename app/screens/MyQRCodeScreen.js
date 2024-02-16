@@ -43,8 +43,6 @@ export default function MyQRCodeScreen({ navigation }) {
     });
   };
 
-  console.log(myAccount);
-
   return (
     <>
       <FlashMessage

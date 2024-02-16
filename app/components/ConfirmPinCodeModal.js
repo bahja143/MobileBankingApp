@@ -17,9 +17,9 @@ import SuspendModal from "./SuspendModal";
 
 export default function ConfirmPinCodeModal({
   user,
-  isVisible,
-  onSubmit,
   onClose,
+  onSubmit,
+  isVisible,
 }) {
   const inputRef = useRef(null);
   const [pin, setPing] = useState("");
@@ -101,18 +101,50 @@ export default function ConfirmPinCodeModal({
               </Text>
               <Animated.View style={{ transform: [{ translateX: shakeAnim }] }}>
                 <View style={styles.pinContainer}>
-                  <View style={styles.pin}>
+                  <View
+                    style={[
+                      styles.pin,
+                      {
+                        backgroundColor:
+                          pin.length >= 1 ? colors.primary : colors.lighter,
+                      },
+                    ]}
+                  >
                     {pin.length >= 1 ? <View style={styles.pinDot} /> : null}
                   </View>
 
-                  <View style={styles.pin}>
+                  <View
+                    style={[
+                      styles.pin,
+                      {
+                        backgroundColor:
+                          pin.length >= 2 ? colors.primary : colors.lighter,
+                      },
+                    ]}
+                  >
                     {pin.length >= 2 ? <View style={styles.pinDot} /> : null}
                   </View>
-                  <View style={styles.pin}>
+                  <View
+                    style={[
+                      styles.pin,
+                      {
+                        backgroundColor:
+                          pin.length >= 3 ? colors.primary : colors.lighter,
+                      },
+                    ]}
+                  >
                     {pin.length >= 3 ? <View style={styles.pinDot} /> : null}
                   </View>
 
-                  <View style={styles.pin}>
+                  <View
+                    style={[
+                      styles.pin,
+                      {
+                        backgroundColor:
+                          pin.length >= 4 ? colors.primary : colors.lighter,
+                      },
+                    ]}
+                  >
                     {pin.length >= 4 ? <View style={styles.pinDot} /> : null}
                   </View>
                 </View>

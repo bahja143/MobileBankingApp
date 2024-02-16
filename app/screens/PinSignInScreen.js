@@ -378,7 +378,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   pin: {
-    padding: 10,
+    padding: 9.25,
     borderWidth: 2,
     borderRadius: 25,
     marginHorizontal: 12,
@@ -400,7 +400,7 @@ const styles = StyleSheet.create({
     width: 77,
     height: 75,
     borderRadius: 10,
-    marginHorizontal: 15,
+    marginHorizontal: 13,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: colors.lighter,
@@ -419,7 +419,7 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   logo: {
-    top: -5,
+    top: -10,
     width: 90,
     height: 80,
     marginBottom: 10,

@@ -17,6 +17,7 @@ import DashboardScreen from "../screens/DashboardScreen";
 import MyAccountScreen from "../screens/MyAccountScreen";
 import ChangePinScreen from "../screens/ChangePinScreen";
 import CreatePinScreen from "../screens/CreatePinScreen";
+import BeneficiaryScreen from "../screens/BeneficiaryScreen";
 import UserProfileScreen from "../screens/UserProfileScreen";
 import VerificationScreen from "../screens/VerificationScreen";
 import TransactionsScreen from "../screens/TransactionsScreen";
@@ -199,6 +200,7 @@ const HomeStackNavigator = () => {
       <HomeStack.Screen name="verifyPin" component={VerificationScreen} />
       <HomeStack.Screen name="support" component={CustomerSupportScreen} />
       <HomeStack.Screen name="forgot" component={ForgotCredentialScreen} />
+      <HomeStack.Screen name="beneficiary" component={BeneficiaryScreen} />
     </HomeStack.Navigator>
   );
 };

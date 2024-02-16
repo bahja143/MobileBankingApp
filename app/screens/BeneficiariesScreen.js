@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
@@ -26,142 +26,17 @@ import colors from "../config/colors";
 import Text from "../components/CustomText";
 import ActivityIndicator from "../components/ActivityIndicator";
 
-const data = [
-  {
-    Id: 4,
-    Name: {
-      firstName: "Bob",
-      lastName: "Jack",
-      middleName: "Frank",
-    },
-    Account: "1400698080874",
-  },
-  {
-    Id: 5,
-    Name: {
-      firstName: "Alice",
-      lastName: "Irene",
-      middleName: "Frank",
-    },
-    Account: "7579333944348",
-  },
-  {
-    Id: 6,
-    Name: {
-      firstName: "Harry",
-      lastName: "Eve",
-      middleName: "Frank",
-    },
-    Account: "1194989860702",
-  },
-  {
-    Id: 7,
-    Name: {
-      firstName: "Bob",
-      lastName: "Harry",
-      middleName: "Jack",
-    },
-    Account: "9962878623715",
-  },
-  {
-    Id: 8,
-    Name: {
-      firstName: "Frank",
-      lastName: "Grace",
-      middleName: "Irene",
-    },
-    Account: "6382348098347",
-  },
-  {
-    Id: 9,
-    Name: {
-      firstName: "Alice",
-      lastName: "Diana",
-      middleName: "Jack",
-    },
-    Account: "1828359688819",
-  },
-  {
-    Id: 10,
-    Name: {
-      firstName: "Charlie",
-      lastName: "Jack",
-      middleName: "Grace",
-    },
-    Account: "1481311198646",
-  },
-  {
-    Id: 14,
-    Name: {
-      firstName: "Bob",
-      lastName: "Jack",
-      middleName: "Frank",
-    },
-    Account: "1400698080874",
-  },
-  {
-    Id: 15,
-    Name: {
-      firstName: "Alice",
-      lastName: "Irene",
-      middleName: "Frank",
-    },
-    Account: "7579333944348",
-  },
-  {
-    Id: 16,
-    Name: {
-      firstName: "Harry",
-      lastName: "Eve",
-      middleName: "Frank",
-    },
-    Account: "1194989860702",
-  },
-  {
-    Id: 17,
-    Name: {
-      firstName: "Bob",
-      lastName: "Harry",
-      middleName: "Jack",
-    },
-    Account: "9962878623715",
-  },
-  {
-    Id: 18,
-    Name: {
-      firstName: "Frank",
-      lastName: "Grace",
-      middleName: "Irene",
-    },
-    Account: "6382348098347",
-  },
-  {
-    Id: 19,
-    Name: {
-      firstName: "Alice",
-      lastName: "Diana",
-      middleName: "Jack",
-    },
-    Account: "1828359688819",
-  },
-  {
-    Id: 110,
-    Name: {
-      firstName: "Charlie",
-      lastName: "Jack",
-      middleName: "Grace",
-    },
-    Account: "1481311198646",
-  },
-];
+import cache from "../utility/cache";
+import banks from "../data/banks.json";
+
+import authContext from "../context/AuthContext";
 
 export default function BeneficiariesScreen({ navigation }) {
   const [show, setShow] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
   const [beneficiary, setBeneficiary] = useState({});
   const [refreshing, setRefreshing] = useState(false);
-  const [beneficiaries, setBeneficiaries] = useState([]);
   const spinValue = useRef(new Animated.Value(0)).current;
   const spinValue1 = useRef(new Animated.Value(0)).current;
   const spin = spinValue.interpolate({
@@ -173,6 +48,7 @@ export default function BeneficiariesScreen({ navigation }) {
     outputRange: ["0deg", "45deg"],
   });
   const swipeRef = useRef();
+  const { beneficiaries, setBeneficiaries } = useContext(authContext);
 
   const handleRefreshing = () => {
     setRefreshing(true);
@@ -212,13 +88,19 @@ export default function BeneficiariesScreen({ navigation }) {
       spinValue.setValue(0);
     }, 50);
   };
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     setVisible(false);
-    swipeRef.current?.close();
+
+    swipeRef.current &&
+      (await cache.setItemAsync("beneficiaries", [
+        ...beneficiaries.filter((b) => b.id !== beneficiary.id),
+      ]));
     swipeRef.current &&
       setBeneficiaries([
-        ...beneficiaries.filter((b) => b.Id !== beneficiary.Id),
+        ...beneficiaries.filter((b) => b.id !== beneficiary.id),
       ]);
+
+    swipeRef.current?.close();
   };
   const handleDelete = (obj) => {
     setBeneficiary(obj);
@@ -229,16 +111,14 @@ export default function BeneficiariesScreen({ navigation }) {
     setVisible(false);
     setBeneficiary({});
   };
-  const handleLoad = () => {
-    setBeneficiaries([...data]);
+  const handleManually = () => {
+    setShow(false);
+    navigation.navigate("beneficiary");
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-      handleLoad();
-    }, 3000);
-  }, []);
+  const handleQrCode = () => {
+    setShow(false);
+    navigation.navigate("qrcode", { beneficiary: true });
+  };
 
   return (
     <>
@@ -255,9 +135,9 @@ export default function BeneficiariesScreen({ navigation }) {
           </View>
           <View style={styles.modalTextContainer}>
             <Text style={styles.modalTitle} bold>
-              {`${beneficiary.Name?.firstName} ${beneficiary.Name?.middleName} ${beneficiary.Name?.lastName}`}
+              {beneficiary.name}
             </Text>
-            <Text style={styles.modalText}>
+            <Text style={styles.modalText} semibold>
               Are you sure to delete this Beneficiary
             </Text>
           </View>
@@ -296,26 +176,26 @@ export default function BeneficiariesScreen({ navigation }) {
         onBackdropPress={handleCloseModal}
       >
         <View style={styles.menu}>
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity onPress={handleManually} style={styles.menuItem}>
             <Text semibold style={styles.menuText}>
               Manually
             </Text>
             <View style={styles.menuIconContainer}>
               <MaterialCommunityIcons
-                size={25}
+                size={27.5}
                 color={colors.white}
                 name="format-list-bulleted"
               />
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity onPress={handleQrCode} style={styles.menuItem}>
             <Text semibold style={styles.menuText}>
               Via QR
             </Text>
             <View style={styles.menuIconContainer}>
               <MaterialCommunityIcons
-                size={25}
+                size={27.5}
                 name="qrcode-scan"
                 color={colors.white}
               />
@@ -343,9 +223,9 @@ export default function BeneficiariesScreen({ navigation }) {
           </Text>
         </View>
 
-        {beneficiaries.length !== 0 ? (
+        {beneficiaries?.length !== 0 ? (
           <FlatList
-            data={beneficiaries}
+            data={beneficiaries?.filter((b) => b !== undefined)}
             contentContainerStyle={styles.flatlistContainer}
             showsVerticalScrollIndicator={false}
             refreshControl={
@@ -355,13 +235,21 @@ export default function BeneficiariesScreen({ navigation }) {
                 onRefresh={handleRefreshing}
               />
             }
+            keyExtractor={(item, index) => String(index)}
             renderItem={({ item }) => (
               <GestureHandlerRootView>
                 <Swipeable
-                  key={item.Id}
                   ref={swipeRef}
                   renderLeftActions={() => (
-                    <TouchableOpacity style={styles.swipeLeft}>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate("transfer", {
+                          account: item.accountNo,
+                          ...item,
+                        })
+                      }
+                      style={styles.swipeLeft}
+                    >
                       <Feather name="send" size={24} color={colors.white} />
                       <Text semibold style={styles.swipeLeftText}>
                         Send Money
@@ -372,7 +260,7 @@ export default function BeneficiariesScreen({ navigation }) {
                     <View style={styles.swipeRight}>
                       <TouchableOpacity
                         onPress={() => handleDelete(item)}
-                        style={styles.deleteAction}
+                        style={[styles.deleteAction]}
                       >
                         <Ionicons
                           name="trash-outline"
@@ -383,7 +271,7 @@ export default function BeneficiariesScreen({ navigation }) {
                           Delete
                         </Text>
                       </TouchableOpacity>
-                      <TouchableOpacity style={styles.editAction}>
+                      {/* <TouchableOpacity style={styles.editAction}>
                         <FontAwesome5
                           name="edit"
                           size={20}
@@ -392,7 +280,7 @@ export default function BeneficiariesScreen({ navigation }) {
                         <Text semibold style={styles.editActionText}>
                           Edit
                         </Text>
-                      </TouchableOpacity>
+                      </TouchableOpacity> */}
                     </View>
                   )}
                 >
@@ -407,10 +295,11 @@ export default function BeneficiariesScreen({ navigation }) {
                       </View>
                       <View>
                         <Text style={styles.itemTitle} semibold>
-                          {`${item.Name.firstName} ${item.Name.middleName} ${item.Name.lastName}`}
+                          {item?.name}
                         </Text>
                         <Text style={styles.itemSubtitle} numberOfLines={1}>
-                          {item.Account} - Shabelle Bank
+                          {item?.accountNo} -{" "}
+                          {banks.find((b) => b.id === item?.bankId)?.name}
                         </Text>
                       </View>
                     </View>
@@ -490,9 +379,12 @@ const styles = StyleSheet.create({
   deleteAction: {
     flex: 1,
     height: "100%",
+    borderWidth: 1,
+    borderRadius: 10,
     alignItems: "center",
     borderTopLeftRadius: 10,
     justifyContent: "center",
+    borderColor: colors.light,
     borderBottomLeftRadius: 10,
     backgroundColor: colors.white,
   },
@@ -561,13 +453,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   menuIconContainer: {
-    width: 32.5,
-    height: 32.5,
-    borderRadius: 5,
+    width: 37.5,
+    height: 37.5,
+    borderRadius: 7.5,
     marginLeft: 7.5,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.primary,
+    backgroundColor: "rgba(0, 0, 0, 0.25)",
   },
   menuText: {
     fontSize: 15,

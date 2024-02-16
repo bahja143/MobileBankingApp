@@ -209,7 +209,7 @@ export default function TransactionsScreen({ navigation }) {
             <Entypo size={30} color={colors.white} name="chevron-left" />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setShow(true)} style={styles.search}>
-            <FontAwesome size={20} name="search" color={colors.medium} />
+            <FontAwesome size={22} name="search" color={colors.medium} />
             <Text style={styles.searchText} semibold>
               Search
             </Text>
@@ -371,19 +371,19 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   searchText: {
-    fontSize: 15.5,
+    fontSize: 16,
     marginLeft: 15,
     color: colors.medium,
   },
   search: {
     flex: 1,
-    borderWidth: 1,
-    borderRadius: 100,
+    borderWidth: 1.35,
+    borderRadius: 10,
+    marginHorizontal: 5,
+    paddingVertical: 12,
     flexDirection: "row",
     alignItems: "center",
-    marginHorizontal: 5,
     paddingHorizontal: 15,
-    paddingVertical: 12,
     borderColor: colors.light,
     borderColor: colors.light,
     backgroundColor: colors.white,
@@ -404,7 +404,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   itemSep: {
-    height: 5,
+    height: 3.5,
     backgroundColor: colors.lighter,
   },
   iconContainer: {
