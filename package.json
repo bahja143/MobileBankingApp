@@ -60,6 +60,7 @@
     "react-native-share": "^7.9.1",
     "react-native-svg": "13.9.0",
     "react-native-svg-uri": "^0.0.1",
+    "react-native-swipe-gestures": "^1.0.5",
     "react-native-tab-view": "^3.5.2",
     "react-native-view-shot": "3.7.0",
     "yup": "^0.32.11"

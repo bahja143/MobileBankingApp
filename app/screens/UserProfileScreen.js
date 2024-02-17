@@ -1,5 +1,5 @@
-import { useState } from "react";
 import Modal from "react-native-modal";
+import { useState, useContext } from "react";
 import * as Media from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
 import FlashMessage, { showMessage } from "react-native-flash-message";
@@ -23,14 +23,16 @@ import Text from "../components/CustomText";
 import ActivityIndicator from "../components/ActivityIndicator";
 
 import Avatar from "../assets/images/avatar.png";
+import authContext from "../context/AuthContext";
 
 export default function UserProfileScreen({ navigation }) {
+  const { account } = useContext(authContext);
   const [imageUri, setImageUri] = useState("");
   const [visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const formatNumberWithSpaces = (number) => {
-    return number.toString().replace(/\B(?=(\d{5})+(?!\d))/g, " ");
+    return number.toString().replace(/\B(?=(\d{4})+(?!\d))/g, " ");
   };
   const handleMedia = async () => {
     setIsLoading(true);
@@ -91,7 +93,7 @@ export default function UserProfileScreen({ navigation }) {
             <Text style={styles.modalTitle} bold>
               Gallery Permission
             </Text>
-            <Text style={styles.modalText}>
+            <Text style={styles.modalText} semibold>
               Allow this app to access your gallery
             </Text>
           </View>
@@ -156,10 +158,10 @@ export default function UserProfileScreen({ navigation }) {
 
           <View style={styles.titleCont}>
             <Text style={styles.title} bold>
-              Abdisalam Farah Abdi
+              {account.name}
             </Text>
             <Text style={styles.subTitle} semibold>
-              {formatNumberWithSpaces("0272010000033")}
+              {formatNumberWithSpaces(account.mobile)}
             </Text>
           </View>
 
@@ -294,7 +296,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: 10,
     alignItems: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     justifyContent: "center",
     backgroundColor: colors.white,
   },

@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import {
   Entypo,
-  Octicons,
+  AntDesign,
   FontAwesome,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
@@ -19,7 +19,7 @@ import {
 import colors from "../config/colors";
 import Text from "../components/CustomText";
 import ActivityIndicator from "../components/ActivityIndicator";
-
+import TransferDetailModal from "../components/TransferDetailModal";
 import { InputField1, DatePickerInput, BtnForm1 } from "../components/form";
 
 import transactionsData from "../data/transactions.json";
@@ -34,8 +34,10 @@ export default function TransactionsScreen({ navigation }) {
     startDate: "",
   });
   const [show, setShow] = useState(false);
+  const [detail, setDetail] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [detailTran, setDetailTran] = useState(false);
 
   const handleSubmit = (values) => {
     if (
@@ -64,6 +66,10 @@ export default function TransactionsScreen({ navigation }) {
   const handleLoad = () => {
     setTransactions([...transactionsData]);
   };
+  const handleTranDetail = (tran) => {
+    setDetail(tran);
+    setDetailTran(true);
+  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -75,6 +81,11 @@ export default function TransactionsScreen({ navigation }) {
   return (
     <>
       <ActivityIndicator visible={isLoading} />
+      <TransferDetailModal
+        detail={detail}
+        isVisible={detailTran}
+        setShow={setDetailTran}
+      />
       <Modal
         isVisible={show}
         style={styles.modal}
@@ -85,13 +96,20 @@ export default function TransactionsScreen({ navigation }) {
         onBackdropPress={() => setShow(false)}
       >
         <View style={styles.filterCont}>
-          <View style={styles.filterTitleCont}>
-            <Octicons
-              size={40}
-              style={styles.icon}
-              color={colors.light}
-              name="horizontal-rule"
-            />
+          <View style={styles.header}>
+            <Text style={styles.headerTitle} bold>
+              Filter
+            </Text>
+            <TouchableOpacity
+              style={styles.headerIconContainer}
+              onPress={() => setShow(false)}
+            >
+              <AntDesign
+                name="closecircleo"
+                size={25.5}
+                color={colors.medium}
+              />
+            </TouchableOpacity>
           </View>
           <Formik
             enableReinitialize
@@ -230,14 +248,14 @@ export default function TransactionsScreen({ navigation }) {
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
               <TouchableOpacity
-                onPress={() => navigation.navigate("detail")}
+                onPress={() => handleTranDetail(item)}
                 style={styles.item}
               >
                 <View style={styles.itemLeft}>
                   <View style={styles.iconContainer}>
                     <MaterialCommunityIcons
                       size={32.5}
-                      name="history"
+                      name="bank-transfer"
                       color={colors.primary}
                     />
                   </View>
@@ -299,6 +317,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: colors.lighter,
   },
+  headerTitle: {
+    fontSize: 15,
+    marginLeft: 12,
+    color: colors.black,
+  },
+  headerIconContainer: {
+    marginRight: 12,
+    borderRadius: 250,
+  },
+  header: {
+    paddingTop: 12,
+    paddingBottom: 9,
+    flexDirection: "row",
+    borderBottomWidth: 1.25,
+    borderColor: colors.lighter,
+    justifyContent: "space-between",
+  },
   emptyText: {
     marginTop: 25,
     color: "rgba(0, 0, 0,.25)",
@@ -320,7 +355,7 @@ const styles = StyleSheet.create({
   },
   form: {
     marginTop: 30,
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
   },
   modelItemText: {
     fontSize: 15,
@@ -365,14 +400,14 @@ const styles = StyleSheet.create({
   filterCont: {
     bottom: 0,
     width: "100%",
-    height: "90%",
-    borderTopEndRadius: 25,
-    borderTopLeftRadius: 25,
+    height: "85%",
+    borderTopEndRadius: 20,
+    borderTopLeftRadius: 20,
     backgroundColor: colors.white,
   },
   searchText: {
     fontSize: 16,
-    marginLeft: 15,
+    marginLeft: 12,
     color: colors.medium,
   },
   search: {
@@ -420,6 +455,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   itemAmount: {
+    fontSize: 14.25,
     marginBottom: 5,
     color: colors.green,
     alignSelf: "flex-end",
@@ -430,7 +466,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
   },
   itemSubtitle: {
-    fontSize: 13,
+    fontSize: 13.5,
     color: colors.medium,
     textTransform: "capitalize",
   },

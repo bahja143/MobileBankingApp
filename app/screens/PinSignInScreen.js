@@ -106,6 +106,10 @@ export default function PinSignInScreen({ navigation }) {
       });
     }
   };
+  const getFirstTwoWords = (string) => {
+    const words = string.split(" ");
+    return words.length >= 2 ? words.slice(0, 2).join(" ") : "";
+  };
 
   useEffect(() => {
     HandleCheckFingerPrint();
@@ -118,7 +122,7 @@ export default function PinSignInScreen({ navigation }) {
       <View style={styles.container}>
         <Image style={styles.logo} source={logo} />
         <Text style={styles.title} semibold>
-          Welcome back, <Text bold>Abdisalam Farah!</Text>
+          Welcome back, <Text bold>{getFirstTwoWords(account?.name)}!</Text>
         </Text>
         <Animated.View
           style={[

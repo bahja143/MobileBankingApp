@@ -15,12 +15,15 @@ import {
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { useState } from "react";
+import Modal from "react-native-modal";
+import Lottie from "lottie-react-native";
 
-import colors from "../config/colors";
 import Text from "../components/CustomText";
 import ActivityIndicator from "../components/ActivityIndicator";
-
 import { TextInputForm, BtnForm } from "../components/form";
+
+import colors from "../config/colors";
+import doneAnimation from "../assets/animation/Registered.json";
 
 const schema = Yup.object({
   name: Yup.string().label("Name"),
@@ -37,6 +40,7 @@ export default function UpdateNextKinScreen({ navigation }) {
     relation: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [isDone, setIsDone] = useState(false);
 
   const handleSubmit = (values) => {
     setIsLoading(true);
@@ -44,13 +48,54 @@ export default function UpdateNextKinScreen({ navigation }) {
 
     setTimeout(() => {
       setIsLoading(false);
-      console.log(values);
+      setIsDone(true);
     }, 3000);
   };
 
   return (
     <>
       <ActivityIndicator visible={isLoading} />
+      <Modal
+        isVisible={isDone}
+        animationOut="fadeOut"
+        animationIn="slideInUp"
+        animationOutTiming={50}
+      >
+        <View style={styles.modalDelete}>
+          <View style={styles.modalTrashIcon}>
+            <Lottie loop={false} autoPlay source={doneAnimation} />
+          </View>
+          <View style={styles.modalTextContainer}>
+            <Text style={styles.modalTitle} bold>
+              Success
+            </Text>
+            <Text style={styles.modalText} semibold>
+              Next kin successful updated
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={() => {
+              setIsDone(false);
+              navigation.goBack();
+            }}
+            style={[
+              styles.modalBtn,
+              {
+                borderWidth: 0,
+                paddingVertical: 11,
+                backgroundColor: colors.primary,
+              },
+            ]}
+          >
+            <Text
+              style={[styles.modalBtnText, { color: colors.white }]}
+              semibold
+            >
+              Done
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
       <View style={styles.container}>
         <View style={styles.navCont}>
           <TouchableOpacity
@@ -148,6 +193,54 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 7.5,
     backgroundColor: colors.white,
+  },
+  modalTrashIcon: {
+    top: -10,
+    width: 110,
+    height: 110,
+    borderRadius: 150,
+    alignItems: "center",
+    marginVertical: -20,
+    justifyContent: "center",
+    backgroundColor: colors.white,
+  },
+  modalBtn: {
+    width: "100%",
+    marginTop: 8,
+    borderWidth: 1.25,
+    borderRadius: 7.5,
+    paddingVertical: 15,
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: colors.light,
+    backgroundColor: colors.white,
+  },
+  modalBtnText: {
+    fontSize: 15,
+    color: colors.black,
+  },
+  modalDelete: {
+    width: "100%",
+    borderRadius: 10,
+    paddingVertical: 10,
+    alignItems: "center",
+    paddingHorizontal: 10,
+    justifyContent: "center",
+    backgroundColor: colors.white,
+  },
+  modalTitle: {
+    top: -2,
+    fontSize: 15,
+    color: colors.black,
+  },
+  modalText: {
+    marginBottom: 5,
+    textAlign: "center",
+    color: colors.medium,
+  },
+  modalTextContainer: {
+    marginVertical: 10,
+    alignItems: "center",
   },
   btnCont: {
     marginTop: 25,

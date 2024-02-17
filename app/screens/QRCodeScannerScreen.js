@@ -28,7 +28,7 @@ export default function QRCodeScannerScreen({ route, navigation }) {
   const [flash, setFlash] = useState(false);
   const [scanned, setScanned] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [invalidQr, setInvalidQr] = useState(false);
+  const [invalidQr, setInvalidQr] = useState(true);
   const [cameraPer, setCameraPer] = useState(false);
   const animatedValue = useRef(new Animated.Value(0)).current;
 
@@ -123,7 +123,7 @@ export default function QRCodeScannerScreen({ route, navigation }) {
             <Text style={styles.modalTitle} bold>
               Invalid QR Code
             </Text>
-            <Text style={styles.modalText}>
+            <Text style={styles.modalText} semibold>
               Apologies, but it seems the QR code provided is invalid or not
               recognized.
             </Text>
@@ -157,7 +157,7 @@ export default function QRCodeScannerScreen({ route, navigation }) {
             <Text style={styles.modalTitle} bold>
               Gallery Permission
             </Text>
-            <Text style={styles.modalText}>
+            <Text style={styles.modalText} semibold>
               Allow this app to access your gallery
             </Text>
           </View>

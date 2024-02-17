@@ -15,7 +15,9 @@ import Text from "../components/CustomText";
 
 import Bg from "../assets/images/Bg.png";
 import Avatar from "../assets/images/avatar.png";
+
 import ActivityIndicator from "../components/ActivityIndicator";
+import TransferDetailModal from "../components/TransferDetailModal";
 
 import cache from "../utility/cache";
 import authContext from "../context/AuthContext";
@@ -23,7 +25,9 @@ import transactionsData from "../data/transactions.json";
 
 export default function DashboardScreen({ navigation }) {
   const [show, setShow] = useState(false);
+  const [detail, setDetail] = useState({});
   const [loading, setLoading] = useState(true);
+  const [detailTran, setDetailTran] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [transactions, setTransactions] = useState([]);
   const { user, account: myAccount, setUser } = useContext(authContext);
@@ -64,6 +68,10 @@ export default function DashboardScreen({ navigation }) {
       navigation.navigate("createPin");
     }
   };
+  const handleTranDetail = (tran) => {
+    setDetail(tran);
+    setDetailTran(true);
+  };
 
   useEffect(() => {
     if (user.initial) {
@@ -78,6 +86,11 @@ export default function DashboardScreen({ navigation }) {
 
   return (
     <>
+      <TransferDetailModal
+        detail={detail}
+        isVisible={detailTran}
+        setShow={setDetailTran}
+      />
       <ActivityIndicator visible={loading} />
       <FlatList
         data={[1]}
@@ -232,7 +245,7 @@ export default function DashboardScreen({ navigation }) {
                 ItemSeparatorComponent={() => <View style={style.itemSep} />}
                 renderItem={({ item }) => (
                   <TouchableOpacity
-                    onPress={() => navigation.navigate("detail")}
+                    onPress={() => handleTranDetail(item)}
                     style={style.TranCont}
                   >
                     <View style={style.Tran} key={item}>
