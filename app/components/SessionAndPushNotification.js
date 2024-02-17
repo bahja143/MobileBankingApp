@@ -15,11 +15,11 @@ import colors from "../config/colors";
 import SuspendModal from "./SuspendModal";
 
 export default function SessionAndPushNotification({
+  user,
   isVisible,
   setIsVisible,
 }) {
   const inputRef = useRef(null);
-  const [myPin] = useState("6438");
   const [pin, setPing] = useState("");
   const [show, setShow] = useState(true);
   const [maxTry, setMaxTry] = useState(0);
@@ -30,7 +30,7 @@ export default function SessionAndPushNotification({
     setPing(num);
 
     if (num.length >= 4) {
-      if (num === myPin) {
+      if (num === user["pin"]) {
         setPing("");
         setIsVisible(false);
 
@@ -97,24 +97,57 @@ export default function SessionAndPushNotification({
             <Text semibold style={styles.title}>
               Please enter your PIN
             </Text>
-            <Text style={styles.subTitle}>
+            <Text style={styles.subTitle} semibold>
               For your security, your banking session has timed out{" "}
               <Text bold>due to inactivity</Text>
             </Text>
             <Animated.View style={{ transform: [{ translateX: shakeAnim }] }}>
               <View style={styles.pinContainer}>
-                <View style={styles.pin}>
+                <View
+                  style={[
+                    styles.pin,
+                    {
+                      borderColor:
+                        pin.length >= 1 ? colors.primary : "rgba(0, 0, 0, 0.3)",
+                    },
+                  ]}
+                >
                   {pin.length >= 1 ? <View style={styles.pinDot} /> : null}
                 </View>
 
-                <View style={styles.pin}>
+                <View
+                  style={[
+                    styles.pin,
+                    {
+                      borderColor:
+                        pin.length >= 2 ? colors.primary : "rgba(0, 0, 0, 0.3)",
+                    },
+                  ]}
+                >
                   {pin.length >= 2 ? <View style={styles.pinDot} /> : null}
                 </View>
-                <View style={styles.pin}>
+
+                <View
+                  style={[
+                    styles.pin,
+                    {
+                      borderColor:
+                        pin.length >= 3 ? colors.primary : "rgba(0, 0, 0, 0.3)",
+                    },
+                  ]}
+                >
                   {pin.length >= 3 ? <View style={styles.pinDot} /> : null}
                 </View>
 
-                <View style={styles.pin}>
+                <View
+                  style={[
+                    styles.pin,
+                    {
+                      borderColor:
+                        pin.length >= 4 ? colors.primary : "rgba(0, 0, 0, 0.3)",
+                    },
+                  ]}
+                >
                   {pin.length >= 4 ? <View style={styles.pinDot} /> : null}
                 </View>
               </View>

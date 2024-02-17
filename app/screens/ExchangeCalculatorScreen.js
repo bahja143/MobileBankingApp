@@ -104,7 +104,7 @@ export default function ExchangeCalculatorScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 25,
+    paddingTop: 25,
     backgroundColor: colors.lighter,
   },
   flatList: { paddingBottom: 15 },

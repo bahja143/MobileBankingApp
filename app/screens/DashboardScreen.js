@@ -234,7 +234,7 @@ export default function DashboardScreen({ navigation }) {
                 Recent Transactions
               </Text>
 
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate("history")}>
                 <Text>See All</Text>
               </TouchableOpacity>
             </View>
@@ -520,7 +520,7 @@ const style = StyleSheet.create({
     color: colors.white,
   },
   name: {
-    top: 4,
+    top: 2.5,
     fontSize: 18.5,
     color: colors.white,
     textTransform: "capitalize",

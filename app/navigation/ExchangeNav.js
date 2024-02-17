@@ -1,8 +1,6 @@
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Entypo } from "@expo/vector-icons";
-
-import { NavigationContainer } from "@react-navigation/native";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 import ExchangeRateScreen from "../screens/ExchangeRateScreen";
 import ExchangeCalculatorScreen from "../screens/ExchangeCalculatorScreen";
