@@ -37,9 +37,8 @@ export default function App() {
   const [isVisible, setIsVisible] = useState(false);
   const [appIsReady, setAppIsReady] = useState(false);
   const [beneficiaries, setBeneficiaries] = useState({});
+  const [timeForInactivityInSecond] = useState(60);
   const timerId = useRef(false);
-  const [timeForInactivityInSecond, setTimeForInactivityInSecond] =
-    useState(60);
 
   const handleExpoNotification = async () => {
     if (isVisible) return;
@@ -60,28 +59,20 @@ export default function App() {
     setAccount(account);
     setBeneficiaries(beneficiaries);
   };
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponderCapture: () => {
-        resetInactivityTimeout();
-      },
-    })
-  ).current;
-
   const resetInactivityTimeout = () => {
     clearTimeout(timerId.current);
     timerId.current = setTimeout(() => {
-      if (isVisible || isAuth) return;
-      setIsVisible(true);
-      handleExpoNotification();
-      // action after user has been detected idle
-    }, timeForInactivityInSecond * 60);
+      if (isAuth) {
+        setIsVisible(true);
+        handleExpoNotification();
+      }
+    }, timeForInactivityInSecond * 1);
   };
 
   useEffect(() => {
+    resetInactivityTimeout();
     async function prepare() {
       try {
-        resetInactivityTimeout();
         await handleLoadAuth();
         await Font.loadAsync({
           Inter_700Bold,
@@ -101,6 +92,14 @@ export default function App() {
 
     prepare();
   }, []);
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponderCapture: () => {
+        resetInactivityTimeout();
+      },
+    })
+  ).current;
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
