@@ -107,8 +107,8 @@ export default function PinSignInScreen({ navigation }) {
     }
   };
   const getFirstTwoWords = (string) => {
-    const words = string.split(" ");
-    return words.length >= 2 ? words.slice(0, 2).join(" ") : "";
+    const words = string?.split(" ");
+    return words?.length >= 2 ? words?.slice(0, 2).join(" ") : "";
   };
 
   useEffect(() => {

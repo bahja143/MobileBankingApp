@@ -15,9 +15,9 @@ export default function WelcomeScreen({ navigation }) {
         <Text style={styles.title} bold>
           Welcome to Shabelle Bank
         </Text>
-        <Text style={styles.subTitle} semibold>
+        {/* <Text style={styles.subTitle} semibold>
           Bank Of Ethics
-        </Text>
+        </Text> */}
       </View>
 
       <View style={styles.btnContainer}>
@@ -28,7 +28,7 @@ export default function WelcomeScreen({ navigation }) {
           backgroundColor="white"
           textTransform="capitalize"
           onPress={() =>
-            navigation.navigate("signInPassword", { initial: true })
+            navigation.navigate("normalPassword", { initial: true })
           }
         />
 
@@ -70,11 +70,11 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    marginTop: 20,
+    marginTop: 13,
     color: colors.white,
   },
   logo: {
-    width: 125,
     height: 90,
+    width: 125,
   },
 });

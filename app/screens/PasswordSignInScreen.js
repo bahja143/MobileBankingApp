@@ -40,7 +40,7 @@ const schema = Yup.object({
     .required()
     .label("Password"),
 });
-export default function PasswordSignInScreen({ navigation, route }) {
+export default function PasswordSignInScreen({ navigation }) {
   const [info] = useState({
     mobile: "",
     password: "",
@@ -57,12 +57,12 @@ export default function PasswordSignInScreen({ navigation, route }) {
   const [visible, setVisible] = useState(false);
   const [maxTry, setMaxTry] = useState(0);
 
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
     Keyboard.dismiss();
+    setIsLoading(true);
     setErrorMessage("");
     const user = myInfo["password"];
 
-    setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
       if (
@@ -118,10 +118,9 @@ export default function PasswordSignInScreen({ navigation, route }) {
     await cache.setItemAsync("account", initialData.account);
   };
   useEffect(() => {
-    if (!myInfo) {
-      handleSignInInitial();
-    }
     HandleCheckFingerPrint();
+
+    if (!myInfo) handleSignInInitial();
   }, []);
 
   return (
@@ -131,8 +130,8 @@ export default function PasswordSignInScreen({ navigation, route }) {
       {myInfo?.initial ? (
         <View style={styles.navCont}>
           <TouchableOpacity
-            onPress={() => navigation.goBack()}
             style={styles.navIconCont}
+            onPress={() => navigation.navigate("welcome")}
           >
             <Entypo name="chevron-left" size={30} color={colors.white} />
           </TouchableOpacity>
@@ -162,7 +161,7 @@ export default function PasswordSignInScreen({ navigation, route }) {
               <TextInputForm
                 name="mobile"
                 maxLength={10}
-                label="Mobile No"
+                label="Mobile"
                 keyboardType="numeric"
                 placeholder="09xxxxxxx"
                 onSubmitEditing={handleSubmit}
@@ -342,8 +341,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   logo: {
-    width: 120,
-    height: 93,
+    width: 110,
+    height: 92,
     alignSelf: "center",
   },
 });

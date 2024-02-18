@@ -3,11 +3,12 @@ import {
   Platform,
   Keyboard,
   StyleSheet,
+  BackHandler,
   KeyboardAvoidingView,
 } from "react-native";
 import * as Yup from "yup";
 import { Formik } from "formik";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 
 import Text from "../components/CustomText";
 import { TextInputForm, BtnForm } from "../components/form";
@@ -104,6 +105,14 @@ export default function CreatePasswordScreen({ route, navigation }) {
       return "Strong";
     }
   };
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => true
+    );
+    return () => backHandler.remove();
+  }, []);
 
   return (
     <>

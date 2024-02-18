@@ -19,16 +19,16 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import colors from "../config/colors";
 import Text from "../components/CustomText";
 
+import colors from "../config/colors";
 import BarcodeScannerPeep from "../assets/sound/store-scanner-beep.mp3";
 
 export default function QRCodeScannerScreen({ route, navigation }) {
   const [flash, setFlash] = useState(false);
   const [scanned, setScanned] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [invalidQr, setInvalidQr] = useState(true);
+  const [invalidQr, setInvalidQr] = useState(false);
   const [cameraPer, setCameraPer] = useState(false);
   const animatedValue = useRef(new Animated.Value(0)).current;
 

@@ -21,7 +21,7 @@ const StackNavigator = () => (
     <Stack.Screen name="verify" component={VerificationScreen} />
     <Stack.Screen name="forgot" component={ForgotCredentialScreen} />
     <Stack.Screen name="support" component={CustomerSupportScreen} />
-    <Stack.Screen name="signInPassword" component={PasswordSignInScreen} />
+    <Stack.Screen name="normalPassword" component={PasswordSignInScreen} />
     <Stack.Screen name="createPassword" component={CreatePasswordScreen} />
   </Stack.Navigator>
 );

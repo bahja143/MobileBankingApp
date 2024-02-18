@@ -16,6 +16,7 @@ import SuspendModal from "./SuspendModal";
 
 export default function SessionAndPushNotification({
   user,
+  onReset,
   isVisible,
   setIsVisible,
 }) {
@@ -31,6 +32,7 @@ export default function SessionAndPushNotification({
 
     if (num.length >= 4) {
       if (num === user["pin"]) {
+        onReset();
         setPing("");
         setIsVisible(false);
 

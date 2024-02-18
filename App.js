@@ -35,10 +35,17 @@ export default function App() {
   const [account, setAccount] = useState({});
   const [isAuth, setIsAuth] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [timeElapsed, setTimeElapsed] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
   const [appIsReady, setAppIsReady] = useState(false);
   const [beneficiaries, setBeneficiaries] = useState({});
-  const [timeForInactivityInSecond] = useState(60);
-  const timerId = useRef(false);
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponderCapture: () => {
+        resetTimer();
+      },
+    })
+  ).current;
 
   const handleExpoNotification = async () => {
     if (isVisible) return;
@@ -59,18 +66,44 @@ export default function App() {
     setAccount(account);
     setBeneficiaries(beneficiaries);
   };
-  const resetInactivityTimeout = () => {
-    clearTimeout(timerId.current);
-    timerId.current = setTimeout(() => {
+  const startTimer = () => {
+    setIsRunning(true);
+  };
+  const stopTimer = () => {
+    setIsRunning(false);
+    setTimeElapsed(0);
+  };
+
+  useEffect(() => {
+    let interval;
+    if (isRunning) {
+      interval = setInterval(() => {
+        setTimeElapsed((prevTime) => prevTime + 1);
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+
+    return () => clearInterval(interval);
+  }, [isRunning]);
+
+  useEffect(() => {
+    if (timeElapsed >= 60) {
+      // Run code after 1 minute
       if (isAuth) {
         setIsVisible(true);
         handleExpoNotification();
       }
-    }, timeForInactivityInSecond * 1);
+      stopTimer();
+    }
+  }, [timeElapsed]);
+
+  const resetTimer = () => {
+    stopTimer();
+    startTimer();
   };
 
   useEffect(() => {
-    resetInactivityTimeout();
     async function prepare() {
       try {
         await handleLoadAuth();
@@ -93,14 +126,6 @@ export default function App() {
     prepare();
   }, []);
 
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponderCapture: () => {
-        resetInactivityTimeout();
-      },
-    })
-  ).current;
-
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
       await SplashScreen.hideAsync();
@@ -115,6 +140,7 @@ export default function App() {
     <>
       <SessionAndPushNotification
         user={user}
+        onReset={resetTimer}
         isVisible={isVisible}
         setIsVisible={setIsVisible}
       />

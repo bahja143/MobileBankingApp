@@ -6,8 +6,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { CurvedBottomBarExpo } from "react-native-curved-bottom-bar";
 import { Animated, StyleSheet, TouchableOpacity } from "react-native";
 
+import SignUpScreen from "../screens/SignUpScreen";
 import ExchangeNav from "../navigation/ExchangeNav";
 import ReceiptScreen from "../screens/ReceiptScreen";
+import WelcomeScreen from "../screens/WelcomeScreen";
 import MyQRCodeScreen from "../screens/MyQRCodeScreen";
 import TransferScreen from "../screens/TransferScreen";
 import BranchesScreen from "../screens/BranchesScreen";
@@ -141,7 +143,9 @@ const HomeStackNavigator = () => {
           name="normalPassword"
           component={PasswordSignInScreen}
         />
+        <HomeStack.Screen name="signUp" component={SignUpScreen} />
         <HomeStack.Screen name="exchange" component={ExchangeNav} />
+        <HomeStack.Screen name="welcome" component={WelcomeScreen} />
         <HomeStack.Screen name="verify" component={VerificationScreen} />
         <HomeStack.Screen name="forgot" component={ForgotCredentialScreen} />
         <HomeStack.Screen
