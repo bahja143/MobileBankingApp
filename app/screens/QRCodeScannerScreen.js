@@ -19,9 +19,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import Text from "../components/CustomText";
-
 import colors from "../config/colors";
+import Text from "../components/CustomText";
 import BarcodeScannerPeep from "../assets/sound/store-scanner-beep.mp3";
 
 export default function QRCodeScannerScreen({ route, navigation }) {
@@ -43,6 +42,7 @@ export default function QRCodeScannerScreen({ route, navigation }) {
   };
   const handlePlay = async () => {
     const { sound } = await Audio.Sound.createAsync(BarcodeScannerPeep);
+    sound.setVolumeAsync(0.2);
     await sound.playAsync();
   };
   const handleFlash = () => {
@@ -90,6 +90,7 @@ export default function QRCodeScannerScreen({ route, navigation }) {
   };
 
   useEffect(() => {
+    handlePlay();
     handleCameraPermission();
     Animated.loop(
       Animated.sequence([

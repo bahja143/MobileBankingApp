@@ -25,7 +25,7 @@ import AuthContext from "./app/context/AuthContext";
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
-    shouldPlaySound: true,
+    shouldPlaySound: false,
     shouldSetBadge: true,
   }),
 });
@@ -51,6 +51,7 @@ export default function App() {
     if (isVisible) return;
     await Notifications.scheduleNotificationAsync({
       content: {
+        vibrate: [],
         title: "Shabelle Bank! 🔒",
         body: "For your security, your banking session has timed out due to inactivity",
       },

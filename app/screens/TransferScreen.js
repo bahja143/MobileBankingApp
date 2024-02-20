@@ -333,11 +333,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   navCont: {
-    marginTop: 10,
-    marginBottom: 40,
+    paddingTop: 10,
+    paddingBottom: 10,
     flexDirection: "row",
     alignItems: "center",
     marginHorizontal: 10,
+    backgroundColor: colors.white,
   },
   confirmBtnConfirmText: {
     fontSize: 16,
@@ -469,6 +470,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 7.5,
     justifyContent: "center",
+    paddingTop: 25,
   },
   title: {
     fontSize: 17,

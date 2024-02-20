@@ -15,9 +15,7 @@
       "fallbackToCacheTimeout": 0,
       "url": "https://u.expo.dev/a6060cc5-bcb3-48bd-9852-25ee9af2dfe9"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "buildNumber": "1.0.10",
       "supportsTablet": true,
@@ -41,9 +39,20 @@
         {
           "color": "#357fc2",
           "icon": "./app/assets/images/icon.png",
-          "sounds": [
-            "./app/assets/sound/mixkit-confirmation-tone.wav"
-          ]
+          "sounds": ["./app/assets/sound/mixkit-confirmation-tone.wav"]
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 31,
+            "targetSdkVersion": 31,
+            "buildToolsVersion": "31.0.0"
+          },
+          "ios": {
+            "deploymentTarget": "13.0"
+          }
         }
       ]
     ],

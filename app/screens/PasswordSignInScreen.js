@@ -9,8 +9,9 @@ import {
   View,
   Image,
   Keyboard,
-  ScrollView,
   StyleSheet,
+  ScrollView,
+  Dimensions,
   TouchableOpacity,
 } from "react-native";
 import * as Yup from "yup";
@@ -141,8 +142,9 @@ export default function PasswordSignInScreen({ navigation }) {
         </View>
       ) : null}
       <ScrollView
+        style={styles.container}
         keyboardShouldPersistTaps="always"
-        contentContainerStyle={styles.container}
+        contentContainerStyle={styles.flatlist}
       >
         <View />
         <Formik
@@ -264,9 +266,12 @@ export default function PasswordSignInScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 7.5,
     backgroundColor: colors.white,
+  },
+  flatlist: {
+    paddingHorizontal: 7.5,
     justifyContent: "space-between",
+    height: Dimensions.get("window").height,
   },
   Navtitle: {
     fontSize: 18,
