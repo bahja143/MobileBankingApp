@@ -98,9 +98,6 @@ function CreatePinScreen({ route, navigation }) {
     <>
       <ActivityIndicator visible={isLoading} />
       <View style={styles.container}>
-        {/* <Text semibold style={styles.title}>
-          New Password
-        </Text> */}
         <Text style={styles.errorMessage}>{errorMessage}</Text>
         <TouchableWithoutFeedback
           style={styles.container}
@@ -121,18 +118,58 @@ function CreatePinScreen({ route, navigation }) {
             </Text>
 
             <View style={styles.pinContainer}>
-              <View style={styles.pin}>
+              <View
+                style={[
+                  styles.pin,
+                  {
+                    borderColor:
+                      pin["pin"].length >= 1
+                        ? colors.primary
+                        : "rgba(0, 0, 0, 0.3)",
+                  },
+                ]}
+              >
                 {pin["pin"].length >= 1 ? <View style={styles.pinDot} /> : null}
               </View>
 
-              <View style={styles.pin}>
+              <View
+                style={[
+                  styles.pin,
+                  {
+                    borderColor:
+                      pin["pin"].length >= 2
+                        ? colors.primary
+                        : "rgba(0, 0, 0, 0.3)",
+                  },
+                ]}
+              >
                 {pin["pin"].length >= 2 ? <View style={styles.pinDot} /> : null}
               </View>
-              <View style={styles.pin}>
+              <View
+                style={[
+                  styles.pin,
+                  {
+                    borderColor:
+                      pin["pin"].length >= 3
+                        ? colors.primary
+                        : "rgba(0, 0, 0, 0.3)",
+                  },
+                ]}
+              >
                 {pin["pin"].length >= 3 ? <View style={styles.pinDot} /> : null}
               </View>
 
-              <View style={styles.pin}>
+              <View
+                style={[
+                  styles.pin,
+                  {
+                    borderColor:
+                      pin["pin"].length >= 4
+                        ? colors.primary
+                        : "rgba(0, 0, 0, 0.3)",
+                  },
+                ]}
+              >
                 {pin["pin"].length >= 4 ? <View style={styles.pinDot} /> : null}
               </View>
             </View>
@@ -159,24 +196,64 @@ function CreatePinScreen({ route, navigation }) {
             </Text>
 
             <View style={styles.pinContainer}>
-              <View style={styles.pin}>
+              <View
+                style={[
+                  styles.pin,
+                  {
+                    borderColor:
+                      pin["confirm"].length >= 1
+                        ? colors.primary
+                        : "rgba(0, 0, 0, 0.3)",
+                  },
+                ]}
+              >
                 {pin["confirm"].length >= 1 ? (
                   <View style={styles.pinDot} />
                 ) : null}
               </View>
 
-              <View style={styles.pin}>
+              <View
+                style={[
+                  styles.pin,
+                  {
+                    borderColor:
+                      pin["confirm"].length >= 2
+                        ? colors.primary
+                        : "rgba(0, 0, 0, 0.3)",
+                  },
+                ]}
+              >
                 {pin["confirm"].length >= 2 ? (
                   <View style={styles.pinDot} />
                 ) : null}
               </View>
-              <View style={styles.pin}>
+              <View
+                style={[
+                  styles.pin,
+                  {
+                    borderColor:
+                      pin["confirm"].length >= 3
+                        ? colors.primary
+                        : "rgba(0, 0, 0, 0.3)",
+                  },
+                ]}
+              >
                 {pin["confirm"].length >= 3 ? (
                   <View style={styles.pinDot} />
                 ) : null}
               </View>
 
-              <View style={styles.pin}>
+              <View
+                style={[
+                  styles.pin,
+                  {
+                    borderColor:
+                      pin["confirm"].length >= 4
+                        ? colors.primary
+                        : "rgba(0, 0, 0, 0.3)",
+                  },
+                ]}
+              >
                 {pin["confirm"].length >= 4 ? (
                   <View style={styles.pinDot} />
                 ) : null}

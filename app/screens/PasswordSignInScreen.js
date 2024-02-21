@@ -144,6 +144,7 @@ export default function PasswordSignInScreen({ navigation }) {
       <ScrollView
         style={styles.container}
         keyboardShouldPersistTaps="always"
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.flatlist}
       >
         <View />
@@ -271,7 +272,7 @@ const styles = StyleSheet.create({
   flatlist: {
     paddingHorizontal: 7.5,
     justifyContent: "space-between",
-    height: Dimensions.get("window").height,
+    height: Dimensions.get("window").height - 13,
   },
   Navtitle: {
     fontSize: 18,

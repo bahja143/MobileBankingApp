@@ -26,7 +26,7 @@ import transactionsData from "../data/transactions.json";
 export default function DashboardScreen({ navigation }) {
   const [show, setShow] = useState(false);
   const [detail, setDetail] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [detailTran, setDetailTran] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [transactions, setTransactions] = useState([]);
@@ -40,7 +40,12 @@ export default function DashboardScreen({ navigation }) {
     }, 3000);
   };
   const handleLoad = () => {
-    setTransactions([...transactionsData.slice(0, 5)]);
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+      setTransactions([...transactionsData.slice(0, 5)]);
+    }, 1000);
   };
   const hideMiddleDigits = (accountNumber) => {
     // Ensure account number is 13 digits long
@@ -78,10 +83,7 @@ export default function DashboardScreen({ navigation }) {
       handleCheckPin();
     }
 
-    setTimeout(() => {
-      setLoading(false);
-      handleLoad();
-    }, 3000);
+    handleLoad();
   }, []);
 
   return (
@@ -94,6 +96,7 @@ export default function DashboardScreen({ navigation }) {
       <ActivityIndicator visible={loading} />
       <FlatList
         data={[1]}
+        style={style.main}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -313,6 +316,7 @@ export default function DashboardScreen({ navigation }) {
 }
 
 const style = StyleSheet.create({
+  main: { flex: 1, backgroundColor: colors.lighter },
   emptyContainer: {
     flex: 1,
     paddingTop: 50,
@@ -425,8 +429,8 @@ const style = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginHorizontal: 7.5,
-    justifyContent: "space-evenly",
     backgroundColor: colors.white,
+    justifyContent: "space-evenly",
   },
   title: {
     fontSize: 15,

@@ -34,7 +34,7 @@ export default function CustomerSupportScreen({ navigation }) {
         </View>
         <View>
           <Text style={styles.itemText} semibold>
-            Our 24x7 Customer Service
+            Our 24x7 customer service
           </Text>
           <Text style={styles.itemTitle} semibold>
             966
@@ -47,7 +47,7 @@ export default function CustomerSupportScreen({ navigation }) {
         </View>
         <View>
           <Text style={styles.itemText} semibold>
-            Message Us
+            Message us
           </Text>
           <Text style={styles.itemTitle} semibold>
             251907005112
@@ -60,7 +60,7 @@ export default function CustomerSupportScreen({ navigation }) {
         </View>
         <View>
           <Text style={styles.itemText} semibold>
-            Write Us
+            Write us
           </Text>
           <Text style={styles.itemTitle} semibold>
             support@shabellebank.com
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 5,
-    backgroundColor: colors.lighter,
+    backgroundColor: colors.white,
   },
   title: {
     fontSize: 17,
@@ -103,19 +103,21 @@ const styles = StyleSheet.create({
     color: colors.medium,
   },
   item: {
+    elevation: 1,
     width: "100%",
-    elevation: 2.5,
+    borderWidth: 1,
     borderRadius: 10,
     marginBottom: 7.5,
-    paddingVertical: 15,
+    paddingVertical: 13,
     alignItems: "center",
     flexDirection: "row",
     paddingHorizontal: 15,
+    borderColor: colors.light,
     backgroundColor: colors.white,
   },
   iconContainer: {
-    width: 50,
-    height: 50,
+    width: 45,
+    height: 45,
     marginRight: 10,
     borderRadius: 100,
     alignItems: "center",

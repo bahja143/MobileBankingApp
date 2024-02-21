@@ -105,8 +105,6 @@ export default function SignUpScreen({ navigation }) {
     }, 5000);
   };
 
-  console.log(data);
-
   return (
     <>
       <ActivityIndicator visible={isLoading} />
@@ -176,7 +174,7 @@ export default function SignUpScreen({ navigation }) {
                   name="accountNo"
                   isLoading={loading}
                   keyboardType="numeric"
-                  placeholder="Account No."
+                  placeholder="Account no."
                   value={values["accountNo"]}
                   invalid={!values["isAccountValid"]}
                   onChange={(value) =>

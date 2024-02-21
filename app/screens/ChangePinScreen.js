@@ -107,24 +107,65 @@ function ChangePinScreen({ navigation }) {
               </Text>
 
               <View style={styles.pinContainer}>
-                <View style={styles.pin}>
+                <View
+                  style={[
+                    styles.pin,
+                    {
+                      borderColor:
+                        pin["oldPin"].length >= 1
+                          ? colors.primary
+                          : "rgba(0, 0, 0, 0.3)",
+                    },
+                  ]}
+                >
                   {pin["oldPin"].length >= 1 ? (
                     <View style={styles.pinDot} />
                   ) : null}
                 </View>
 
-                <View style={styles.pin}>
+                <View
+                  style={[
+                    styles.pin,
+                    {
+                      borderColor:
+                        pin["oldPin"].length >= 2
+                          ? colors.primary
+                          : "rgba(0, 0, 0, 0.3)",
+                    },
+                  ]}
+                >
                   {pin["oldPin"].length >= 2 ? (
                     <View style={styles.pinDot} />
                   ) : null}
                 </View>
-                <View style={styles.pin}>
+
+                <View
+                  style={[
+                    styles.pin,
+                    {
+                      borderColor:
+                        pin["oldPin"].length >= 3
+                          ? colors.primary
+                          : "rgba(0, 0, 0, 0.3)",
+                    },
+                  ]}
+                >
                   {pin["oldPin"].length >= 3 ? (
                     <View style={styles.pinDot} />
                   ) : null}
                 </View>
 
-                <View style={styles.pin}>
+                <View
+                  style={[
+                    styles.pin,
+                    {
+                      borderColor:
+                        pin["oldPin"].length >= 4
+                          ? colors.primary
+                          : "rgba(0, 0, 0, 0.3)",
+                    },
+                  ]}
+                >
                   {pin["oldPin"].length >= 4 ? (
                     <View style={styles.pinDot} />
                   ) : null}
@@ -149,24 +190,65 @@ function ChangePinScreen({ navigation }) {
               </Text>
 
               <View style={styles.pinContainer}>
-                <View style={styles.pin}>
+                <View
+                  style={[
+                    styles.pin,
+                    {
+                      borderColor:
+                        pin["pin"].length >= 1
+                          ? colors.primary
+                          : "rgba(0, 0, 0, 0.3)",
+                    },
+                  ]}
+                >
                   {pin["pin"].length >= 1 ? (
                     <View style={styles.pinDot} />
                   ) : null}
                 </View>
 
-                <View style={styles.pin}>
+                <View
+                  style={[
+                    styles.pin,
+                    {
+                      borderColor:
+                        pin["pin"].length >= 2
+                          ? colors.primary
+                          : "rgba(0, 0, 0, 0.3)",
+                    },
+                  ]}
+                >
                   {pin["pin"].length >= 2 ? (
                     <View style={styles.pinDot} />
                   ) : null}
                 </View>
-                <View style={styles.pin}>
+
+                <View
+                  style={[
+                    styles.pin,
+                    {
+                      borderColor:
+                        pin["pin"].length >= 3
+                          ? colors.primary
+                          : "rgba(0, 0, 0, 0.3)",
+                    },
+                  ]}
+                >
                   {pin["pin"].length >= 3 ? (
                     <View style={styles.pinDot} />
                   ) : null}
                 </View>
 
-                <View style={styles.pin}>
+                <View
+                  style={[
+                    styles.pin,
+                    {
+                      borderColor:
+                        pin["pin"].length >= 4
+                          ? colors.primary
+                          : "rgba(0, 0, 0, 0.3)",
+                    },
+                  ]}
+                >
                   {pin["pin"].length >= 4 ? (
                     <View style={styles.pinDot} />
                   ) : null}
@@ -192,24 +274,65 @@ function ChangePinScreen({ navigation }) {
               </Text>
 
               <View style={styles.pinContainer}>
-                <View style={styles.pin}>
+                <View
+                  style={[
+                    styles.pin,
+                    {
+                      borderColor:
+                        pin["confirm"].length >= 1
+                          ? colors.primary
+                          : "rgba(0, 0, 0, 0.3)",
+                    },
+                  ]}
+                >
                   {pin["confirm"].length >= 1 ? (
                     <View style={styles.pinDot} />
                   ) : null}
                 </View>
 
-                <View style={styles.pin}>
+                <View
+                  style={[
+                    styles.pin,
+                    {
+                      borderColor:
+                        pin["confirm"].length >= 2
+                          ? colors.primary
+                          : "rgba(0, 0, 0, 0.3)",
+                    },
+                  ]}
+                >
                   {pin["confirm"].length >= 2 ? (
                     <View style={styles.pinDot} />
                   ) : null}
                 </View>
-                <View style={styles.pin}>
+
+                <View
+                  style={[
+                    styles.pin,
+                    {
+                      borderColor:
+                        pin["confirm"].length >= 3
+                          ? colors.primary
+                          : "rgba(0, 0, 0, 0.3)",
+                    },
+                  ]}
+                >
                   {pin["confirm"].length >= 3 ? (
                     <View style={styles.pinDot} />
                   ) : null}
                 </View>
 
-                <View style={styles.pin}>
+                <View
+                  style={[
+                    styles.pin,
+                    {
+                      borderColor:
+                        pin["confirm"].length >= 4
+                          ? colors.primary
+                          : "rgba(0, 0, 0, 0.3)",
+                    },
+                  ]}
+                >
                   {pin["confirm"].length >= 4 ? (
                     <View style={styles.pinDot} />
                   ) : null}

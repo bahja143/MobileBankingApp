@@ -105,7 +105,7 @@ export default function TransferScreen({ route, navigation }) {
     setTimeout(() => {
       setIsLoading(false);
       navigation.navigate("receipt", { transfer, toAccount: account });
-    }, 3000);
+    }, 1000);
   };
   const handleConfirm = () => {
     setShowConfirm(false);
@@ -288,8 +288,8 @@ export default function TransferScreen({ route, navigation }) {
                 />
                 <InputField1
                   required
-                  maxLength={13}
                   icon="wallet"
+                  maxLength={13}
                   name="accountNo"
                   isLoading={loading}
                   keyboardType="numeric"
@@ -300,7 +300,7 @@ export default function TransferScreen({ route, navigation }) {
                     handleCheckAccountNo(value, setFieldValue, values)
                   }
                   errorMessage={
-                    values["isAccountValid"] ? null : "Invalid Account No."
+                    values["isAccountValid"] ? null : "Invalid account no."
                   }
                 />
                 <InputField1
@@ -366,11 +366,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   detailItemLabel: {
-    fontSize: 14.5,
+    fontSize: 15,
+    marginLeft: 8,
     color: colors.medium,
   },
   detailItemValue: {
-    fontSize: 14.5,
+    fontSize: 15,
+    marginRight: 8,
     color: colors.black,
     alignItems: "baseline",
     textTransform: "capitalize",
@@ -385,7 +387,6 @@ const styles = StyleSheet.create({
   },
   detail: {
     marginTop: 30,
-    marginHorizontal: 5,
   },
   confirmBalanceCont: {
     width: 200,

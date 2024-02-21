@@ -37,7 +37,7 @@ export default function TransferDetailModal({ isVisible, setShow, detail }) {
 
             <View style={styles.detailIconCont}>
               <MaterialCommunityIcons
-                size={18}
+                size={17}
                 color={colors.green}
                 name="check-decagram"
               />
@@ -128,7 +128,7 @@ export default function TransferDetailModal({ isVisible, setShow, detail }) {
 
 const styles = StyleSheet.create({
   container: {
-    height: 480,
+    height: 500,
     width: "100%",
     paddingTop: 12,
     borderTopEndRadius: 20,
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   detailItemSubt: {
-    fontSize: 14.5,
+    fontSize: 15,
     maxWidth: 230,
     marginLeft: 3,
     marginRight: 18,
@@ -159,14 +159,14 @@ const styles = StyleSheet.create({
     fontFamily: "Inter_500Medium",
   },
   detailItemTitle: {
-    fontSize: 14.5,
+    fontSize: 15,
     marginLeft: 18,
     color: colors.medium,
     fontFamily: "Inter_500Medium",
   },
   detailItem: {
-    marginTop: 17,
-    paddingBottom: 12,
+    marginTop: 19,
+    paddingBottom: 14,
     flexDirection: "row",
     borderBottomWidth: 1.45,
     borderColor: colors.lighter,

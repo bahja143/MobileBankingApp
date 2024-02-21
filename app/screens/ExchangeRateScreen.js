@@ -76,6 +76,7 @@ export default function ExchangeRateScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 5,
     backgroundColor: colors.lighter,
   },
   bodyTitle: {

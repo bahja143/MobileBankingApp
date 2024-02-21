@@ -80,7 +80,7 @@ export default function MyQRCodeScreen({ navigation }) {
             </View>
             <View style={styles.qr}>
               <QRCode
-                size={300}
+                size={312}
                 logo={Logo}
                 logoSize={65}
                 style={styles.qr}
@@ -168,7 +168,7 @@ export default function MyQRCodeScreen({ navigation }) {
             </View>
             <View style={[styles.qr, { marginVertical: 20 }]}>
               <QRCode
-                size={300}
+                size={312}
                 logo={Logo}
                 logoSize={50}
                 style={styles.qr}
@@ -199,11 +199,12 @@ export default function MyQRCodeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    height: "100%",
     backgroundColor: colors.primary,
   },
   qr: {
-    alignSelf: "center",
     marginVertical: 25,
+    alignSelf: "center",
   },
   logo: {
     width: 52,
@@ -220,10 +221,11 @@ const styles = StyleSheet.create({
     color: colors.green,
   },
   bottomContainer: {
-    top: 85,
+    // top: 85,
     height: 75,
     borderWidth: 1,
     borderRadius: 10,
+    marginBottom: 10,
     alignItems: "center",
     flexDirection: "row",
     borderColor: colors.light,
@@ -234,13 +236,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text: {
-    fontSize: 15,
     width: 260,
+    fontSize: 16,
     textAlign: "center",
     color: colors.medium,
   },
   title: {
-    fontSize: 19,
+    fontSize: 20,
     marginBottom: 5,
     textTransform: "uppercase",
     color: colors.black,
@@ -252,15 +254,16 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    marginBottom: 20,
     marginHorizontal: 10,
-    justifyContent: "flex-end",
+    justifyContent: "center",
   },
   qrContainer: {
-    flex: 0.93,
+    flex: 0.9,
     borderRadius: 15,
+    paddingVertical: 20,
     paddingHorizontal: 20,
     backgroundColor: colors.white,
+    justifyContent: "space-between",
   },
   Navtitle: {
     fontSize: 17,

@@ -143,26 +143,28 @@ export default function UserProfileScreen({ navigation }) {
         </View>
 
         <View style={styles.body}>
-          <TouchableOpacity onPress={handleMedia} style={styles.avatarCont}>
-            <Image
-              style={[styles.avatar, imageUri && { top: 0 }]}
-              source={imageUri ? { uri: imageUri } : Avatar}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleMedia} style={styles.iconCamera}>
-            <Ionicons name="camera-outline" size={20} color={colors.white} />
-          </TouchableOpacity>
-          <Text style={styles.avatarTitle} semibold>
-            Change Picture
-          </Text>
+          <View style={styles.topHeader}>
+            <TouchableOpacity onPress={handleMedia} style={styles.avatarCont}>
+              <Image
+                style={[styles.avatar, imageUri && { top: 0 }]}
+                source={imageUri ? { uri: imageUri } : Avatar}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleMedia} style={styles.iconCamera}>
+              <Ionicons name="camera-outline" size={20} color={colors.white} />
+            </TouchableOpacity>
+            <Text style={styles.avatarTitle} semibold>
+              Change Picture
+            </Text>
 
-          <View style={styles.titleCont}>
-            <Text style={styles.title} bold>
-              {account.name}
-            </Text>
-            <Text style={styles.subTitle} semibold>
-              {formatNumberWithSpaces(account.mobile)}
-            </Text>
+            <View style={styles.titleCont}>
+              <Text style={styles.title} bold>
+                {account.name}
+              </Text>
+              <Text style={styles.subTitle} semibold>
+                {formatNumberWithSpaces(account.mobile)}
+              </Text>
+            </View>
           </View>
 
           <View style={styles.menus}>
@@ -286,8 +288,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     backgroundColor: colors.white,
   },
+  topHeader: {
+    alignItems: "center",
+  },
   avatarTitle: {
-    top: -25,
+    top: -22,
     fontSize: 15.5,
     color: colors.primary,
   },
@@ -337,9 +342,9 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   iconCamera: {
-    top: -30,
+    top: -33,
     width: 34,
-    right: -32,
+    right: -37,
     height: 34,
     borderRadius: 30,
     borderWidth: 2.25,
@@ -389,7 +394,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lighter,
   },
   title: {
-    fontSize: 20,
+    fontSize: 19,
     color: colors.black,
   },
   subTitle: {
@@ -398,12 +403,13 @@ const styles = StyleSheet.create({
     color: colors.medium,
   },
   titleCont: {
+    top: 10,
     textAlign: "center",
   },
   body: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
   },
   avatarCont: {
     width: 130,

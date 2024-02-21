@@ -106,7 +106,10 @@ export default function UpdateContactInfoScreen({ navigation }) {
           </Text>
         </View>
 
-        <ScrollView keyboardShouldPersistTaps="always">
+        <ScrollView
+          contentContainerStyle={styles.scrollCont}
+          keyboardShouldPersistTaps="always"
+        >
           <KeyboardAvoidingView
             behavior="padding"
             keyboardVerticalOffset={Platform.select({
@@ -161,6 +164,9 @@ export default function UpdateContactInfoScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  scrollCont: {
+    paddingTop: 35,
+  },
   container: {
     flex: 1,
     paddingHorizontal: 7.5,
@@ -230,7 +236,7 @@ const styles = StyleSheet.create({
   },
   navCont: {
     marginTop: 10,
-    marginBottom: 25,
+    marginBottom: 5,
     alignItems: "center",
     flexDirection: "row",
   },

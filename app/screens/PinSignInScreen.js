@@ -122,7 +122,10 @@ export default function PinSignInScreen({ navigation }) {
       <View style={styles.container}>
         <Image style={styles.logo} source={logo} />
         <Text style={styles.title} semibold>
-          Welcome back, <Text bold>{getFirstTwoWords(account?.name)}!</Text>
+          Welcome back,{" "}
+          <Text style={styles.name} bold>
+            {getFirstTwoWords(account?.name)}
+          </Text>
         </Text>
         <Animated.View
           style={[
@@ -347,8 +350,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     backgroundColor: colors.white,
+  },
+  name: {
+    fontFamily: "Inter_600SemiBold",
   },
   actionItem: {
     alignItems: "center",
@@ -369,7 +375,7 @@ const styles = StyleSheet.create({
   },
   actionsCont: {
     top: 30,
-    width: "100%",
+    width: "98%",
     borderRadius: 7.5,
     paddingVertical: 11,
     flexDirection: "row",
@@ -378,7 +384,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lighter,
   },
   pinContainer: {
-    marginVertical: 18,
     flexDirection: "row",
   },
   pin: {
@@ -389,7 +394,7 @@ const styles = StyleSheet.create({
     borderColor: colors.primary,
   },
   bottomCont: {
-    top: 15,
+    top: -15,
     marginTop: 5,
   },
   bottomText: {
@@ -418,15 +423,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   title: {
-    fontSize: 16,
+    fontSize: 16.5,
     marginBottom: 10,
     color: colors.black,
   },
   logo: {
-    top: -10,
+    top: 10,
     width: 90,
     height: 80,
-    marginBottom: 10,
     alignSelf: "center",
   },
 });

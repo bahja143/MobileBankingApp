@@ -110,7 +110,10 @@ export default function UpdateAddressScreen({ navigation }) {
           </Text>
         </View>
 
-        <ScrollView keyboardShouldPersistTaps="always">
+        <ScrollView
+          contentContainerStyle={styles.scrollCont}
+          keyboardShouldPersistTaps="always"
+        >
           <KeyboardAvoidingView
             behavior="padding"
             keyboardVerticalOffset={Platform.select({
@@ -192,6 +195,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 7.5,
     backgroundColor: colors.white,
   },
+  scrollCont: {
+    paddingTop: 25,
+  },
   modalTrashIcon: {
     top: -10,
     width: 110,
@@ -256,7 +262,7 @@ const styles = StyleSheet.create({
   },
   navCont: {
     marginTop: 10,
-    marginBottom: 25,
+    marginBottom: 5,
     alignItems: "center",
     flexDirection: "row",
   },

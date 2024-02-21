@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useContext } from "react";
+import { useState, useRef, useContext } from "react";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
@@ -17,7 +17,6 @@ import {
   Ionicons,
   Octicons,
   AntDesign,
-  FontAwesome5,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import Modal from "react-native-modal";
@@ -28,7 +27,6 @@ import ActivityIndicator from "../components/ActivityIndicator";
 
 import cache from "../utility/cache";
 import banks from "../data/banks.json";
-
 import authContext from "../context/AuthContext";
 
 export default function BeneficiariesScreen({ navigation }) {
