@@ -33,37 +33,15 @@
     "web": {
       "favicon": "./app/assets/images/icon.png"
     },
-    "plugins": [
-      [
-        "expo-notifications",
-        {
-          "color": "#357fc2",
-          "icon": "./app/assets/images/icon.png",
-          "sounds": ["./app/assets/sound/mixkit-confirmation-tone.wav"]
-        }
-      ],
-      [
-        "expo-build-properties",
-        {
-          "android": {
-            "compileSdkVersion": 31,
-            "targetSdkVersion": 31,
-            "buildToolsVersion": "31.0.0"
-          },
-          "ios": {
-            "deploymentTarget": "13.0"
-          }
-        }
-      ]
-    ],
-    "extra": {
-      "eas": {
-        "projectId": "a6060cc5-bcb3-48bd-9852-25ee9af2dfe9"
-      }
-    },
+    "plugins": [],
     "runtimeVersion": {
       "policy": "appVersion"
     },
-    "owner": "abdi143"
+    "owner": "farah143",
+    "extra": {
+      "eas": {
+        "projectId": "d3a5a5fe-0333-40c7-8bb3-da158f6a600a"
+      }
+    }
   }
 }

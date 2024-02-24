@@ -28,6 +28,7 @@ import UpdateAddressScreen from "../screens/UpdateAddressScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import QRCodeScannerScreen from "../screens/QRCodeScannerScreen";
 import BeneficiariesScreen from "../screens/BeneficiariesScreen";
+import BranchLocationScreen from "../screens/BranchLocationScreen";
 import PasswordSignInScreen from "../screens/PasswordSignInScreen";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen";
 import TransferDetailScreen from "../screens/TransferDetailScreen";
@@ -153,6 +154,8 @@ const HomeStackNavigator = () => {
           component={CreatePasswordScreen}
         />
         <HomeStack.Screen name="support" component={CustomerSupportScreen} />
+        <HomeStack.Screen name="location" component={BranchLocationScreen} />
+        <HomeStack.Screen name="branches" component={BranchesScreen} />
       </HomeStack.Navigator>
     ) : (
       <HomeStack.Navigator screenOptions={{ headerShown: false }}>
@@ -162,6 +165,8 @@ const HomeStackNavigator = () => {
         <HomeStack.Screen name="verifyPin" component={VerificationScreen} />
         <HomeStack.Screen name="forgot" component={ForgotCredentialScreen} />
         <HomeStack.Screen name="support" component={CustomerSupportScreen} />
+        <HomeStack.Screen name="location" component={BranchLocationScreen} />
+        <HomeStack.Screen name="branches" component={BranchesScreen} />
       </HomeStack.Navigator>
     )
   ) : (
@@ -201,6 +206,7 @@ const HomeStackNavigator = () => {
       <HomeStack.Screen name="pin" component={PinSignInScreen} />
       <HomeStack.Screen name="receipt" component={ReceiptScreen} />
       <HomeStack.Screen name="createPin" component={CreatePinScreen} />
+      <HomeStack.Screen name="location" component={BranchLocationScreen} />
       <HomeStack.Screen name="verifyPin" component={VerificationScreen} />
       <HomeStack.Screen name="support" component={CustomerSupportScreen} />
       <HomeStack.Screen name="forgot" component={ForgotCredentialScreen} />

@@ -36,7 +36,7 @@ export default function ReceiptScreen({ route, navigation }) {
   };
   const handlePlay = async () => {
     const { sound } = await Audio.Sound.createAsync(Ding);
-    sound.setVolumeAsync(0.2);
+    sound.setVolumeAsync(0.5);
 
     await sound.playAsync();
   };

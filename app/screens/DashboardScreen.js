@@ -3,11 +3,13 @@ import {
   Image,
   FlatList,
   StyleSheet,
+  BackHandler,
+  ToastAndroid,
   RefreshControl,
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useCallback } from "react";
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
@@ -22,6 +24,7 @@ import TransferDetailModal from "../components/TransferDetailModal";
 import cache from "../utility/cache";
 import authContext from "../context/AuthContext";
 import transactionsData from "../data/transactions.json";
+import { useDoubleBackPressExit } from "../hook/useDoubleBackPressExit";
 
 export default function DashboardScreen({ navigation }) {
   const [show, setShow] = useState(false);
@@ -31,6 +34,9 @@ export default function DashboardScreen({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
   const [transactions, setTransactions] = useState([]);
   const { user, account: myAccount, setUser } = useContext(authContext);
+  useDoubleBackPressExit(() => {
+    BackHandler.exitApp();
+  });
 
   const handleRefreshing = () => {
     setRefreshing(true);
@@ -316,7 +322,10 @@ export default function DashboardScreen({ navigation }) {
 }
 
 const style = StyleSheet.create({
-  main: { flex: 1, backgroundColor: colors.lighter },
+  main: {
+    flex: 1,
+    backgroundColor: colors.lighter,
+  },
   emptyContainer: {
     flex: 1,
     paddingTop: 50,
@@ -404,7 +413,8 @@ const style = StyleSheet.create({
     alignItems: "center",
   },
   navIcon: {
-    color: "rgba(0, 0, 0, 0.7)",
+    // color: "rgba(0, 0, 0, 0.7)",
+    color: colors.primary,
   },
   navTitle: {
     fontSize: 12,

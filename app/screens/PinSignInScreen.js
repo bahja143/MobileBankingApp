@@ -120,13 +120,15 @@ export default function PinSignInScreen({ navigation }) {
       <ActivityIndicator visible={isLoading} />
       <SuspendModal isVisible={visible} type="PIN" />
       <View style={styles.container}>
-        <Image style={styles.logo} source={logo} />
-        <Text style={styles.title} semibold>
-          Welcome back,{" "}
-          <Text style={styles.name} bold>
-            {getFirstTwoWords(account?.name)}
+        <View>
+          <Image style={styles.logo} source={logo} />
+          <Text style={styles.title} semibold>
+            Welcome back,{" "}
+            <Text style={styles.name} bold>
+              {getFirstTwoWords(account?.name)}
+            </Text>
           </Text>
-        </Text>
+        </View>
         <Animated.View
           style={[
             styles.pinView,
@@ -290,17 +292,22 @@ export default function PinSignInScreen({ navigation }) {
               <Feather size={29} name="delete" color={colors.primary} />
             </TouchableOpacity>
           </View>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate("forgot", { type: "pin" })}
+            style={styles.bottomCont}
+          >
+            <Text style={styles.bottomText} bold>
+              Forgot PIN Code?
+            </Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("forgot", { type: "pin" })}
-          style={styles.bottomCont}
-        >
-          <Text style={styles.bottomText} bold>
-            Forgot PIN Code?
-          </Text>
-        </TouchableOpacity>
+
         <View style={styles.actionsCont}>
-          <TouchableOpacity style={styles.actionItem}>
+          <TouchableOpacity
+            style={styles.actionItem}
+            onPress={() => navigation.navigate("branches")}
+          >
             <View style={styles.actionIcon}>
               <Octicons name="location" size={25} color={colors.white} />
             </View>
@@ -349,6 +356,7 @@ export default function PinSignInScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingVertical: 10,
     alignItems: "center",
     justifyContent: "space-evenly",
     backgroundColor: colors.white,
@@ -374,7 +382,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   actionsCont: {
-    top: 30,
+    top: 25,
     width: "98%",
     borderRadius: 7.5,
     paddingVertical: 11,
@@ -394,8 +402,9 @@ const styles = StyleSheet.create({
     borderColor: colors.primary,
   },
   bottomCont: {
-    top: -15,
+    top: 5,
     marginTop: 5,
+    alignSelf: "center",
   },
   bottomText: {
     fontSize: 15,
@@ -423,14 +432,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   title: {
-    fontSize: 16.5,
-    marginBottom: 10,
+    fontSize: 16,
+    // marginBottom: 10,
     color: colors.black,
   },
   logo: {
-    top: 10,
-    width: 90,
-    height: 80,
+    width: 85,
+    height: 75,
+    marginBottom: 14,
     alignSelf: "center",
   },
 });

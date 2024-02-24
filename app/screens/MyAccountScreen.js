@@ -13,20 +13,20 @@ const menuItems = [
   {
     id: 1,
     icon: "format-list-bulleted",
-    title: "My Profile",
+    title: "My profile",
     url: "userprofile",
     color: "primary",
   },
   {
     id: 2,
-    title: "Bank Branches",
+    title: "Bank branches",
     color: "primary",
     url: "branches",
     icon: "bank",
   },
   {
     id: 3,
-    title: "Currency Exchange",
+    title: "Currency exchange",
     icon: "currency-usd",
     color: "primary",
     url: "exchange",

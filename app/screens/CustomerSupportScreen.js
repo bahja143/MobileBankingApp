@@ -103,9 +103,8 @@ const styles = StyleSheet.create({
     color: colors.medium,
   },
   item: {
-    elevation: 1,
     width: "100%",
-    borderWidth: 1,
+    borderWidth: 1.25,
     borderRadius: 10,
     marginBottom: 7.5,
     paddingVertical: 13,

@@ -1,91 +1,64 @@
-import { useEffect, useState } from "react";
-import MapView from "react-native-maps";
-import * as Location from "expo-location";
 import MapViewDirections from "react-native-maps-directions";
-import { Dimensions, StyleSheet, View, Text } from "react-native";
+import React, { useEffect, useState, useRef } from "react";
+import { StyleSheet, View, Dimensions, TouchableOpacity } from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import { FontAwesome, Entypo } from "@expo/vector-icons";
+import * as Location from "expo-location";
 
 import colors from "../config/colors";
-// import PermissionsModal from "../components/PermissionsModal";
+import Text from "../components/CustomText";
 
 const { width, height } = Dimensions.get("window");
 const ASPECT_RATIO = width / height;
-const LATITUDE = 9.56;
-const LONGITUDE = 44.06;
-const LATITUDE_DELTA = 10.43;
+const LATITUDE = 9.145;
+const LATITUDE_DELTA = 10;
+const LONGITUDE = 40.489673;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+const GOOGLE_MAPS_APIKEY = "AIzaSyBPu8BqybdnkeahLkTajf5H0OezipCnNk4";
 
-const GOOGLE_MAPS_APIKEY = "AIzaSyAdcgm5LvfAevml-ae6OuXqVZ8WqQWo5hc";
-const origin = { latitude: 37.3318456, longitude: -122.0296002 };
-const destination = { latitude: 37.771707, longitude: -122.4053769 };
-
-export default function BranchLocation() {
-  const [center, setCenter] = useState({});
+const MapWithDirections = ({ route, navigation }) => {
+  const [branch, setBranch] = useState({});
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [mapView, setMapView] = useState(null);
   const [coordinates, setCoordinates] = useState([]);
-  const [showPermissions, setShowPermissions] = useState(false);
+  let mapView = useRef();
 
-  const handlePermissions = (input) => {
-    setShowPermissions(input);
-  };
-
-  const getUserLocation = async () => {
+  const handleGetUserLocationOnchange = async () => {
     try {
       const {
         coords: { latitude, longitude },
       } = await Location.getLastKnownPositionAsync();
 
-      coordinates.push({ latitude, longitude });
+      coordinates.shift();
+      coordinates.unshift({ latitude, longitude });
 
-      setCoordinates((c) => [...c, { latitude, longitude }]);
+      setCoordinates(coordinates);
     } catch (error) {
       console.log(error);
-      handlePermissions(true);
-    }
-  };
-
-  const getUserLocationOnchange = async () => {
-    try {
-      const { coordinates } = this.state;
-
-      const {
-        coords: { latitude, longitude },
-      } = await Location.getLastKnownPositionAsync();
-
-      coordinates.pop();
-      coordinates.push({ latitude, longitude });
-
-      this.setState({ coordinates });
-    } catch (error) {
-      console.log(error);
-      handlePermissions(true);
     }
   };
 
   useEffect(() => {
-    // const item = this.props.route?.params;
-    const item = { location: { latitude: 9.561287, longitude: 44.058293 } };
-    setCoordinates(() => [
-      { latitude: 9.561287, longitude: 44.058293 },
-      { latitude: 9.612016, longitude: 43.882136 },
-    ]);
+    const data = route.params;
 
-    getUserLocation();
-    setCenter({ ...item });
+    setBranch(data.branch);
+    setCoordinates([...data.coordinates]);
   }, []);
 
   return (
-    <View style={styles.container}>
-      {/* <PermissionsModal
-        show={showPermissions}
-        setShow={this.handlePermissions}
-        message="For better experience please turn on you Location."
-      /> */}
+    <View style={{ flex: 1 }}>
       <View style={styles.textContainer}>
-        <Text style={styles.text}>{Math.ceil(distance)}Km away, </Text>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.navIconCont}
+        >
+          <Entypo size={30} color={colors.white} name="chevron-left" />
+        </TouchableOpacity>
+        <Text style={styles.text} semibold>
+          {Math.ceil(distance)} KM away,{" "}
+        </Text>
         <Text style={styles.text1}>
-          You will get after {Math.ceil(duration)} Menutes
+          you will get after {Math.ceil(duration)} Menutes
         </Text>
       </View>
       <MapView
@@ -95,54 +68,88 @@ export default function BranchLocation() {
           latitudeDelta: LATITUDE_DELTA,
           longitudeDelta: LONGITUDE_DELTA,
         }}
-        ref={(c) => setMapView(c)}
-        showsUserLocation
-        followsUserLocation
         focusable
-        onUserLocationChange={() => getUserLocationOnchange()}
-        showsCompass={true}
-        chacheEnabled={false}
-        zoomEnabled={true}
         loadingEnabled
-        loadingIndicatorColor={colors["primary"]}
+        showsUserLocation
         style={styles.map}
+        zoomEnabled={true}
+        followsUserLocation
+        showsCompass={true}
+        cacheEnabled={false}
+        ref={(c) => (mapView = c)}
+        loadingIndicatorColor={colors["primary"]}
+        onUserLocationChange={handleGetUserLocationOnchange}
       >
-        <MapViewDirections
-          origin={origin}
-          destination={destination}
-          apikey={GOOGLE_MAPS_APIKEY}
-        />
+        {coordinates.slice(1).map((coordinate, index) => (
+          <Marker
+            key={index}
+            coordinate={coordinate}
+            title={`Shabelle Bank - ${branch.name}`}
+          >
+            <FontAwesome name="bank" color={colors.primary} size={30} />
+          </Marker>
+        ))}
+
+        {coordinates.length >= 2 && (
+          <MapViewDirections
+            origin={coordinates[0]}
+            waypoints={
+              coordinates.length > 2 ? coordinates.slice(1, -1) : undefined
+            }
+            strokeWidth={5}
+            lineDashPattern={[1]}
+            optimizeWaypoints={true}
+            apikey={GOOGLE_MAPS_APIKEY}
+            strokeColor={colors["green"]}
+            destination={coordinates[coordinates.length - 1]}
+            onReady={(result) => {
+              setDistance(result.distance);
+              setDuration(result.duration);
+
+              mapView.fitToCoordinates(result.coordinates, {
+                edgePadding: {
+                  right: width / 20,
+                  bottom: height / 20,
+                  left: width / 20,
+                  top: height / 20,
+                },
+              });
+            }}
+          />
+        )}
       </MapView>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   textContainer: {
-    backgroundColor: colors["white"],
-    height: 75,
     zIndex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
+    height: 60,
+    paddingLeft: 5,
     alignItems: "center",
-    marginBottom: 10,
+    flexDirection: "row",
+    backgroundColor: colors["white"],
+  },
+  navIconCont: {
+    padding: 3,
+    marginRight: 7,
+    borderRadius: 5,
+    paddingVertical: 5,
+    backgroundColor: colors.primary,
   },
   map: {
     flex: 1,
-    top: -25,
     height: 8500,
   },
   text: {
-    color: colors["primary"],
-    fontSize: 16,
-    fontFamily: "sans-serif-light",
+    fontSize: 15.5,
+    color: colors["black"],
   },
   text1: {
-    color: colors["secondary"],
-    fontSize: 16,
-    fontFamily: "sans-serif-light",
+    fontSize: 15.5,
+    color: colors["black"],
   },
 });
+
+export default MapWithDirections;

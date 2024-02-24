@@ -42,7 +42,7 @@ export default function QRCodeScannerScreen({ route, navigation }) {
   };
   const handlePlay = async () => {
     const { sound } = await Audio.Sound.createAsync(BarcodeScannerPeep);
-    sound.setVolumeAsync(0.2);
+    sound.setVolumeAsync(0.5);
     await sound.playAsync();
   };
   const handleFlash = () => {
@@ -90,7 +90,6 @@ export default function QRCodeScannerScreen({ route, navigation }) {
   };
 
   useEffect(() => {
-    handlePlay();
     handleCameraPermission();
     Animated.loop(
       Animated.sequence([

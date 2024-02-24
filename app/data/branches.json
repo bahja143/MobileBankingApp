@@ -1,0 +1,32 @@
+[
+  {
+    "id": "2",
+    "phone": "251915118996",
+    "name": "Jijiga Branch",
+    "location": {
+      "latitude": 9.347446,
+      "longitude": 42.799477
+    }
+  },
+  {
+    "id": "4",
+    "phone": "251913884507",
+    "name": "Tog-wajaale Branch",
+    "location": { "latitude": 9.599442, "longitude": 43.331541 }
+  },
+  {
+    "id": "1",
+    "phone": "25190888804",
+    "name": "Madina Branch",
+    "location": {
+      "latitude": 9.361533595626351,
+      "longitude": 42.79249774076375
+    }
+  },
+  {
+    "id": "3",
+    "phone": "251915650412",
+    "name": "Qaryan dhodan Branch",
+    "location": { "latitude": 9.351907, "longitude": 42.797924 }
+  }
+]

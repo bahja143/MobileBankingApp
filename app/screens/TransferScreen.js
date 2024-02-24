@@ -69,7 +69,7 @@ export default function TransferScreen({ route, navigation }) {
       setTransfer(transfer);
       setShowConfirm(true);
       setIsLoading(false);
-    }, 3000);
+    }, 1000);
   };
   const handleCheckAccountNo = (accountNo, setFieldValue) => {
     setLoading(true);

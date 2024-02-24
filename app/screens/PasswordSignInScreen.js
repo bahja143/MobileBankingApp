@@ -218,7 +218,10 @@ export default function PasswordSignInScreen({ navigation }) {
         </Formik>
 
         <View style={styles.actionsCont}>
-          <TouchableOpacity style={styles.actionItem}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("branches")}
+            style={styles.actionItem}
+          >
             <View style={styles.actionIcon}>
               <Octicons name="location" size={25} color={colors.white} />
             </View>
@@ -272,7 +275,9 @@ const styles = StyleSheet.create({
   flatlist: {
     paddingHorizontal: 7.5,
     justifyContent: "space-between",
-    height: Dimensions.get("window").height - 13,
+    height:
+      Dimensions.get("window").height -
+      calculateFivePercent(Dimensions.get("window").height),
   },
   Navtitle: {
     fontSize: 18,
@@ -352,3 +357,18 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
 });
+
+function calculateFivePercent(amount) {
+  // Ensure amount is a valid number
+  if (typeof amount !== "number" || isNaN(amount)) {
+    throw new Error("Invalid input: Please provide a valid number.");
+  }
+
+  // Calculate 5% using multiplication and division
+  const fivePercent = amount * 0.08;
+
+  // Round the result to two decimal places for better presentation (optional)
+  const roundedFivePercent = fivePercent.toFixed(2);
+
+  return roundedFivePercent;
+}

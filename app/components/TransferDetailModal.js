@@ -64,7 +64,7 @@ export default function TransferDetailModal({ isVisible, setShow, detail }) {
                     backgroundColor: "rgba(255, 82, 82, 0.15)",
                   },
                 ]}
-                semibold
+                bold
               >
                 {detail.type === "Received"
                   ? "+" + detail.amount?.toLocaleString("en-US")
@@ -136,14 +136,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   detailItemAmount: {
-    fontSize: 15.6,
+    fontSize: 14.5,
     marginRight: 20,
     borderRadius: 4,
     paddingVertical: 3,
     paddingHorizontal: 7.5,
     marginVertical: -1.75,
     color: colors.primary,
-    fontFamily: "Inter_600SemiBold",
     backgroundColor: colors.secondary,
   },
   detailIconCont: {
@@ -151,7 +150,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   detailItemSubt: {
-    fontSize: 15,
+    fontSize: 14.5,
     maxWidth: 230,
     marginLeft: 3,
     marginRight: 18,
@@ -159,7 +158,7 @@ const styles = StyleSheet.create({
     fontFamily: "Inter_500Medium",
   },
   detailItemTitle: {
-    fontSize: 15,
+    fontSize: 14.5,
     marginLeft: 18,
     color: colors.medium,
     fontFamily: "Inter_500Medium",
