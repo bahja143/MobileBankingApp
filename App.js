@@ -142,7 +142,7 @@ export default function App() {
       <SessionAndPushNotification
         user={user}
         onReset={resetTimer}
-        isVisible={false}
+        isVisible={isVisible}
         setIsVisible={setIsVisible}
       />
       <AuthContext.Provider
