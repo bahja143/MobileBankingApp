@@ -1,3 +1,4 @@
+import { useNetInfo } from "@react-native-community/netinfo";
 import { StatusBar, PanResponder, View } from "react-native";
 import { useEffect, useCallback, useState, useRef } from "react";
 
@@ -16,6 +17,7 @@ import * as Notifications from "expo-notifications";
 import Screen from "./app/components/Screen";
 import AuthNavigation from "./app/navigation/AuthNavigation";
 import HomeNavigation from "./app/navigation/HomeNavigation";
+import NoInternetModal from "./app/components/NoInternetModal";
 import SessionAndPushNotification from "./app/components/SessionAndPushNotification";
 
 import cache from "./app/utility/cache";
@@ -31,6 +33,7 @@ Notifications.setNotificationHandler({
 });
 
 export default function App() {
+  const info = useNetInfo();
   const [user, setUser] = useState({});
   const [account, setAccount] = useState({});
   const [isAuth, setIsAuth] = useState(false);
@@ -49,6 +52,8 @@ export default function App() {
 
   const handleExpoNotification = async () => {
     if (isVisible) return;
+
+    setIsVisible(true);
     await Notifications.scheduleNotificationAsync({
       content: {
         vibrate: [],
@@ -65,7 +70,7 @@ export default function App() {
 
     setUser(auth);
     setAccount(account);
-    setBeneficiaries(beneficiaries);
+    setBeneficiaries(beneficiaries == null ? [] : beneficiaries);
   };
   const startTimer = () => {
     setIsRunning(true);
@@ -92,7 +97,6 @@ export default function App() {
     if (timeElapsed >= 60) {
       // Run code after 1 minute
       if (isAuth) {
-        setIsVisible(true);
         handleExpoNotification();
       }
       stopTimer();
@@ -139,10 +143,16 @@ export default function App() {
 
   return (
     <>
+      <NoInternetModal
+        isVisible={
+          // info.type !== "unknown" && info.isInternetReachable === false
+          false
+        }
+      />
       <SessionAndPushNotification
         user={user}
+        isVisible={false}
         onReset={resetTimer}
-        isVisible={isVisible}
         setIsVisible={setIsVisible}
       />
       <AuthContext.Provider

@@ -55,12 +55,11 @@ const menuItems = [
 
 const MyAccountScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const { setIsAuth } = useContext(authContext);
+  const { account, setIsAuth } = useContext(authContext);
 
   const handleSignOut = async () => {
     setIsLoading(true);
     setTimeout(() => {
-      setIsLoading(false);
       setIsAuth(false);
     }, 1000);
   };
@@ -69,7 +68,7 @@ const MyAccountScreen = ({ navigation }) => {
     <>
       <ActivityIndicator visible={isLoading} />
       <View style={styles.container}>
-        <Profile title="Abdisalam Farah Abdi" subtile="0907005112" />
+        <Profile title={account.name} subtile={account.mobile} />
         <FlatList
           data={menuItems}
           style={styles.flatList}

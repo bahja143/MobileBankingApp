@@ -43,7 +43,7 @@ export default function CreatePasswordScreen({ route, navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const { setUser, setIsAuth, account, setAccount } = useContext(authContext);
 
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
     setIsLoading(true);
     Keyboard.dismiss();
     const mobile = route.params;
@@ -55,16 +55,14 @@ export default function CreatePasswordScreen({ route, navigation }) {
       },
     };
 
-    setTimeout(() => {
+    setTimeout(async () => {
       setIsLoading(false);
       setAccount(account);
-      cache.setItemAsync("auth", auth);
-      cache.setItemAsync("account", account);
+      await cache.setItemAsync("auth", auth);
+      await cache.setItemAsync("account", account);
+
       setUser(auth);
       setIsAuth(true);
-
-      // setTimeout(() => {
-      // }, 500);
     }, 3000);
   };
   const checkPasswordStrength = (password) => {

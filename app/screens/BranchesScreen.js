@@ -2,6 +2,7 @@ import Modal from "react-native-modal";
 import * as Location from "expo-location";
 import { useState, useEffect } from "react";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
+import { useNetInfo } from "@react-native-community/netinfo";
 import {
   View,
   Linking,
@@ -20,6 +21,7 @@ import colors from "../config/colors";
 import data from "../data/branches.json";
 
 export default BranchesScreen = ({ navigation }) => {
+  const info = useNetInfo();
   const [isLoading, setIsLoading] = useState(false);
   const [branches, setBranches] = useState([...data]);
   const [refreshing, setRefreshing] = useState(false);
@@ -27,11 +29,13 @@ export default BranchesScreen = ({ navigation }) => {
 
   const handleRedirect = async (item) => {
     try {
+      if (info.type !== "unknown" && info.isInternetReachable === false) return;
+
       setIsLoading(true);
       const { granted } = await Location.requestForegroundPermissionsAsync();
       if (!granted) return setShowPermissions(true);
 
-      const { coords } = await Location.getCurrentPositionAsync({});
+      const { coords } = await Location.getLastKnownPositionAsync();
       if (!coords) return;
 
       setIsLoading(false);

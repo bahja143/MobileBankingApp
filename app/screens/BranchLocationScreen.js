@@ -1,9 +1,10 @@
-import MapViewDirections from "react-native-maps-directions";
-import React, { useEffect, useState, useRef } from "react";
-import { StyleSheet, View, Dimensions, TouchableOpacity } from "react-native";
+import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
-import * as Location from "expo-location";
+import React, { useEffect, useState, useRef } from "react";
+import { useNetInfo } from "@react-native-community/netinfo";
+import MapViewDirections from "react-native-maps-directions";
+import { StyleSheet, View, Dimensions, TouchableOpacity } from "react-native";
 
 import colors from "../config/colors";
 import Text from "../components/CustomText";
@@ -17,6 +18,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const GOOGLE_MAPS_APIKEY = "AIzaSyBPu8BqybdnkeahLkTajf5H0OezipCnNk4";
 
 const MapWithDirections = ({ route, navigation }) => {
+  const info = useNetInfo();
   const [branch, setBranch] = useState({});
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -25,6 +27,8 @@ const MapWithDirections = ({ route, navigation }) => {
 
   const handleGetUserLocationOnchange = async () => {
     try {
+      if (info.type !== "unknown" && info.isInternetReachable === false) return;
+
       const {
         coords: { latitude, longitude },
       } = await Location.getLastKnownPositionAsync();
@@ -46,7 +50,7 @@ const MapWithDirections = ({ route, navigation }) => {
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <View style={styles.textContainer}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
@@ -58,7 +62,7 @@ const MapWithDirections = ({ route, navigation }) => {
           {Math.ceil(distance)} KM away,{" "}
         </Text>
         <Text style={styles.text1}>
-          you will get after {Math.ceil(duration)} Menutes
+          you will get after {Math.ceil(duration)} Minutes
         </Text>
       </View>
       <MapView
@@ -123,6 +127,9 @@ const MapWithDirections = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   textContainer: {
     zIndex: 1,
     height: 60,

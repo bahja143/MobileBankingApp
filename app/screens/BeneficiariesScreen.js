@@ -118,6 +118,8 @@ export default function BeneficiariesScreen({ navigation }) {
     navigation.navigate("qrcode", { beneficiary: true });
   };
 
+  console.log(beneficiaries);
+
   return (
     <>
       <ActivityIndicator visible={loading} />

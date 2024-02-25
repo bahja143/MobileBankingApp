@@ -24,19 +24,16 @@ import TransferDetailModal from "../components/TransferDetailModal";
 import cache from "../utility/cache";
 import authContext from "../context/AuthContext";
 import transactionsData from "../data/transactions.json";
-import { useDoubleBackPressExit } from "../hook/useDoubleBackPressExit";
 
-export default function DashboardScreen({ navigation }) {
+export default function DashboardScreen({ route, navigation }) {
   const [show, setShow] = useState(false);
   const [detail, setDetail] = useState({});
   const [loading, setLoading] = useState(false);
   const [detailTran, setDetailTran] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [transactions, setTransactions] = useState([]);
+  const [backPressCount, setBackPressCount] = useState(0);
   const { user, account: myAccount, setUser } = useContext(authContext);
-  useDoubleBackPressExit(() => {
-    BackHandler.exitApp();
-  });
 
   const handleRefreshing = () => {
     setRefreshing(true);
@@ -83,14 +80,38 @@ export default function DashboardScreen({ navigation }) {
     setDetail(tran);
     setDetailTran(true);
   };
+  const handleBackPress = useCallback(() => {
+    if (!navigation.canGoBack()) {
+      if (backPressCount === 0) {
+        setBackPressCount((prevCount) => prevCount + 1);
+        setTimeout(() => setBackPressCount(0), 2000);
+        ToastAndroid.show("Press again to exit", ToastAndroid.SHORT);
+      } else if (backPressCount === 1) {
+        BackHandler.exitApp();
+      }
+    } else {
+      navigation.goBack();
+    }
+    return true;
+  }, [backPressCount]);
 
   useEffect(() => {
-    if (user.initial) {
-      handleCheckPin();
-    }
+    // if (!user.initial) {
+    //   handleCheckPin();
+    // }
 
     handleLoad();
   }, []);
+
+  useEffect(() => {
+    if (Platform.OS === "android") {
+      const backListener = BackHandler.addEventListener(
+        "hardwareBackPress",
+        handleBackPress
+      );
+      return backListener?.remove;
+    }
+  }, [handleBackPress]);
 
   return (
     <>

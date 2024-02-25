@@ -29,8 +29,8 @@ export default function PinSignInScreen({ navigation }) {
   const [visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const shake = useRef(new Animated.Value(0.5)).current;
-  const [isFingerAvailable, setFingerAvailable] = useState(false);
   const { user, account, setIsAuth } = useContext(authContext);
+  const [isFingerAvailable, setFingerAvailable] = useState(false);
 
   const handleTouch = (num) => {
     setPin((e) => e + num);

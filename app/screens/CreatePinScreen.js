@@ -22,7 +22,7 @@ function CreatePinScreen({ route, navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [pin, setPing] = useState({ pin: "", confirm: "" });
-  const { user, setIsAuth, setUser } = useContext(authContext);
+  const { setIsAuth, setUser } = useContext(authContext);
 
   const handleOnchange = (name, value) => {
     setPing({ ...pin, [name]: value });
@@ -37,8 +37,8 @@ function CreatePinScreen({ route, navigation }) {
   };
   const handleSubmit = async () => {
     setErrorMessage(null);
-    const enablePin = route.params?.pin ? true : false;
     const settings = await cache.getItemAsync("settings");
+    const user = await cache.getItemAsync("auth");
 
     Keyboard.dismiss();
     if (pin["pin"].length !== 4 || pin["confirm"].length !== 4) {
@@ -54,35 +54,32 @@ function CreatePinScreen({ route, navigation }) {
       await cache.setItemAsync("auth", {
         ...user,
         pin: pin["pin"],
-        type: enablePin ? "pin" : user.type,
       });
       await cache.setItemAsync("settings", {
         ...settings,
-        pin: enablePin ? "pin" : user.type,
       });
       setIsLoading(false);
       setUser({
         ...user,
         pin: pin["pin"],
-        type: enablePin ? "pin" : user.type,
       });
-      setIsAuth(true);
 
       if (user.pin) {
         setUser({
           ...user,
           pin: pin["pin"],
-          type: enablePin ? "pin" : user.type,
         });
+
+        setIsAuth(false);
         return navigation.navigate("pin");
       }
 
       setUser({
         ...user,
         pin: pin["pin"],
-        type: enablePin ? "pin" : user.type,
       });
       navigation.navigate("MainNavigation");
+      return setIsAuth(false);
     }, 3000);
   };
 
@@ -263,7 +260,13 @@ function CreatePinScreen({ route, navigation }) {
         </TouchableWithoutFeedback>
 
         <View style={styles.btnCont}>
-          <Button onPress={handleSubmit} title="Create PIN" margin={50} />
+          <Button
+            onPress={handleSubmit}
+            title="Create"
+            margin={50}
+            bold
+            textTransform="capitalize"
+          />
         </View>
       </View>
     </>

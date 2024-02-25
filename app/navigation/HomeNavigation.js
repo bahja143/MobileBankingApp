@@ -44,7 +44,7 @@ import authContext from "../context/AuthContext";
 import themeNavigation from "../config/themeNavigation";
 import qrCodeAnimation from "../assets/animation/QRCode.json";
 
-const MainNavigation = ({ navigation }) => {
+const MainNavigation = ({ route, navigation }) => {
   const _renderIcon = (routeName, selectedTab) => {
     let icon = "";
 
@@ -106,11 +106,15 @@ const MainNavigation = ({ navigation }) => {
       <CurvedBottomBarExpo.Screen
         name="Home"
         position="LEFT"
-        component={() => <DashboardScreen navigation={navigation} />}
+        component={({ route }) => (
+          <DashboardScreen route={route} navigation={navigation} />
+        )}
       />
       <CurvedBottomBarExpo.Screen
         name="Account"
-        component={() => <MyAccountScreen navigation={navigation} />}
+        component={({ route }) => (
+          <MyAccountScreen route={route} navigation={navigation} />
+        )}
         position="RIGHT"
         options={{
           tabBarIcon: ({ focused, color, size }) =>
@@ -203,7 +207,7 @@ const HomeStackNavigator = () => {
         name="forgotCredential"
         component={ForgotCredentialScreen}
       />
-      <HomeStack.Screen name="pin" component={PinSignInScreen} />
+      {/* <HomeStack.Screen name="pin" component={PinSignInScreen} /> */}
       <HomeStack.Screen name="receipt" component={ReceiptScreen} />
       <HomeStack.Screen name="createPin" component={CreatePinScreen} />
       <HomeStack.Screen name="location" component={BranchLocationScreen} />

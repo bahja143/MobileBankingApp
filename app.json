@@ -13,9 +13,11 @@
     },
     "updates": {
       "fallbackToCacheTimeout": 0,
-      "url": "https://u.expo.dev/a6060cc5-bcb3-48bd-9852-25ee9af2dfe9"
+      "url": "https://u.expo.dev/d3a5a5fe-0333-40c7-8bb3-da158f6a600a"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "buildNumber": "1.0.10",
       "supportsTablet": true,

@@ -74,10 +74,9 @@ export default function PasswordSignInScreen({ navigation }) {
       }
 
       if (1 + maxTry === 5) return setVisible(true);
-
       setMaxTry(maxTry + 1);
       return setErrorMessage("Invalid credentials!");
-    }, 3000);
+    }, 1000);
   };
   const HandleCheckFingerPrint = async () => {
     const response = await LocalAuthentication.hasHardwareAsync();
