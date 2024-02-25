@@ -145,14 +145,13 @@ export default function App() {
     <>
       <NoInternetModal
         isVisible={
-          // info.type !== "unknown" && info.isInternetReachable === false
-          false
+          info.type !== "unknown" && info.isInternetReachable === false
         }
       />
       <SessionAndPushNotification
         user={user}
-        isVisible={false}
         onReset={resetTimer}
+        isVisible={isVisible}
         setIsVisible={setIsVisible}
       />
       <AuthContext.Provider
