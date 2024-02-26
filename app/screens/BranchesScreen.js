@@ -36,10 +36,7 @@ export default BranchesScreen = ({ navigation }) => {
       if (!granted) return setShowPermissions(true);
 
       setIsLoading(false);
-      navigation.navigate("location", {
-        branch: item,
-        coordinates: [item.location],
-      });
+      navigation.navigate("location", item);
     } catch (error) {
       console.log(error);
     }

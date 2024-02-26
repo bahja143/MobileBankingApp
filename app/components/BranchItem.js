@@ -66,7 +66,8 @@ export default BranchItem = ({ item, onCall, onPress }) => {
               />
 
               <Text style={styles.bottomText} numberOfLines={1}>
-                <Text semibold>{item.distance}KM</Text> away
+                <Text semibold>{parseFloat(item.distance).toFixed(1)}KM</Text>{" "}
+                away
               </Text>
             </View>
           )}
