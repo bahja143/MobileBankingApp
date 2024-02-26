@@ -64,74 +64,78 @@ export default function ReceiptScreen({ route, navigation }) {
             <Text style={styles.subTitle}>
               You've successfully transferred money
             </Text>
-          </View>
-
-          <View style={styles.balanceContainer}>
-            <Text style={styles.balance} bold>
-              {Number(route.params?.transfer?.amount).toLocaleString("en-US", {
-                style: "currency",
-                currency: "ETB",
-              })}
-            </Text>
-          </View>
-
-          <View style={styles.itemContainer}>
-            <View style={styles.item}>
-              <Text style={styles.itemLabel} semibold>
-                From:
-              </Text>
-              <Text style={styles.itemLabel} semibold>
-                {account.name}
-              </Text>
-            </View>
-            <View style={styles.item}>
-              <Text style={styles.itemValue} semibold>
-                Account No:
-              </Text>
-
-              <Text style={styles.itemValue} semibold>
-                {account.account}
+            <View style={styles.balanceContainer}>
+              <Text style={styles.balance} bold>
+                {Number(route.params?.transfer?.amount).toLocaleString(
+                  "en-US",
+                  {
+                    style: "currency",
+                    currency: "ETB",
+                  }
+                )}
               </Text>
             </View>
           </View>
 
-          <View style={styles.itemContainer}>
-            <View style={styles.item}>
-              <Text style={styles.itemLabel} semibold>
-                To:
-              </Text>
-              <Text style={styles.itemLabel} semibold>
-                {route.params?.toAccount.name}
-              </Text>
-            </View>
-            <View style={styles.item}>
-              <Text style={styles.itemValue} semibold>
-                Account No:
-              </Text>
+          <View style={styles.detail}>
+            <View style={styles.itemContainer}>
+              <View style={styles.item}>
+                <Text style={styles.itemLabel} semibold>
+                  From:
+                </Text>
+                <Text style={styles.itemLabel} semibold>
+                  {account.name}
+                </Text>
+              </View>
+              <View style={styles.item}>
+                <Text style={styles.itemValue} semibold>
+                  Account No:
+                </Text>
 
-              <Text style={styles.itemValue} semibold>
-                {route.params?.toAccount.account}
-              </Text>
+                <Text style={styles.itemValue} semibold>
+                  {account.account}
+                </Text>
+              </View>
             </View>
-          </View>
 
-          <View style={styles.itemContainer}>
-            <View style={styles.item}>
-              <Text style={styles.itemLabel} semibold>
-                Date:
-              </Text>
-              <Text style={styles.itemLabel} semibold>
-                {new Date().toDateString()}
-              </Text>
+            <View style={styles.itemContainer}>
+              <View style={styles.item}>
+                <Text style={styles.itemLabel} semibold>
+                  To:
+                </Text>
+                <Text style={styles.itemLabel} semibold>
+                  {route.params?.toAccount.name}
+                </Text>
+              </View>
+              <View style={styles.item}>
+                <Text style={styles.itemValue} semibold>
+                  Account No:
+                </Text>
+
+                <Text style={styles.itemValue} semibold>
+                  {route.params?.toAccount.account}
+                </Text>
+              </View>
             </View>
-            <View style={styles.item}>
-              <Text style={styles.itemValue} semibold>
-                Time:
-              </Text>
 
-              <Text style={styles.itemValue} semibold>
-                {new Date().toLocaleTimeString()}
-              </Text>
+            <View style={styles.itemContainer}>
+              <View style={styles.item}>
+                <Text style={styles.itemLabel} semibold>
+                  Date:
+                </Text>
+                <Text style={styles.itemLabel} semibold>
+                  {new Date().toDateString()}
+                </Text>
+              </View>
+              <View style={styles.item}>
+                <Text style={styles.itemValue} semibold>
+                  Time:
+                </Text>
+
+                <Text style={styles.itemValue} semibold>
+                  {new Date().toLocaleTimeString()}
+                </Text>
+              </View>
             </View>
           </View>
 
@@ -324,6 +328,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: colors.primary,
   },
+  detail: {
+    flex: 1,
+    justifyContent: "space-evenly",
+  },
   body: {
     height: 225,
     justifyContent: "space-between",
@@ -360,7 +368,7 @@ const styles = StyleSheet.create({
     borderColor: colors.light,
   },
   btnContainer: {
-    marginVertical: 20,
+    // marginVertical: 20,
   },
   btnCloseText: {
     fontSize: 13,
@@ -377,7 +385,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lighter,
   },
   btn: {
-    top: 20,
+    // top: 20,
     marginTop: 20,
     borderRadius: 7.5,
     paddingVertical: 12.5,
@@ -390,15 +398,16 @@ const styles = StyleSheet.create({
     textTransform: "capitalize",
   },
   itemContainer: {
+    marginVertical: 5,
     borderBottomWidth: 0.8,
     borderBottomColor: colors.lighter,
   },
   itemLabel: {
-    fontSize: 15,
+    fontSize: 14.5,
     color: colors.black,
   },
   itemValue: {
-    fontSize: 15,
+    fontSize: 14.5,
     marginTop: 7.5,
     color: colors.medium,
   },
@@ -407,24 +416,26 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   balance: {
-    fontSize: 25,
+    fontSize: 24,
     paddingVertical: 10,
     color: colors.black,
     paddingHorizontal: 15,
   },
   balanceContainer: {
-    top: -7.5,
-    height: 70,
-    width: "75%",
-    borderRadius: 10,
+    // top: -7.5,
+    // height: 70,
+    // width: "75%",
+    marginTop: 15,
+    borderRadius: 7.5,
     marginBottom: 20,
+    paddingVertical: 5,
     alignSelf: "center",
     alignItems: "center",
+    paddingHorizontal: 15,
     justifyContent: "center",
     backgroundColor: colors.lighter,
   },
   subTitle: {
-    fontSize: 13.5,
     color: colors.medium,
   },
   title: {
@@ -437,12 +448,14 @@ const styles = StyleSheet.create({
   },
   receiptHeader: {
     alignItems: "center",
+    // paddingVertical: 25,
   },
   receipt: {
     flex: 0.95,
     borderRadius: 18,
+    paddingVertical: 10,
     paddingHorizontal: 15,
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
     backgroundColor: colors.white,
   },
 });

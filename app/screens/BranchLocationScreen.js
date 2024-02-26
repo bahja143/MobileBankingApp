@@ -18,25 +18,31 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const GOOGLE_MAPS_APIKEY = "AIzaSyBPu8BqybdnkeahLkTajf5H0OezipCnNk4";
 
 const MapWithDirections = ({ route, navigation }) => {
+  let mapView = useRef();
   const info = useNetInfo();
   const [branch, setBranch] = useState({});
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
   const [coordinates, setCoordinates] = useState([]);
-  let mapView = useRef();
 
-  const handleGetUserLocationOnchange = async () => {
+  const handleUserLocationOnchange = async () => {
     try {
       if (info.type !== "unknown" && info.isInternetReachable === false) return;
 
-      const {
-        coords: { latitude, longitude },
-      } = await Location.getLastKnownPositionAsync();
+      const response = await Location.getLastKnownPositionAsync();
 
-      coordinates.shift();
-      coordinates.unshift({ latitude, longitude });
+      if (!response?.coords) return;
 
-      setCoordinates(coordinates);
+      const data = [...coordinates];
+      if (data.length !== 1) {
+        data.pop();
+      }
+
+      data.push({
+        latitude: response?.coords?.latitude,
+        longitude: response?.coords?.longitude,
+      });
+      setCoordinates([...data]);
     } catch (error) {
       console.log(error);
     }
@@ -59,10 +65,10 @@ const MapWithDirections = ({ route, navigation }) => {
           <Entypo size={30} color={colors.white} name="chevron-left" />
         </TouchableOpacity>
         <Text style={styles.text} semibold>
-          {Math.ceil(distance)} KM away,{" "}
+          {parseFloat(distance).toFixed(1)} KM away,{" "}
         </Text>
         <Text style={styles.text1}>
-          you will get after {Math.ceil(duration)} Minutes
+          you will get after {parseFloat(duration).toFixed(1)} Minutes
         </Text>
       </View>
       <MapView
@@ -73,6 +79,7 @@ const MapWithDirections = ({ route, navigation }) => {
           longitudeDelta: LONGITUDE_DELTA,
         }}
         focusable
+        ref={(c) => (mapView = c)}
         loadingEnabled
         showsUserLocation
         style={styles.map}
@@ -80,23 +87,24 @@ const MapWithDirections = ({ route, navigation }) => {
         followsUserLocation
         showsCompass={true}
         cacheEnabled={false}
-        ref={(c) => (mapView = c)}
         loadingIndicatorColor={colors["primary"]}
-        onUserLocationChange={handleGetUserLocationOnchange}
+        onUserLocationChange={handleUserLocationOnchange}
       >
-        {coordinates.slice(1).map((coordinate, index) => (
-          <Marker
-            key={index}
-            coordinate={coordinate}
-            title={`Shabelle Bank - ${branch.name}`}
-          >
-            <FontAwesome name="bank" color={colors.primary} size={30} />
-          </Marker>
-        ))}
+        {coordinates
+          .slice(0, coordinates.length - 1)
+          .map((coordinate, index) => (
+            <Marker
+              key={index}
+              coordinate={coordinate}
+              title={`Shabelle Bank - ${branch.name}`}
+            >
+              <FontAwesome name="bank" color={colors.primary} size={30} />
+            </Marker>
+          ))}
 
         {coordinates.length >= 2 && (
           <MapViewDirections
-            origin={coordinates[0]}
+            origin={coordinates[coordinates.length - 1]}
             waypoints={
               coordinates.length > 2 ? coordinates.slice(1, -1) : undefined
             }
@@ -105,12 +113,12 @@ const MapWithDirections = ({ route, navigation }) => {
             optimizeWaypoints={true}
             apikey={GOOGLE_MAPS_APIKEY}
             strokeColor={colors["green"]}
-            destination={coordinates[coordinates.length - 1]}
+            destination={coordinates[0]}
             onReady={(result) => {
               setDistance(result.distance);
               setDuration(result.duration);
 
-              mapView.fitToCoordinates(result.coordinates, {
+              mapView?.fitToCoordinates(result.coordinates, {
                 edgePadding: {
                   right: width / 20,
                   bottom: height / 20,
@@ -150,11 +158,11 @@ const styles = StyleSheet.create({
     height: 8500,
   },
   text: {
-    fontSize: 15.5,
+    fontSize: 15,
     color: colors["black"],
   },
   text1: {
-    fontSize: 15.5,
+    fontSize: 15,
     color: colors["black"],
   },
 });

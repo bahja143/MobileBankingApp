@@ -35,16 +35,10 @@ export default BranchesScreen = ({ navigation }) => {
       const { granted } = await Location.requestForegroundPermissionsAsync();
       if (!granted) return setShowPermissions(true);
 
-      const { coords } = await Location.getLastKnownPositionAsync();
-      if (!coords) return;
-
       setIsLoading(false);
       navigation.navigate("location", {
         branch: item,
-        coordinates: [
-          { latitude: coords.latitude, longitude: coords.longitude },
-          item.location,
-        ],
+        coordinates: [item.location],
       });
     } catch (error) {
       console.log(error);

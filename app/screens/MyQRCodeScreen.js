@@ -1,11 +1,24 @@
 import * as Share from "expo-sharing";
-import { useRef, useState, useContext } from "react";
+import Modal from "react-native-modal";
+import * as Media from "expo-media-library";
 import QRCode from "react-native-qrcode-svg";
 import ViewShot from "react-native-view-shot";
 import * as MediaLibrary from "expo-media-library";
-import { Entypo, FontAwesome, Feather } from "@expo/vector-icons";
+import { useRef, useState, useContext } from "react";
 import FlashMessage, { showMessage } from "react-native-flash-message";
-import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Linking,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+} from "react-native";
+import {
+  Entypo,
+  Feather,
+  FontAwesome,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 
 import colors from "../config/colors";
 import Text from "../components/CustomText";
@@ -15,10 +28,15 @@ import authContext from "../context/AuthContext";
 
 export default function MyQRCodeScreen({ navigation }) {
   const { account: myAccount } = useContext(authContext);
+  const [visible, setVisible] = useState(false);
   const [isSave, setIsSave] = useState(false);
   const ref = useRef();
 
   const handleCapture = async () => {
+    const { granted } = await Media.requestPermissionsAsync();
+
+    if (!granted) return setVisible(true);
+
     if (isSave)
       return showMessage({
         type: "success",
@@ -42,9 +60,59 @@ export default function MyQRCodeScreen({ navigation }) {
       await Share.shareAsync(uri);
     });
   };
+  const handleOpenSettings = () => {
+    setVisible(false);
+    if (Platform.OS === "ios") {
+      Linking.openURL("app-settings:");
+    } else {
+      Linking.openSettings();
+    }
+  };
 
   return (
     <>
+      <Modal isVisible={visible} animationIn="slideInUp" animationOut="fadeOut">
+        <View style={styles.modalDelete}>
+          <View style={styles.modalTrashIcon}>
+            <MaterialCommunityIcons
+              size={32.5}
+              color={colors.danger}
+              name="folder-multiple-image"
+            />
+          </View>
+          <View style={styles.modalTextContainer}>
+            <Text style={styles.modalTitle} bold>
+              Gallery Permission
+            </Text>
+            <Text style={styles.modalText} semibold>
+              Allow this app to access your gallery
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={handleOpenSettings}
+            style={[
+              styles.modalBtn,
+              {
+                borderWidth: 0,
+                paddingVertical: 11,
+                backgroundColor: colors.primary,
+              },
+            ]}
+          >
+            <Text style={[styles.modalBtnText, { color: colors.white }]} bold>
+              Go to settings
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setVisible(false)}
+            style={[styles.modalBtn, { paddingVertical: 10 }]}
+          >
+            <Text style={[styles.modalBtnText]} bold>
+              Back
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
       <FlashMessage
         position="top"
         backgroundColor={colors.primary}
@@ -205,6 +273,51 @@ const styles = StyleSheet.create({
   qr: {
     marginVertical: 25,
     alignSelf: "center",
+  },
+  modalTrashIcon: {
+    width: 55,
+    height: 55,
+    borderRadius: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.lighter,
+  },
+  modalBtn: {
+    width: "100%",
+    marginTop: 8,
+    borderWidth: 1.25,
+    borderRadius: 7.5,
+    paddingVertical: 15,
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: colors.light,
+    backgroundColor: colors.white,
+  },
+  modalBtnText: {
+    color: colors.black,
+  },
+  modalDelete: {
+    width: "100%",
+    borderRadius: 10,
+    paddingVertical: 10,
+    alignItems: "center",
+    paddingHorizontal: 10,
+    justifyContent: "center",
+    backgroundColor: colors.white,
+  },
+  modalTitle: {
+    top: -5,
+    fontSize: 15,
+    color: colors.black,
+  },
+  modalText: {
+    marginBottom: 5,
+    textAlign: "center",
+    color: colors.medium,
+  },
+  modalTextContainer: {
+    marginVertical: 10,
+    alignItems: "center",
   },
   logo: {
     width: 52,

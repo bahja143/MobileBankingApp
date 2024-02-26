@@ -176,6 +176,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.7)",
   },
   modalContainer: {
+    height: 575,
     paddingTop: 15,
     borderTopEndRadius: 22.5,
     borderTopLeftRadius: 22.5,

@@ -364,7 +364,7 @@ function calculateFivePercent(amount) {
   }
 
   // Calculate 5% using multiplication and division
-  const fivePercent = amount * 0.08;
+  const fivePercent = amount * 0.05;
 
   // Round the result to two decimal places for better presentation (optional)
   const roundedFivePercent = fivePercent.toFixed(2);

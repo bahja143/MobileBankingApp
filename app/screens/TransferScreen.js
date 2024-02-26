@@ -137,12 +137,10 @@ export default function TransferScreen({ route, navigation }) {
         swipeDirection="down"
         isVisible={showConfirm}
         animationIn="slideInUp"
-        animationInTiming={500}
-        animationOutTiming={600}
         animationOut="slideOutDown"
         style={styles.modalContainer}
-        backdropTransitionInTiming={500}
-        backdropTransitionOutTiming={600}
+        animationInTiming={600}
+        animationOutTiming={600}
         onSwipeComplete={() => setShowConfirm(false)}
         onBackdropPress={() => setShowConfirm(false)}
       >
@@ -350,7 +348,7 @@ const styles = StyleSheet.create({
   },
   confirmBtnCloseText: {
     fontSize: 16,
-    color: colors.black,
+    color: colors.primary,
     textTransform: "capitalize",
   },
   confirmBtnClose: {

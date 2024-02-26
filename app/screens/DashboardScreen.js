@@ -96,9 +96,9 @@ export default function DashboardScreen({ route, navigation }) {
   }, [backPressCount]);
 
   useEffect(() => {
-    // if (!user.initial) {
-    //   handleCheckPin();
-    // }
+    if (!user.initial) {
+      handleCheckPin();
+    }
 
     handleLoad();
   }, []);
